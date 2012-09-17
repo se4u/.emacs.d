@@ -1,6 +1,18 @@
 (require 'python-mode)
-(global-set-key "" (quote newline-and-indent))
+(global-set-key "" (quote newline-and-indent))
+(global-set-key "" (quote delete-forward-char))
+(transient-mark-mode 1)
+(defun py-execute-current-line ()
+  "Execute the current line assuming it's python"
+  (interactive)
+  (py-execute-region (line-beginning-position) (line-end-position)))
 
+(setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+(global-set-key "\C-r" 'py-execute-current-line)
+
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/w3m")
+(global-set-key (kbd "C-a") 'back-to-indentation)
+(global-set-key [f1] (quote call-last-kbd-macro))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;; FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                                     
@@ -48,7 +60,7 @@
   "An assoc list of pretty key strings                                                                                                                 
 and their terminal equivalents.")
 
-(global-set-key (kbd "C-d") 'kill-current-line)
+;(global-set-key (kbd "C-d") 'kill-current-line)
 (global-set-key (key "M-<up>") 'select-next-window)
 (global-set-key (key "M-<down>") 'select-previous-window)
 (global-set-key (key "M-p") 'backward-paragraph)
