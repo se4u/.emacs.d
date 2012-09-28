@@ -12,7 +12,7 @@ Support for the Python programming language.
 Determine whether required packages are installed. If not, use ELPA to
 install them.
 #+begin_src emacs-lisp
-  (dolist (package '(python-mode ipython))
+  (dolist (package '(ipython))
     (unless (package-installed-p package)
       (package-install package)))
 #+end_src
@@ -24,9 +24,9 @@ install them.
 Replace the Python mode that comes with Emacs by the Python mode
 supplied by the Python distribution itself.
 #+begin_src emacs-lisp
-(require 'python-mode)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(require 'python)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python))
+(add-to-list 'interpreter-mode-alist '("python" . python))
 #+end_src
 
 ** Use IPython if =ipython= command is present
@@ -37,8 +37,8 @@ If an =ipython= executable is on the path, then assume that IPython is
 the preferred method python evaluation.
 #+begin_src emacs-lisp
   (when (executable-find "ipython")
-    (require 'ipython)
-    (setq org-babel-python-mode 'python-mode))
+    (require 'python)
+    (setq org-babel-python-mode 'python))
 #+end_src
 
 ** Use Cython mode
