@@ -5,8 +5,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;; FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun pychecker ()
-  "Run pychecker against the file behind the current buffer after                                                                                      
-  checking if unsaved buffers should be saved."
+  """Run pychecker against the file behind the current buffer after
+  checking if unsaved buffers should be saved."""
   (interactive)
   (let* ((file (buffer-file-name (current-buffer)))
                  (command (concat "pychecker " file)))
@@ -52,9 +52,9 @@
   (python-send-region (line-beginning-position) (line-end-position)))
 
 (defun python-hook ()
-  (when (and (stringp buffer-file-name)
-             (string-match "\\.py\\'" buffer-file-name))
+  (when (string-match "\\.py\\'" buffer-file-name)
     (require 'python)
+    (python-send-string "import sys;sys.path.insert(0,'')")
     (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
     (global-set-key "\C-r" 'py-execute-current-line)))
 
@@ -90,3 +90,4 @@
 (add-hook 'find-file-hook 'matlab-hook)
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/w3m")
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
+(global-set-key "d" (quote delete-backward-char))
