@@ -30,7 +30,6 @@ Mail
 mail
 .newsrc-dribble
 .nnmail-cache
-#.newsrc-dribble#
 *.SCORE
 marks
 .session
