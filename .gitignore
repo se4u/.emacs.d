@@ -3,23 +3,15 @@
 ## misc
 loaddefs.el*
 auto-save-list
-custom.el
+tramp
 places
 .svn
 .DS_Store
-tramp
+
 
 ## directories
 backups/*
 thumbs/*
-oddmuse/*
-eshell/*
-image-dired/*
-elim/*
-doc/*
-elpa/*
-themes/*
-url/*
 
 ## exported and encrypted files
 *gpg
