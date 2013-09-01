@@ -3,6 +3,11 @@
 ;; To run dired and dired+ I basically need to understand a few keys
 ;; You can filter filenames by regex by using C-x d *.sh
 
+(add-hook 'org-mode-hook
+               (lambda ()
+                (font-lock-add-keywords nil
+                 '(("\\<\\(QQQ\\)" 1
+                    font-lock-warning-face t)))))
 
 (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el")
 (load custom-file)
