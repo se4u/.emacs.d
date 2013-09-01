@@ -3,6 +3,38 @@
 ;; To run dired and dired+ I basically need to understand a few keys
 ;; You can filter filenames by regex by using C-x d *.sh
 
+(add-to-list 'load-path "~/.emacs.d/org-blog-sitemap")
+(require 'org-blog-sitemap)
+
+(defun active-learn-publishing-completion ()
+  "Set file permissions and clean up after publishing"
+  (progn
+    (shell-command "chmod 644 ~/public_html/*.html")
+;;    (ignore-errors (shell-command "mv -f ~/public_html/sitemap.html ~/public_html/index.html"))
+    (shell-command "rm ~/Dropbox/org/.*.orgx")
+  ))
+
+(setq org-publish-project-alist
+      (list
+       '("active-learn" 
+         :base-directory "~/Dropbox/org/"
+         :base-extension "org"
+         :publishing-directory "~/public_html"
+         :exclude "morepersonal.org"
+         :publishing-function org-publish-org-to-html
+         :auto-sitemap t
+         :sitemap-sort-files "anti-chronologically"
+         :makeindex nil
+         :auto-preamble t
+         :with-section-numbers nil
+         :completion-function active-learn-publishing-completion
+         ;;:sitemap-function org-blog-export
+         ;;sitemap-title
+         ;;sitemap-filename
+         )))
+
+
+
 (add-hook 'org-mode-hook
                (lambda ()
                 (font-lock-add-keywords nil
@@ -15,7 +47,7 @@
 (if
     (string= system-type "darwin")
     (set-default-font "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
-  (set-default-font "Consolas")
+  (if (ignore-errors (set-default-font "Consolas")) 'true (set-default-font "Liberation Mono"))
   )
 
 (set-face-attribute 'default nil :height 150)
