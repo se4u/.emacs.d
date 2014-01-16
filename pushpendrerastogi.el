@@ -3,14 +3,72 @@
 ;; To run dired and dired+ I basically need to understand a few keys
 ;; You can filter filenames by regex by using C-x d *.sh
 
+;; M-x highlight-changes-mode, and  (global-hi-lock-mode 1)  and M-x
+;; hi-lock-mode and C-x w h regexp <RET> face <RET> and C-x w r regexp
+;; <RET> C-x w l regexp <RET> face <RET> and
+;; (font-lock-add-keywords 'emacs-lisp-mode  '(("foo" . font-lock-keyword-face)))
+;; and
+;;(font-lock-add-keywords 'c-mode
+;;  '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
+;;    ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face)))
+
+;;(load-file "~/.emacs.d/cedet-1.1/common/cedet.el")
+;;(add-to-list 'load-path "~/.emacs.d/ess-13.09")
+;;(load-library "ess-autoloads")
+;;(matlab-cedet-setup)
+
+(defun fix-indentation-xml ()
+  "Reformats xml to make it readable (respects current selection)."
+  (interactive)
+  (save-excursion
+    (let ((beg (point-min))
+          (end (point-max)))
+      (if (and mark-active transient-mark-mode)
+          (progn
+            (setq beg (min (point) (mark)))
+            (setq end (max (point) (mark))))
+        (widen))
+      (setq end (copy-marker end t))
+      (goto-char beg)
+      (while (re-search-forward ">\\s-*<" end t)
+        (replace-match ">\n<" t t))
+      (goto-char beg)
+      (indent-region beg end nil))))
+
+(setenv "PATH" (concat (getenv "PATH") ":/sw/bin" ":/usr/texbin"))
+(setq exec-path (append '("/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python") exec-path '("/sw/bin") '("/usr/texbin")))
+
+(setq ediff-split-window-function 'split-window-horizontally)
+
+(global-set-key (kbd "M-=") '(lambda () (interactive) (progn (org-return-indent) (insert "==> "))))
+
+(require 'dired-x)
+(setq dired-omit-files "^\\...+$")
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+
+(require 'org-latex)
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+(add-to-list 'org-export-latex-classes
+             '("article"
+               "\\documentclass{article}"
+               ("\\section{%s}" . "\\section*{%s}")))
+
+(add-to-list 'org-entities '("pp"
+                             "misc"
+                             ("emptyset" "\\emptyset" t "" "" "" "")))
+
 (add-hook 'org-mode-hook
                (lambda ()
                 (font-lock-add-keywords nil
-                 '(("\\<\\(QQQ\\)" 1
-                    font-lock-warning-face t)))))
+                 '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+                   ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
+                   ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))))
 
 (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el")
 (load custom-file)
+
+
 
 (if
     (string= system-type "darwin")
@@ -24,12 +82,11 @@
 
 (server-start)
 (setq ring-bell-function (lambda () (message "*beep*")))
-(add-to-list 'load-path "~/.emacs.d/matlab-emacs")
 (add-to-list 'load-path "~/.emacs.d/elpa/smex-2.0/")
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
-(load-library "matlab-load")
+
 (require 'smex)
 (smex-initialize)
 (require 'python)
@@ -53,8 +110,7 @@
 (setq org-capture-templates
       '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
          "* TODO %?\n %i\n")
-        ("l" "Link" plain (file (concat org-directory "/links.org"))
-         "- %?\n %x\n")))
+        ))
 
 (setq mweb-default-major-mode 'html-mode)
 (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
@@ -407,8 +463,8 @@ and their terminal equivalents.")
 (global-set-key (key "M-<up>") 'org-metaup)
 (global-set-key (key "M-<down>") 'org-metadown)
 (global-set-key [?\C-c ?l] 'org-store-link)
-(global-set-key [?\C-c ?c] 'org-capture)
-(global-set-key [?\C-c ?a] 'org-agenda)
+(global-set-key [?\C-c ?c] '(lambda () (interactive) (org-capture nil "t")))
+(global-set-key [?\C-c ?a] 'org-todo-list)
 (global-set-key [?\C-c ?b] 'org-iswitchb)
 (global-set-key "" 'newline-and-indent)
 (global-set-key [?\C-a] 'back-to-indentation)
@@ -442,6 +498,8 @@ If buffer is modified, ask about save before running etags."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;; MATLAB
+(add-to-list 'load-path "~/.emacs.d/matlab-emacs")
+(load-library "matlab-load")
 (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
 (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
 (setq matlab-indent-function t)
@@ -549,7 +607,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   "Insert org-mode line to file"
   (interactive)
   (insert "-*- mode: org; -*-\n"))
-;;(setq org-agenda-files (list "~/org/work.org" "~/org/school.org" "~/org/home.org"))
+(setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
 
 (org-babel-do-load-languages
     'org-babel-load-languages '((python . t) (R . t)))
@@ -574,3 +632,18 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (global-set-key (kbd "C-S-r") 'org-refresh-everything)    
     (global-set-key [?\C-c ?q] 'org-set-tags-command)))
 (add-hook 'org-mode-hook 'org-ka-hook)
+
+(defun org-transpose-table-at-point ()
+  "Transpose orgmode table at point, eliminate hlines."
+  (interactive)
+  (let ((contents (apply #'mapcar* #'list    ;; <== LOB magic imported here
+                         (remove-if-not 'listp  ;; remove 'hline from list
+                                        (org-table-to-lisp))))  ;; signals  error if not table
+        )
+    (delete-region (org-table-begin) (org-table-end))
+    (insert (mapconcat (lambda(x) (concat "| " (mapconcat 'identity x " | " ) " |\n" ))
+                       contents
+                       ""))
+    (org-table-align)
+    )
+)

@@ -4151,7 +4151,7 @@ desired.  Optional argument FAST is not used."
   :group 'matlab-shell
   :type 'string)
 
-(defcustom matlab-shell-command-switches '("-nodesktop")
+(defcustom matlab-shell-command-switches '("-nodesktop -nosplash")
   "*Command line parameters run with `matlab-shell-command'.
 Command switches are a list of strings.  Each entry is one switch."
   :group 'matlab-shell
@@ -4288,9 +4288,9 @@ Try C-h f matlab-shell RET"))
 		'comint-previous-matching-input-from-input)
 	      (define-key km [(control down)]
 		'comint-next-matching-input-from-input)
-	      (define-key km [up]
+	      (define-key km "\M-p"
 		'matlab-shell-previous-matching-input-from-input)
-	      (define-key km [down]
+	      (define-key km "\M-n"
 		'matlab-shell-next-matching-input-from-input)
 	      (define-key km [(control return)] 'comint-kill-input)
 	      (define-key km "\C-?"
