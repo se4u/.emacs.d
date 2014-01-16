@@ -12,13 +12,10 @@
 	    ((:url . "http://stephe-leake.org/emacs/ada-mode/emacs-ada-mode.html"))])
  (adaptive-wrap .
 		[(0 5)
-		 nil "Smart line-wrapping with wrap-prefix" single
-		 ((:url . "http://elpa.gnu.org/packages/adaptive-wrap.html")
-		  (:keywords))])
+		 nil "Smart line-wrapping with wrap-prefix" single])
  (adjust-parens .
-		[(3 0)
-		 nil "Indent and dedent Lisp code, automatically adjust close parens" tar
-		 ((:url . "http://elpa.gnu.org/packages/adjust-parens.html"))])
+		[(1 0)
+		 nil "Indent and dedent Lisp code, automatically adjust close parens" single])
  (all .
       [(1 0)
        nil "Edit all lines matching a given regexp" single
