@@ -5,18 +5,17 @@
 (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (semantic-mode 1)
 (global-semantic-idle-completions-mode t)
-(global-semantic-decoration-mode t)
-(global-semantic-highlight-func-mode t)
+(global-semantic-decoration-mode nil)
+(global-semantic-highlight-func-mode nil)
 (global-semantic-show-unmatched-syntax-mode t)
 ;; (semantic-load-enable-code-helpers)
-;; semantic-complete-analyze-inline
-;; global-semantic-idle-completions-mode
-
+;; (semantic-complete-analyze-inline)
+(global-semantic-idle-completions-mode)
 (global-ede-mode 1)
-
+(add-hook 'before-save-hook 'time-stamp)
 ;(yas-global-mode 1)
 
 (setq shift-select-mode t)
@@ -247,6 +246,7 @@
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-6")  'enlarge-window)
 (global-set-key (kbd "M-8") 'pop-tag-mark)
+(global-set-key (kbd "M-9") 'keyboard-quit)
 (global-set-key (kbd "M-p") 'next-multiframe-window)
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region)
 (progn (define-key key-translation-map (kbd "M-o") (kbd "C-x M-n"))

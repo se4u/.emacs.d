@@ -330,26 +330,12 @@ putting the matching lines in a buffer named *matching*"
     (compile-internal command "No more errors or warnings" "pychecker"
 		      nil pychecker-regexp-alist)))
 
-
 (defun recentf-ido-find-file ()
-  "Find a recent file using Ido."
+  "Find a recent file using ido."
   (interactive)
-  (let* ((file-assoc-list
-          (mapcar (lambda (x)
-		    (cons (file-name-nondirectory x)
-			  x))
-		  recentf-list))
-         (filename-list
-          (remove-duplicates (mapcar #'car file-assoc-list)
-			     :test #'string=))
-         (filename (ido-completing-read "Choose recent file: "
-					filename-list
-					nil
-					t)))
-    (when filename
-      (find-file (cdr (assoc filename
-			     file-assoc-list))))))
-
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
 
 (defun sarcasm-makefile-mode-hook ()
   "Hooks for Makefile mode."
@@ -436,6 +422,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-after-init-hook ()
   (add-package-managers)
+  (recentf-mode 1)
   (global-company-mode 1)
   )
 
