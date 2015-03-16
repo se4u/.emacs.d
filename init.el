@@ -1,15 +1,277 @@
-;;; init.el --- Where all the magic begins
-;;
-;; Part of the Emacs Starter Kit
-;;
-;; This is the first thing to get loaded.
-;;
+;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
+(ido-mode t)
+(ido-everywhere 1)
+(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+(semantic-mode 1)
+(global-semantic-idle-completions-mode t)
+(global-semantic-decoration-mode t)
+(global-semantic-highlight-func-mode t)
+(global-semantic-show-unmatched-syntax-mode t)
+;(yas-global-mode 1)
+(global-ede-mode 1)
+(setq shift-select-mode t)
+(electric-pair-mode 1)
+(transient-mark-mode 1)
 
-;; remember this directory
-(setq starter-kit-dir
-      (file-name-directory (or load-file-name (buffer-file-name))))
+;; This turns on auto-fill only in the comments line
+(auto-fill-mode 1)
+(setq comment-auto-fill-only-comments t)
+;; ido-dired is bound to C-x d. It lets you filter files through globs
+;; Graphics Settings
+(defvar font-lock-operator-face 'font-lock-operator-face)
+(defface font-lock-operator-face ()
+  "Basic face for highlighting."
+  :group 'basic-faces)
+(set-face-foreground 'font-lock-operator-face "red")
+(setq ring-bell-function (lambda () (message "*beep*")))
+(menu-bar-mode -1)
+(menu-bar-showhide-tool-bar-menu-customize-disable)
+(kill-buffer "*scratch*")
+(winner-mode 1)
+(column-number-mode 1)
+(fringe-mode '(nil . 0))
+(setq ediff-split-window-function 'split-window-horizontally)
+(progn (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el")
+       (load custom-file))
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+;; After loading the helper functions, Now add them as hooks to various modes
+(load "~/.emacs.d/init_func.el")
+(add-hook 'find-file-hook 'find-file-check-line-endings)
+(add-hook 'text-mode-hook 'remove-dos-eol)
+(add-hook 'java-mode-hook
+	  (lambda () (setq indent-tabs-mode t) (setq java-indent 8) (setq tab-width 4)))
+(add-hook 'dired-mode-hook
+	  (lambda () (dired-omit-mode 1)))
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (setq ac-sources (append '(ac-source-semantic) ac-sources))
+	    (linum-mode t)
+	    (font-lock-add-keywords nil
+				    '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
+				      ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face)))))
+(add-hook 'tex-mode-hook
+	  (lambda ()
+	    (font-lock-add-keywords nil
+				    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+				      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+	    (writegood-mode)))
+ (add-hook 'org-mode-hook
+	   (lambda ()
+	    (font-lock-add-keywords nil
+				    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+				      ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
+				      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+	    (writegood-mode)))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+	    (font-lock-add-keywords
+	     'python-mode
+	     '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
+	       ("\\([0123456789]\\)"  0 'font-lock-constant-face)
+	       ("\\([][{}]\\)" 0 'font-lock-builtin-face)
+	       ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
+	    ))
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (progn
+	      (global-set-key (kbd "C-S-r") 'org-refresh-everything)    
+	      (global-set-key [?\C-c ?q] 'org-set-tags-command))))
+(add-hook 'makefile-gmake-mode-hook 'sarcasm-makefile-mode-hook)
+(add-hook 'makefile-bsdmake-mode-hook 'sarcasm-makefile-mode-hook)
 
-;; load up the starter kit
-(org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))
+;; ORG Mode Setup
+(setq org-publish-project-alist
+      (list
+       '("active-learn" 
+         :base-directory "~/Dropbox/org/"
+         :base-extension "org"
+         :publishing-directory "~/public_html/notes/"
+         :exclude "morepersonal.org" ; talks-with-ben.html ass4.html gtd.html theindex.html ToReadPersonal.html
+         :publishing-function org-publish-org-to-html
+         :auto-sitemap t
+         :sitemap-sort-files "anti-chronologically"
+         :makeindex nil
+         :auto-preamble t
+         :with-section-numbers nil
+         :completion-function active-learn-publishing-completion
+         :sitemap-function org-blog-export
+         :sitemap-title
+         :sitemap-filename
+         )))
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
+         "* TODO %?\n %i\n")
+        ))
+(setq org-alphabetical-lists t
+      org-startup-indented t
+      org-enforce-todo-checkbox-dependencies t
+      org-enforce-todo-dependencies t
+      org-clock-persist 'history
+      org-log-done t
+      org-use-tag-inheritance nil
+      org-startup-truncated nil
+      org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))
+      org-confirm-babel-evaluate nil
+      org-tag-alist '((:startgroup . nil)
+                      ("@reading" . ?r)
+                      ("@coding" . ?c)
+                      ("@errand" . ?e)
+                      (:endgroup . nil)
+                      (:startgroup . nil)
+                      ("@work" . ?w)
+                      ("@personal" . ?p)
+                      (:endgroup . nil)
+                      ))
 
-;;; init.el ends here
+(define-key mode-specific-map [?a] 'org-agenda)
+;; org-clock-persistance-insinutae has a side effect dont shift it behind that eval-after function
+(org-clock-persistence-insinuate)
+
+(eval-after-load "org"
+  '(progn
+     '(defun org-return (&optional indent) "" (interactive) (newline-and-indent))
+     (define-prefix-command 'org-todo-state-map)
+     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+     (define-key org-mode-map [home] 'org-beginning-of-line)
+     (define-key org-todo-state-map "x"
+       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+     (define-key org-todo-state-map "d"
+       #'(lambda nil (interactive) (org-todo "DONE")))
+     (define-key org-todo-state-map "f"
+       #'(lambda nil (interactive) (org-todo "DEFERRED")))
+     (define-key org-todo-state-map "l"
+       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+     (define-key org-todo-state-map "s"
+       #'(lambda nil (interactive) (org-todo "STARTED")))
+     (define-key org-todo-state-map "w"
+       #'(lambda nil (interactive) (org-todo "WAITING")))
+     ))
+
+
+(setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
+
+(org-babel-do-load-languages
+    'org-babel-load-languages '((python . t) (R . t)))
+
+
+;;(server-start)
+(setq browse-url-mailto-function 'browse-url-generic)
+(setq browse-url-generic-program "open")
+
+;; MATLAB
+(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
+(setq matlab-indent-function t)
+(setq matlab-shell-command "matlab")
+
+;; Eval AFTER load
+(eval-after-load "sgml-mode" '(progn
+                                (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
+                                (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
+                                (define-key sgml-mode-map [?\C-v] 'sgml-validate)
+                                (define-key sgml-mode-map (kbd "C--") 'sgml-tags-invisible)
+                                ;(define-key sgml-mode-map (kbd "C-r") 'am-annotate-and-close-tag)
+                                (define-key sgml-mode-map (kbd "C-]") 'surround-selected-text-with-tag)
+                                (define-key sgml-mode-map (kbd "C-t") 'am-annotate-tag)
+                                (define-key sgml-mode-map (kbd "M-.") 'end-of-buffer)
+                                (define-key sgml-mode-map (kbd "M-,") 'beginning-of-buffer)
+                                (define-key sgml-mode-map (kbd "C-.") 'end-of-buffer)
+                                (define-key sgml-mode-map (kbd "C-,") 'beginning-of-buffer)
+                                (define-key sgml-mode-map (kbd "C-p") 'previous-line)
+                                (define-key sgml-mode-map (kbd "C-=") 'surround-all-names-and-msp-with-tags)
+                                (define-key sgml-mode-map (kbd "C-+") 'surround-all-sms-language)
+                                (define-key sgml-mode-map (kbd "<tab>") 'right-word)
+                                (define-key sgml-mode-map (kbd "<backtab>") 'left-word)
+                                (define-key sgml-mode-map (kbd "<C-return>") 'hippie-expand)
+                                (define-key sgml-mode-map (kbd "M-=") (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 C-right 134217847 C-left 60 99 97 112 32 99 111 114 114 61 34 134217836 34 62 25 60 47 99 97 112 right 4] 0 "%d")) arg)))
+                                (define-key sgml-mode-map (kbd "<f11>") (lambda (&optional arg) "Keyboard macro." (interactive "p") (save-buffer) (kmacro-exec-ring-item (quote ([24 111 down 111] 0 "%d")) arg)))
+                                ;(define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
+                                ))
+(eval-after-load "python-mode" '(define-key python-mode-map [?\C-r] 'py-execute-current-line)) 
+(defadvice quit-window (before quit-window-always-kill)
+  "When running `quit-window', always kill the buffer."
+  (ad-set-arg 0 t))
+(ad-activate 'quit-window)
+(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+	       '("\\.py\\'" flymake-pyflakes-init))
+  )
+;; Key bindings
+;; They should be set last so that they override any other mode
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key [f1] (quote call-last-kbd-macro))
+(global-set-key [f3] (lambda () (interactive) (manual-entry (current-word))))
+(global-set-key [f4] 'flymake-goto-next-error)
+(global-set-key [f5] 'org-screenshot)
+(global-set-key [f7]  '(lambda (x) (interactive "P") (write-input-and-come-back x "_")))
+(global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
+(global-set-key [home] 'back-to-indentation)
+(global-set-key (kbd "M-<del>") 'kill-this-buffer)
+(global-set-key (kbd "M-<down>") (lambda () (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0)))
+(global-set-key (kbd "M-<up>") (lambda () (interactive) (transpose-lines 1) (beginning-of-line -1)))
+(global-set-key (kbd "M-0") 'delete-window)
+(global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "M-6")  'enlarge-window)
+(global-set-key (kbd "M-8") 'pop-tag-mark)
+(global-set-key (kbd "M-p") 'next-multiframe-window)
+(global-set-key (kbd "M-;") 'comment-or-uncomment-region)
+(progn (define-key key-translation-map (kbd "M-o") (kbd "C-x M-n"))
+       (global-set-key (kbd "C-x M-n") 'previous-multiframe-window))
+(global-set-key (kbd "M-k") 'recentf-ido-find-file)
+(global-set-key (kbd "M-K") 'ido-find-file)
+(global-set-key (kbd "M-RET") 'save-buffer)
+(global-set-key (kbd "M-D") 'kill-whole-line)
+(global-set-key (kbd "M-,") (lambda () (interactive) (set-mark-command t)))
+(global-set-key (kbd "M-'") 'ido-switch-buffer)
+(global-set-key (kbd "M-a") 'align-current)
+(global-set-key (kbd "M-}") 'mark-sexp)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-?") 'pop-tag-mark)
+(global-set-key (kbd "M-=") '(lambda () (interactive) (progn (org-return-indent) (insert "==> "))))
+(global-set-key (kbd "M-s /") 'my-multi-occur-in-matching-buffers)
+(global-set-key (kbd "M-[") 'backward-sexp)
+(global-set-key (kbd "M-]") 'forward-sexp)
+;; hippie-expand
+(global-set-key (kbd "C-.") 'pop-tag-mark)
+(global-set-key (kbd "C-x M-b") 'scroll-other-window-down)
+(global-set-key (kbd "C-x M-v") 'scroll-other-window)
+(global-set-key (kbd "C-;")  'previous-line)
+(global-set-key (kbd "C-c r") 'reload-buffer-no-confirm)
+(global-set-key (kbd "C-x C-k") 'ido-kill-buffer)
+(global-set-key (kbd "C-x C-f") 'find-file)
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
+(global-set-key (kbd "C-c a") 'org-todo-list)
+(global-set-key (kbd "C-c b") 'org-iswitchb)
+(global-set-key (kbd "C-a") 'back-to-indentation)
+(global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
+(global-set-key (kbd "C-x f") '(lambda () (interactive) (message "Press M-k/K not C-x f")))
+(global-set-key (kbd "C-p") 'save-line-to-kill-ring)
+(define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
+;; Emacs Server
+(setq server-socket-dir "~/.emacs.d/server")
+(server-start)
+;; http://stackoverflow.com/questions/24725778/how-to-rebuild-elpa-packages-after-upgrade-of-emacs
+;; (byte-recompile-directory package-user-dir nil 'force)
+;; (dolist (package-name package-activated-list) (package-install package-name))
+
+;; SETUP Package Managers
+(add-hook 'after-init-hook '(lambda ()
+			      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+			      (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)))
+
