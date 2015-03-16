@@ -1,3 +1,11 @@
+(server-start)
+(setq server-socket-dir "~/.emacs.d/server")
+(add-to-list 'load-path "~/.emacs.d/elpa/company-0.8.11")
+(add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-1.4")
+(add-to-list 'load-path "/Applications/Emacs.app/Contents/share/emacs/site-lisp/w3m")
+
+(autoload 'company-mode "company" nil t)
+
 ;; Important keys M-x imenu and C-s foo then C-x C-x
 ;; The basic way to run a function when turning on a mode is to use (add-hook 'XXXX-mode-hook 'MY-FUNCTION-NAME)
 ;; To run dired and dired+ I basically need to understand a few keys
@@ -16,6 +24,120 @@
 ;;(add-to-list 'load-path "~/.emacs.d/ess-13.09")
 ;;(load-library "ess-autoloads")
 ;;(matlab-cedet-setup)
+
+;; http://orgmode.org/manual/A-LaTeX-example.html#A-LaTeX-example
+;; table-capture
+;; table-release
+;; table-generate-source
+;; align-current
+;;  C-x r r to copy the rectangular area
+;; C-x r k to cut ("kill-rectangle")
+;; C-x r y to paste ("yank-rectagle") 
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+(semantic-mode 1)
+
+;; (add-hook 'text-mode-hook 'remove-dos-eol)
+
+; (setq ns-function-modifier ‘super)
+(global-set-key (kbd "M-k") 'kill-this-buffer)
+(global-set-key (kbd "M-D") 'kill-whole-line)
+(define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
+(define-key key-translation-map (kbd "s-x") (kbd "C-x"))
+(define-key key-translation-map (kbd "s-e") (kbd "C-e"))
+(global-set-key (kbd "C-x M-b") 'scroll-other-window-down)
+(global-set-key (kbd "C-x M-v") 'scroll-other-window)
+(global-set-key (kbd "M-,") (lambda () (interactive) (set-mark-command t)))
+(global-set-key (kbd "M-'") 'ido-switch-buffer)
+(defun write-input-and-come-back (x def)
+  "Moves back sexp, adds the passed character or default, comes back"
+  (backward-sexp)
+  (if (equal x nil) (insert def) (insert x))
+  (forward-sexp))
+
+(global-set-key [?\M-a] 'align-current)
+(global-set-key [?\M-}] 'mark-sexp)
+(global-set-key (kbd "C-x ^")  'enlarge-window)
+(global-set-key [f7]  '(lambda (x) (interactive "P") (write-input-and-come-back x "_")))
+(global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
+(add-to-list 'load-path "/opt/local/share/whizzytex/emacs/")
+(autoload 'whizzytex-mode "whizzytex" "WhizzyTeX, a minor-mode WYSIWIG environment for LaTeX" t)
+
+(fringe-mode (quote (nil . 0)))
+(global-set-key (kbd "C-;")  'previous-line)
+(global-set-key [?\C-x ?p] 'previous-multiframe-window)
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+;; (require 'cython-mode)
+;;(yas-global-mode 1)
+
+(global-set-key  [f3] (lambda () (interactive) (manual-entry (current-word))))
+
+(defun uniquify-all-lines-region (start end)
+    "Find duplicate lines in region START to END keeping first occurrence."
+    (interactive "*r")
+    (save-excursion
+      (let ((end (copy-marker end)))
+        (while
+            (progn
+              (goto-char start)
+              (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+          (replace-match "\\1\n\\2")))))
+  
+  (defun uniquify-all-lines-buffer ()
+    "Delete duplicate lines in buffer and keep first occurrence."
+    (interactive "*")
+    (uniquify-all-lines-region (point-min) (point-max)))
+
+;;(global-set-key (kbd "TAB") 'self-insert-command) 
+(add-hook 'java-mode-hook  (lambda () (setq indent-tabs-mode t) (setq java-indent 8) (setq tab-width 4)))
+;; (global-ede-mode 1)
+;; (require 'semantic/sb)
+;; (semantic-mode 1)
+;; (global-semantic-idle-completions-mode t)
+;; (global-semantic-decoration-mode t)
+;; (global-semantic-highlight-func-mode t)
+;; (global-semantic-show-unmatched-syntax-mode t)
+
+;; ;; CC-mode
+;; (add-hook 'c-mode-hook '(lambda ()
+;;         (setq ac-sources (append '(ac-source-semantic) ac-sources))
+;;         (local-set-key (kbd "RET") 'newline-and-indent)
+;;         (linum-mode t)
+;;         (semantic-mode t)))
+
+;; (defun my-speedbar-no-separate-frame ()
+;;     (interactive)
+;;     (when (not (buffer-live-p speedbar-buffer))
+;;       (setq speedbar-buffer (get-buffer-create my-speedbar-buffer-name)
+;;             speedbar-frame (selected-frame)
+;;             dframe-attached-frame (selected-frame)
+;;             speedbar-select-frame-method 'attached
+;;             speedbar-verbosity-level 0
+;;             speedbar-last-selected-file nil)
+;;       (set-buffer speedbar-buffer)
+;;       (speedbar-mode)
+;;       (speedbar-reconfigure-keymaps)
+;;       (speedbar-update-contents)
+;;       (speedbar-set-timer 1)
+;;       (make-local-hook 'kill-buffer-hook)
+;;       (add-hook 'kill-buffer-hook
+;;                 (lambda () (when (eq (current-buffer) speedbar-buffer)
+;;                              (setq speedbar-frame nil
+;;                                    dframe-attached-frame nil
+;;                                    speedbar-buffer nil)
+;;                              (speedbar-set-timer nil)))))
+;;     (set-window-buffer (selected-window) 
+;;                        (get-buffer my-speedbar-buffer-name)))
 
 (defun fix-indentation-xml ()
   "Reformats xml to make it readable (respects current selection)."
@@ -64,9 +186,10 @@
 (defun active-learn-publishing-completion ()
   "Set file permissions and clean up after publishing"
   (progn
-    (shell-command "chmod 644 ~/public_html/*.html")
+    (shell-command "chmod 655 ~/public_html/*.html")
 ;;    (ignore-errors (shell-command "mv -f ~/public_html/sitemap.html ~/public_html/index.html"))
     (shell-command "rm ~/Dropbox/org/.*.orgx")
+    (shell-command "rsync -avz --chmod=o+rx -p ~/public_html/notes/* prastog3@masters1.cs.jhu.edu:~/public_html/notes")
   ))
 
 (setq org-publish-project-alist
@@ -74,8 +197,8 @@
        '("active-learn" 
          :base-directory "~/Dropbox/org/"
          :base-extension "org"
-         :publishing-directory "~/public_html"
-         :exclude "morepersonal.org"
+         :publishing-directory "~/public_html/notes/"
+         :exclude "morepersonal.org" ; talks-with-ben.html ass4.html gtd.html theindex.html ToReadPersonal.html
          :publishing-function org-publish-org-to-html
          :auto-sitemap t
          :sitemap-sort-files "anti-chronologically"
@@ -83,19 +206,30 @@
          :auto-preamble t
          :with-section-numbers nil
          :completion-function active-learn-publishing-completion
-         ;;:sitemap-function org-blog-export
-         ;;sitemap-title
-         ;;sitemap-filename
+         :sitemap-function org-blog-export
+         :sitemap-title
+         :sitemap-filename
          )))
 
 
+(add-hook 'tex-mode-hook
+	  (lambda ()
+	    (font-lock-add-keywords nil
+             '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+               ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))))
 
-(add-hook 'org-mode-hook
-               (lambda ()
-                (font-lock-add-keywords nil
-                 '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-                   ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
-                   ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))))
+
+(add-hook 'tex-mode-hook 'writegood-mode)
+
+
+ (add-hook 'org-mode-hook
+	  (lambda ()
+	    (font-lock-add-keywords nil
+	     '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+               ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
+               ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))))
+
+(add-hook 'org-mode-hook 'writegood-mode)
 
 (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el")
 (load custom-file)
@@ -112,7 +246,7 @@
 
 
 
-(server-start)
+;;(server-start)
 (setq ring-bell-function (lambda () (message "*beep*")))
 (add-to-list 'load-path "~/.emacs.d/elpa/smex-2.0/")
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
@@ -352,19 +486,6 @@ putting the matching lines in a buffer named *matching*"
 
 (global-set-key [f4] 'flymake-goto-next-error)
  
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
- 
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
- 
-(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL
@@ -625,13 +746,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (interactive)
   (setq tilde-buffer-filename (replace-regexp-in-string "/" "\\" (buffer-file-name) t t))
   (setq filename (concat (make-temp-name (concat tilde-buffer-filename "_" (format-time-string "%Y%m%d_%H%M%S_")) ) ".jpg"))
-  ;; Linux: ImageMagick: (call-process "import" nil nil nil filename)
-  ;; Windows: Irfanview
-  (call-process "c:\\IrfanView\\i_view32.exe" nil nil nil (concat "/clippaste /convert=" filename))
-  (insert (concat "[[file:" filename "]]"))
-  (insert (concat "\n" filename))
-  ;;(insert-image (create-image filename))
-  (funcall 'org-mode)
+  (shell-command (concat "screencapture -o -x -w -W " filename))
+  (insert (concat "[[file:" filename "]]" "\n" filename))
   (org-display-inline-images))
 (global-set-key [f5] 'org-screenshot)
 
@@ -665,17 +781,98 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (global-set-key [?\C-c ?q] 'org-set-tags-command)))
 (add-hook 'org-mode-hook 'org-ka-hook)
 
-(defun org-transpose-table-at-point ()
-  "Transpose orgmode table at point, eliminate hlines."
-  (interactive)
-  (let ((contents (apply #'mapcar* #'list    ;; <== LOB magic imported here
-                         (remove-if-not 'listp  ;; remove 'hline from list
-                                        (org-table-to-lisp))))  ;; signals  error if not table
-        )
-    (delete-region (org-table-begin) (org-table-end))
-    (insert (mapconcat (lambda(x) (concat "| " (mapconcat 'identity x " | " ) " |\n" ))
-                       contents
-                       ""))
-    (org-table-align)
-    )
-)
+
+
+(add-to-list 'load-path "/Users/pushpendrerastogi/.opam/system/share/emacs/site-lisp")
+(add-to-list 'load-path  "/Users/pushpendrerastogi/.emacs.d/tuareg")
+(require 'tuareg)
+(setq tuareg-use-smie nil)
+;; Load merlin-mode
+(require 'merlin)
+; https://github.com/the-lambda-church/merlin/wiki/emacs-from-scratch
+;; Start merlin on ocaml files
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'caml-mode-hook 'merlin-mode)
+;; Enable auto-complete
+(setq merlin-use-auto-complete-mode 'easy)
+(require 'auto-complete)
+; Make company aware of merlin
+(require 'company)
+(add-to-list 'company-backends 'merlin-company-backend)
+; Enable company on merlin managed buffers
+(add-hook 'merlin-mode-hook 'company-mode)
+
+;; Use opam switch to lookup ocamlmerlin binary
+(setq merlin-command 'opam)
+(add-to-list 'load-path "/Users/pushpendrerastogi/.opam/system/share/emacs/site-lisp")
+(require 'ocp-indent)
+(eval-after-load "merlin-mode" '(progn
+                                (define-key merlin-mode-map (kbd "C-c t") 'merlin-type-expr)))
+;; ;; Automatically load utop.el
+;; Setup environment variables using opam for UTOP
+;; (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+;;   (setenv (car var) (cadr var)))
+;; ;; Update the emacs path
+;; (setq exec-path (append (parse-colon-path (getenv "PATH"))
+;;                         (list exec-directory)))
+;; ;; Update the emacs load path
+;; (add-to-list 'load-path "/Users/pushpendrerastogi/.opam/system/share/emacs/site-lisp")
+;; (require 'utop)
+;; ;;(autoload 'utop "utop" "Toplevel for OCaml" t)
+;; ;; key-binding	function	Description
+;; ;; C-c C-s	utop	Start a utop buffer
+;; ;; C-x C-e	utop-eval-phrase	Evaluate the current phrase
+;; ;; C-x C-r	utop-eval-region	Evaluate the selected region
+;; ;; C-c C-b	utop-eval-buffer	Evaluate the current buffer
+;; ;; C-c C-k	utop-kill	Kill a running utop process
+;; (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+;; (remove-hook 'tuareg-mode-hook 'utop-minor-mode)
+;; (add-hook 'tuareg-mode-hook 'merlin-mode)
+
+
+(defvar font-lock-operator-face 'font-lock-operator-face)
+(defface font-lock-operator-face ()
+  "Basic face for highlighting."
+  :group 'basic-faces)
+
+(set-face-foreground 'font-lock-operator-face "red")
+
+(font-lock-add-keywords
+ 'python-mode
+ '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
+   ("\\([0123456789]\\)"  0 'font-lock-constant-face)
+   ("\\([][{}]\\)" 0 'font-lock-builtin-face)
+   ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
+
+(defun sarcasm-makefile-mode-hook ()
+  "Hooks for Makefile mode."
+  (font-lock-add-keywords nil '(("\\<\\(TARGET\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(SOURCE\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(EXAMPLE\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\([#]\\)" 1 font-lock-warning-face t)))
+  )
+
+(add-hook 'makefile-gmake-mode-hook 'sarcasm-makefile-mode-hook)
+(add-hook 'makefile-bsdmake-mode-hook 'sarcasm-makefile-mode-hook)
+
+;; This turns on auto-fill only in the comments line
+(auto-fill-mode 1)
+(setq comment-auto-fill-only-comments t)
+
+
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+ 
+  (add-to-list 'flymake-allowed-file-name-masks
+              '("\\.py\\'" flymake-pyflakes-init))
+  )
+ 
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+(require 'flymake-cursor)
+(require 'w3m)

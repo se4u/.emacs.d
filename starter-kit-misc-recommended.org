@@ -45,7 +45,9 @@ for information on installing nxhtml see [[http://www.emacswiki.org/emacs/Nxhtml
 ** Set browser
 Set this to whatever browser you use e.g...
 : ;; (setq browse-url-browser-function 'browse-url-firefox)
-: ;; (setq browse-url-browser-function 'browse-default-macosx-browser)
+#+begin_src emacs-lisp
+(setq browse-url-browser-function 'browse-default-macosx-browser)
+#+end_src
 : ;; (setq browse-url-browser-function 'browse-default-windows-browser)
 : ;; (setq browse-url-browser-function 'browse-default-kde)
 : ;; (setq browse-url-browser-function 'browse-default-epiphany)
