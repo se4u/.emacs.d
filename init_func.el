@@ -412,3 +412,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (org-table-align)
     )
   )
+
+
+(defun my-matlab-shell-mode-hook () '())
+(defun my-matlab-mode-hook ()
+  (setq matlab-indent-function t)
+  (setq matlab-shell-command "matlab")
+  (setq fill-column 76)
+  (setq matlab-indent-function-body nil); indent function bodies
+  (setq matlab-verify-on-save-flag t); verify on save
+  )
+
+(defun my-java-mode-hook ()
+  (setq indent-tabs-mode t)
+  (setq java-indent 8)
+  (setq tab-width 4))
+
+(defun add-package-managers ()
+  (add-to-list 'package-archives
+	       '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives
+	       '("marmalade" . "http://marmalade-repo.org/packages/") t))
+
+(defun my-after-init-hook ()
+  (add-package-managers)
+  (global-company-mode 1)
+  )
+
+

@@ -11,17 +11,23 @@
 (global-semantic-decoration-mode t)
 (global-semantic-highlight-func-mode t)
 (global-semantic-show-unmatched-syntax-mode t)
-;(yas-global-mode 1)
+;; (semantic-load-enable-code-helpers)
+;; semantic-complete-analyze-inline
+;; global-semantic-idle-completions-mode
+
 (global-ede-mode 1)
+
+;(yas-global-mode 1)
+
 (setq shift-select-mode t)
 (electric-pair-mode 1)
 (transient-mark-mode 1)
-
 ;; This turns on auto-fill only in the comments line
-(auto-fill-mode 1)
-(setq comment-auto-fill-only-comments t)
+(progn (auto-fill-mode 1)
+       (setq comment-auto-fill-only-comments t))
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
+(global-font-lock-mode t)
 (defvar font-lock-operator-face 'font-lock-operator-face)
 (defface font-lock-operator-face ()
   "Basic face for highlighting."
@@ -42,28 +48,36 @@
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 ;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
-(add-hook 'find-file-hook 'find-file-check-line-endings)
-(add-hook 'text-mode-hook 'remove-dos-eol)
-(add-hook 'java-mode-hook
-	  (lambda () (setq indent-tabs-mode t) (setq java-indent 8) (setq tab-width 4)))
+(add-hook 'asm-mode-hook
+	  'helm-gtags-mode)
+(add-hook 'c-mode-hook
+	  'c-hook-func)
+(add-hook 'c++-mode-hook
+	  'c-hook-func)
 (add-hook 'dired-mode-hook
 	  (lambda () (dired-omit-mode 1)))
-
-(add-hook 'c-mode-hook 'c-hook-func)
-(add-hook 'c++-mode-hook 'c-hook-func)
-(add-hook 'tex-mode-hook
+(add-hook 'find-file-hook
+	  'find-file-check-line-endings)
+(add-hook 'java-mode-hook
+	  'my-java-mode-hook)
+(add-hook 'matlab-shell-mode-hook
+	  'my-matlab-shell-mode-hook)
+(add-hook 'matlab-mode-hook
+	  'my-matlab-mode-hook)
+(add-hook 'makefile-gmake-mode-hook
+	  'sarcasm-makefile-mode-hook)
+(add-hook 'makefile-bsdmake-mode-hook
+	  'sarcasm-makefile-mode-hook)
+(add-hook 'org-mode-hook
 	  (lambda ()
-	    (font-lock-add-keywords nil
-				    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-				      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-	    (writegood-mode)))
- (add-hook 'org-mode-hook
-	   (lambda ()
-	    (font-lock-add-keywords nil
-				    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-				      ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
-				      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-	    (writegood-mode)))
+	    (font-lock-add-keywords
+	      nil
+	      '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+		("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
+		("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+	     (writegood-mode)
+	     (global-set-key (kbd "C-S-r") 'org-refresh-everything)    
+	     (global-set-key [?\C-c ?q] 'org-set-tags-command)))
 (add-hook 'python-mode-hook
           (lambda ()
             (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
@@ -74,14 +88,15 @@
 	       ("\\([][{}]\\)" 0 'font-lock-builtin-face)
 	       ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
 	    ))
-(add-hook 'org-mode-hook
+(add-hook 'tex-mode-hook
 	  (lambda ()
-	    (progn
-	      (global-set-key (kbd "C-S-r") 'org-refresh-everything)    
-	      (global-set-key [?\C-c ?q] 'org-set-tags-command))))
-(add-hook 'makefile-gmake-mode-hook 'sarcasm-makefile-mode-hook)
-(add-hook 'makefile-bsdmake-mode-hook 'sarcasm-makefile-mode-hook)
-(add-hook 'asm-mode-hook 'helm-gtags-mode)
+	    (font-lock-add-keywords
+	     nil
+	     '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+	       ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+	    (writegood-mode)))
+(add-hook 'text-mode-hook
+	  'remove-dos-eol)
 
 ;; ORG Mode Setup
 (setq org-publish-project-alist
@@ -140,11 +155,6 @@
 ;;(server-start)
 (setq browse-url-mailto-function 'browse-url-generic)
 (setq browse-url-generic-program "open")
-
-;; MATLAB
-(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-(setq matlab-indent-function t)
-(setq matlab-shell-command "matlab")
 
 ;; Eval AFTER load
 ;; Eval After Load
@@ -255,7 +265,7 @@
 (global-set-key (kbd "M-s /") 'my-multi-occur-in-matching-buffers)
 (global-set-key (kbd "M-[") 'backward-sexp)
 (global-set-key (kbd "M-]") 'forward-sexp)
-;; hippie-expand
+(global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-.") 'pop-tag-mark)
 (global-set-key (kbd "C-x M-b") 'scroll-other-window-down)
 (global-set-key (kbd "C-x M-v") 'scroll-other-window)
@@ -281,6 +291,12 @@
 ;; (dolist (package-name package-activated-list) (package-install package-name))
 
 ;; SETUP Package Managers
-(add-hook 'after-init-hook '(lambda ()
-			      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-			      (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)))
+(add-hook 'after-init-hook
+	  'my-after-init-hook)
+
+(add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
+(require 'matlab-load)
+(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
+(matlab-cedet-setup)
+(matlab-shell)
+  
