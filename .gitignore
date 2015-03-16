@@ -1,3 +1,24 @@
 semanticdb/*
 auto-save-list/*
 url/*
+elpa/*
+## exported and encrypted files
+*gpg
+*elc
+*html
+*tex
+*pdf
+*txt
+## ignore mail/gnus cruft for those who keep mail in this directory
+drafts
+Mail
+mail
+.newsrc-dribble
+.nnmail-cache
+*.SCORE
+marks
+.session
+abbrev_defs
+scratch
+secret.org
+.emacs.desktop*
