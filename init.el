@@ -48,13 +48,9 @@
 	  (lambda () (setq indent-tabs-mode t) (setq java-indent 8) (setq tab-width 4)))
 (add-hook 'dired-mode-hook
 	  (lambda () (dired-omit-mode 1)))
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (setq ac-sources (append '(ac-source-semantic) ac-sources))
-	    (linum-mode t)
-	    (font-lock-add-keywords nil
-				    '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
-				      ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face)))))
+
+(add-hook 'c-mode-hook 'c-hook-func)
+(add-hook 'c++-mode-hook 'c-hook-func)
 (add-hook 'tex-mode-hook
 	  (lambda ()
 	    (font-lock-add-keywords nil
@@ -85,6 +81,7 @@
 	      (global-set-key [?\C-c ?q] 'org-set-tags-command))))
 (add-hook 'makefile-gmake-mode-hook 'sarcasm-makefile-mode-hook)
 (add-hook 'makefile-bsdmake-mode-hook 'sarcasm-makefile-mode-hook)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
 
 ;; ORG Mode Setup
 (setq org-publish-project-alist
@@ -134,6 +131,33 @@
 ;; org-clock-persistance-insinutae has a side effect dont shift it behind that eval-after function
 (org-clock-persistence-insinuate)
 
+(setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
+
+(org-babel-do-load-languages
+    'org-babel-load-languages '((python . t) (R . t)))
+
+
+;;(server-start)
+(setq browse-url-mailto-function 'browse-url-generic)
+(setq browse-url-generic-program "open")
+
+;; MATLAB
+(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
+(setq matlab-indent-function t)
+(setq matlab-shell-command "matlab")
+
+;; Eval AFTER load
+;; Eval After Load
+(eval-after-load "helm-gtags"
+  '(progn
+     (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+     (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+     (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+     (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+     (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+     (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+     (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
+
 (eval-after-load "org"
   '(progn
      '(defun org-return (&optional indent) "" (interactive) (newline-and-indent))
@@ -154,23 +178,6 @@
        #'(lambda nil (interactive) (org-todo "WAITING")))
      ))
 
-
-(setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
-
-(org-babel-do-load-languages
-    'org-babel-load-languages '((python . t) (R . t)))
-
-
-;;(server-start)
-(setq browse-url-mailto-function 'browse-url-generic)
-(setq browse-url-generic-program "open")
-
-;; MATLAB
-(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-(setq matlab-indent-function t)
-(setq matlab-shell-command "matlab")
-
-;; Eval AFTER load
 (eval-after-load "sgml-mode" '(progn
                                 (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
                                 (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
@@ -220,7 +227,7 @@
 (global-set-key [f7]  '(lambda (x) (interactive "P") (write-input-and-come-back x "_")))
 (global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
 (global-set-key [home] 'back-to-indentation)
-(global-set-key (kbd "M-<del>") 'kill-this-buffer)
+(global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") (lambda () (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0)))
 (global-set-key (kbd "M-<up>") (lambda () (interactive) (transpose-lines 1) (beginning-of-line -1)))
 (global-set-key (kbd "M-0") 'delete-window)

@@ -11,20 +11,20 @@
   (forward-sexp))
 
 (defun uniquify-all-lines-region (start end)
-    "Find duplicate lines in region START to END keeping first occurrence."
-    (interactive "*r")
-    (save-excursion
-      (let ((end (copy-marker end)))
-        (while
-            (progn
-              (goto-char start)
-              (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-          (replace-match "\\1\n\\2")))))
-  
-  (defun uniquify-all-lines-buffer ()
-    "Delete duplicate lines in buffer and keep first occurrence."
-    (interactive "*")
-    (uniquify-all-lines-region (point-min) (point-max)))
+  "Find duplicate lines in region START to END keeping first occurrence."
+  (interactive "*r")
+  (save-excursion
+    (let ((end (copy-marker end)))
+      (while
+	  (progn
+	    (goto-char start)
+	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+	(replace-match "\\1\n\\2")))))
+
+(defun uniquify-all-lines-buffer ()
+  "Delete duplicate lines in buffer and keep first occurrence."
+  (interactive "*")
+  (uniquify-all-lines-region (point-min) (point-max)))
 
 ;; (defun my-speedbar-no-separate-frame ()
 ;;     (interactive)
@@ -73,7 +73,7 @@
   "Set file permissions and clean up after publishing"
   (progn
     (shell-command "chmod 655 ~/public_html/*.html")
-;;    (ignore-errors (shell-command "mv -f ~/public_html/sitemap.html ~/public_html/index.html"))
+    ;;    (ignore-errors (shell-command "mv -f ~/public_html/sitemap.html ~/public_html/index.html"))
     (shell-command "rm ~/Dropbox/org/.*.orgx")
     (shell-command "rsync -avz --chmod=o+rx -p ~/public_html/notes/* prastog3@masters1.cs.jhu.edu:~/public_html/notes")
     ))
@@ -114,7 +114,7 @@
            (forward-word 1))
          (funcall temp))))
 (defun has-revisit-file-with-coding-windows-1252 ()
-    "Re-opens currently visited file with the windows-1252 coding. (By: hassansrc at gmail dot com)
+  "Re-opens currently visited file with the windows-1252 coding. (By: hassansrc at gmail dot com)
     Example: 
     the currently opened file has french accents showing as codes such as:
         french: t\342ches et activit\340s   (\340 is shown as a unique char) 
@@ -123,15 +123,15 @@
                    Hopefully, the accents are now shown properly.
                    Otherwise, find another coding...
     "
-        (interactive)
-        (let ((coding-system-for-read 'windows-1252)
-    	  (coding-system-for-write 'windows-1252)
-    	  (coding-system-require-warning t)
-    	  (current-prefix-arg nil))
-          (message "has: Reopened file with coding set to windows-1252")
-          (find-alternate-file buffer-file-name)
-          )
+  (interactive)
+  (let ((coding-system-for-read 'windows-1252)
+	(coding-system-for-write 'windows-1252)
+	(coding-system-require-warning t)
+	(current-prefix-arg nil))
+    (message "has: Reopened file with coding set to windows-1252")
+    (find-alternate-file buffer-file-name)
     )
+  )
 
 
 (defun show-file-name ()
@@ -173,8 +173,8 @@
   )
 
 (defun reload-buffer-no-confirm ()
-    "Revert buffer without confirmation."
-    (interactive) (revert-buffer t t))
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
 
 (defun am-annotate-tag (&optional tag)
   (interactive "SEnter tag: ")
@@ -280,7 +280,7 @@
             (progn
               (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
               (setq flyspell-issue-message-flag nil)
-              ;(flyspell-mode 1)
+					;(flyspell-mode 1)
               (setq case-fold-search nil)
               (modify-syntax-entry 92 "w" sgml-mode-syntax-table))))
 
@@ -325,30 +325,30 @@ putting the matching lines in a buffer named *matching*"
   checking if unsaved buffers should be saved."
   (interactive)
   (let* ((file (buffer-file-name (current-buffer)))
-                 (command (concat "pychecker \"" file "\"")))
-                 (save-some-buffers (not compilation-ask-about-save) nil) ; save  files.                                                               
-                 (compile-internal command "No more errors or warnings" "pychecker"
-				   nil pychecker-regexp-alist)))
+	 (command (concat "pychecker \"" file "\"")))
+    (save-some-buffers (not compilation-ask-about-save) nil) ; save  files.                                                               
+    (compile-internal command "No more errors or warnings" "pychecker"
+		      nil pychecker-regexp-alist)))
 
 
- (defun recentf-ido-find-file ()
-      "Find a recent file using Ido."
-      (interactive)
-      (let* ((file-assoc-list
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido."
+  (interactive)
+  (let* ((file-assoc-list
           (mapcar (lambda (x)
-                (cons (file-name-nondirectory x)
-                  x))
-              recentf-list))
+		    (cons (file-name-nondirectory x)
+			  x))
+		  recentf-list))
          (filename-list
           (remove-duplicates (mapcar #'car file-assoc-list)
-                     :test #'string=))
+			     :test #'string=))
          (filename (ido-completing-read "Choose recent file: "
-                        filename-list
-                        nil
-                        t)))
-        (when filename
-          (find-file (cdr (assoc filename
-				 file-assoc-list))))))
+					filename-list
+					nil
+					t)))
+    (when filename
+      (find-file (cdr (assoc filename
+			     file-assoc-list))))))
 
 
 (defun sarcasm-makefile-mode-hook ()
@@ -377,9 +377,18 @@ directory as the org-buffer and insert a link to this file. This function wont w
   "An example of how to have emacs 'interact' with the minibuffer use a kbd macro"
   (interactive)
   (progn
-  (execute-kbd-macro [?\C-  ?\C- ])
-  (beginning-of-buffer)
-  (execute-kbd-macro [?\C-c ?\C-c])
-  (execute-kbd-macro [?\C-u ?\C-c ?#])
-  (execute-kbd-macro [?\C-u ?\C-c ?\C-x ?\C-u])
-  (execute-kbd-macro [?\C-u ?\C- ])))
+    (execute-kbd-macro [?\C-  ?\C- ])
+    (beginning-of-buffer)
+    (execute-kbd-macro [?\C-c ?\C-c])
+    (execute-kbd-macro [?\C-u ?\C-c ?#])
+    (execute-kbd-macro [?\C-u ?\C-c ?\C-x ?\C-u])
+    (execute-kbd-macro [?\C-u ?\C- ])))
+
+(defun c-hook-func()
+  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  (linum-mode t)
+  (c-turn-on-eldoc-mode)
+  (helm-gtags-mode)
+  (font-lock-add-keywords nil
+			  '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
+			    ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face))))
