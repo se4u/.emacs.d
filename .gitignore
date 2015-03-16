@@ -38,3 +38,7 @@ scratch
 secret.org
 .emacs.desktop*
 agent/*
+snippets/*
+elpa/*
+ac-comphist.dat
+ede-projects.el
