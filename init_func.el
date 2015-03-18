@@ -1,3 +1,23 @@
+;;; Code
+(defun set-region-read-only (begin end)
+  "Sets the read-only text property on the marked region.
+   Use `set-region-writeable' to remove this property."
+  ;; See http://stackoverflow.com/questions/7410125
+  (interactive "r")
+  (let ((modified (buffer-modified-p)))
+    (add-text-properties begin end '(read-only t))
+    (set-buffer-modified-p modified)))
+
+(defun set-region-writeable (begin end)
+  "Removes the read-only text property from the marked region.
+   Use `set-region-read-only' to set this property."
+  ;; See http://stackoverflow.com/questions/7410125
+  (interactive "r")
+  (let ((modified (buffer-modified-p))
+        (inhibit-read-only t))
+    (remove-text-properties begin end '(read-only t))
+    (set-buffer-modified-p modified)))
+
 (defun remove-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)
@@ -400,14 +420,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 
-(defun my-matlab-shell-mode-hook () '())
+(defun my-matlab-shell-mode-hook ()
+  (define-key matlab-shell-mode-map (kbd "TAB") 'matlab-shell-tab))
+
 (defun my-matlab-mode-hook ()
   (setq matlab-indent-function t)
   (setq matlab-shell-command "matlab")
   (setq fill-column 76)
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
-  )
+  (matlab-shell-command-switches '("-nodesktop -nosplash")))
 
 (defun my-java-mode-hook ()
   (setq indent-tabs-mode t)
@@ -420,10 +442,70 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'package-archives
 	       '("marmalade" . "http://marmalade-repo.org/packages/") t))
 
+
+(defun transpose-line-down ()
+  (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0))
+
+(defun transpose-line-up ()
+  (interactive) (transpose-lines 1) (beginning-of-line -1))
+
+(define-skeleton python-header-tmpl
+  "Insert a comment block containing the module title, author, etc."
+  ""
+  "# -*- Mode: Python -*-"
+  "\n# Filename        : " (buffer-name)
+  "\n# Description     : " "NA"
+  "\n# Author          : " (user-login-name)
+  "\n# Created On      : " (current-time-string)
+  "\n# Time-stamp: <>"
+  "\n")
+
+(defun python-header ()
+  "Insert a descriptive header at the top of the file."
+  (interactive "*")
+  (save-excursion
+    (goto-char (point-min))
+    (python-header-tmpl)))
+
+(defun my-python-mode-hook ()
+  (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+  (auto-make-header)
+  (font-lock-add-keywords
+   'python-mode
+   '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
+     ("\\([0123456789]\\)"  0 'font-lock-constant-face)
+     ("\\([][{}]\\)" 0 'font-lock-builtin-face)
+     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face))))
+
+(defun my-org-mode-hook ()
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+     ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+  (writegood-mode)
+  (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)    
+  (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command))
+
+(defun my-tex-mode-hook ()
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+  (writegood-mode))
+
+
+
 (defun my-after-init-hook ()
   (add-package-managers)
   (recentf-mode 1)
   (global-company-mode 1)
+  (autoload 'auto-update-file-header "header2")
+  (autoload 'auto-make-header "header2")
+  (add-hook 'write-file-hooks 'auto-update-file-header)
+  (global-flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   )
-
+(provide 'init_func)
+;;; init_func.el ends here
 

@@ -4,22 +4,21 @@
 (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
+;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
 ;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (semantic-mode 1)
-(global-semantic-idle-completions-mode t)
-(global-semantic-decoration-mode nil)
-(global-semantic-highlight-func-mode nil)
-(global-semantic-show-unmatched-syntax-mode t)
-;; (semantic-load-enable-code-helpers)
-;; (semantic-complete-analyze-inline)
 (global-semantic-idle-completions-mode)
+(global-semantic-decoration-mode)
+;; (global-semantic-highlight-func-mode)
+;; (global-semantic-show-unmatched-syntax-mode nil)
+;; (global-srecode-minor-mode 1)
+;; (semantic-complete-analyze-inline)
 (global-ede-mode 1)
 (add-hook 'before-save-hook 'time-stamp)
 ;(yas-global-mode 1)
 
 (setq shift-select-mode t)
-(electric-pair-mode 1)
+(electric-pair-mode nil)
 (transient-mark-mode 1)
 ;; This turns on auto-fill only in the comments line
 (progn (auto-fill-mode 1)
@@ -68,32 +67,12 @@
 (add-hook 'makefile-bsdmake-mode-hook
 	  'sarcasm-makefile-mode-hook)
 (add-hook 'org-mode-hook
-	  (lambda ()
-	    (font-lock-add-keywords
-	      nil
-	      '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-		("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
-		("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-	     (writegood-mode)
-	     (global-set-key (kbd "C-S-r") 'org-refresh-everything)    
-	     (global-set-key [?\C-c ?q] 'org-set-tags-command)))
+	  'my-org-mode-hook)
 (add-hook 'python-mode-hook
-          (lambda ()
-            (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-	    (font-lock-add-keywords
-	     'python-mode
-	     '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
-	       ("\\([0123456789]\\)"  0 'font-lock-constant-face)
-	       ("\\([][{}]\\)" 0 'font-lock-builtin-face)
-	       ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
-	    ))
+          'my-python-mode-hook)
 (add-hook 'tex-mode-hook
-	  (lambda ()
-	    (font-lock-add-keywords
-	     nil
-	     '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-	       ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-	    (writegood-mode)))
+	  'my-tex-mode-hook)
+
 (add-hook 'text-mode-hook
 	  'remove-dos-eol)
 
@@ -171,7 +150,7 @@
   '(progn
      '(defun org-return (&optional indent) "" (interactive) (newline-and-indent))
      (define-prefix-command 'org-todo-state-map)
-     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+     (define-key org-mode-map (kbd "C-c x") 'org-todo-state-map)
      (define-key org-mode-map [home] 'org-beginning-of-line)
      (define-key org-todo-state-map "x"
        #'(lambda nil (interactive) (org-todo "CANCELLED")))
@@ -209,7 +188,8 @@
                                 (define-key sgml-mode-map (kbd "<f11>") (lambda (&optional arg) "Keyboard macro." (interactive "p") (save-buffer) (kmacro-exec-ring-item (quote ([24 111 down 111] 0 "%d")) arg)))
                                 ;(define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
                                 ))
-(eval-after-load "python-mode" '(define-key python-mode-map [?\C-r] 'py-execute-current-line)) 
+(eval-after-load "python-mode"
+  '(define-key python-mode-map (kbd "C-r") 'py-execute-current-line)) 
 
 (defadvice quit-window (before quit-window-always-kill)
   "When running `quit-window', always kill the buffer."
@@ -240,8 +220,10 @@
 (global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
 (global-set-key [home] 'back-to-indentation)
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
-(global-set-key (kbd "M-<down>") (lambda () (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0)))
-(global-set-key (kbd "M-<up>") (lambda () (interactive) (transpose-lines 1) (beginning-of-line -1)))
+(global-set-key (kbd "M-<down>") 'transpose-line-down)
+(global-set-key (kbd "M-<up>") 'transpose-line-up)
+(global-set-key [27 down] 'transpose-line-down)
+(global-set-key [27 up] 'transpose-line-up)
 (global-set-key (kbd "M-0") 'delete-window)
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-6")  'enlarge-window)
@@ -261,7 +243,8 @@
 (global-set-key (kbd "M-}") 'mark-sexp)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-?") 'pop-tag-mark)
-(global-set-key (kbd "M-=") '(lambda () (interactive) (progn (org-return-indent) (insert "==> "))))
+(global-set-key (kbd "M-=") 'move-end-of-line)
+(global-set-key (kbd "M--") 'back-to-indentation)
 (global-set-key (kbd "M-s /") 'my-multi-occur-in-matching-buffers)
 (global-set-key (kbd "M-[") 'backward-sexp)
 (global-set-key (kbd "M-]") 'forward-sexp)
@@ -298,5 +281,4 @@
 (require 'matlab-load)
 (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
 (matlab-cedet-setup)
-(matlab-shell)
-  
+;(matlab-shell)
