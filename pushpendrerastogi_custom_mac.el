@@ -3,7 +3,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
  '(browse-url-browser-function (quote browse-url-default-macosx-browser))
+ '(company-idle-delay 1)
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(ecb-options-version "2.40")
  '(flycheck-checkers
    (quote
@@ -12,6 +18,7 @@
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
  '(indent-tabs-mode t)
+ '(magit-use-overlays nil)
  '(make-header-hook
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
@@ -32,6 +39,7 @@
     (magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yasnippet yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))
  '(python-python-command
    "/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python")
+ '(python-shell-interpreter "python")
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/usr/local/R2012a/toolbox/matlab/funfun" "/usr/local/R2012a/toolbox/matlab/general")))
@@ -42,9 +50,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
  '(flycheck-warning ((t (:background "white"))))
- '(font-lock-keyword-face ((t (:foreground "lightblue"))))
+ '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))
  '(font-lock-warning-face ((t (:inherit error))))
  '(magit-item-highlight ((t (:background "grey"))))
  '(semantic-decoration-on-unparsed-includes ((t (:background "#ffffff"))))

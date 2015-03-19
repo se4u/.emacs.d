@@ -15,10 +15,10 @@
 ;; (semantic-complete-analyze-inline)
 (global-ede-mode 1)
 (add-hook 'before-save-hook 'time-stamp)
-;(yas-global-mode 1)
+;; (yas-global-mode 1)
 
 (setq shift-select-mode t)
-(electric-pair-mode nil)
+;; (electric-pair-mode)
 (transient-mark-mode 1)
 ;; This turns on auto-fill only in the comments line
 (progn (auto-fill-mode 1)
@@ -39,8 +39,11 @@
 (column-number-mode 1)
 (fringe-mode '(nil . 0))
 (setq ediff-split-window-function 'split-window-horizontally)
-(progn (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el")
-       (load custom-file))
+(progn
+  (if (string-equal (user-login-name) "pushpendrerastogi")
+      (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
+    (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
+  (load custom-file))
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
@@ -266,9 +269,10 @@
 (global-set-key (kbd "C-x f") '(lambda () (interactive) (message "Press M-k/K not C-x f")))
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
 (define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
+(define-key key-translation-map [f5] (kbd "C-c C-c"))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
-(server-start)
+(if (server-running-p) '() (server-start))
 ;; http://stackoverflow.com/questions/24725778/how-to-rebuild-elpa-packages-after-upgrade-of-emacs
 ;; (byte-recompile-directory package-user-dir nil 'force)
 ;; (dolist (package-name package-activated-list) (package-install package-name))
