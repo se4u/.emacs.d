@@ -41,7 +41,9 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (progn
   (if (string-equal (user-login-name) "pushpendrerastogi")
-      (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
+      (if (display-graphic-p)
+	  (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
+	(setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
     (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
   (load custom-file))
 (setq frame-title-format
@@ -264,13 +266,13 @@
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
-(global-set-key (kbd "C-x f") '(lambda () (interactive) (message "Press M-k/K not C-x f")))
+(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
 (define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
-(if (server-running-p) '() (server-start))
+
 ;; http://stackoverflow.com/questions/24725778/how-to-rebuild-elpa-packages-after-upgrade-of-emacs
 ;; (byte-recompile-directory package-user-dir nil 'force)
 ;; (dolist (package-name package-activated-list) (package-install package-name))
