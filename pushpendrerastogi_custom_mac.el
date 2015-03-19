@@ -23,7 +23,7 @@
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
  '(mlint-calculate-cyclic-complexity-flag t)
- '(mlint-programs (quote ("/usr/local/R2012a/bin/glnxa64/mlint")))
+ '(mlint-programs (quote ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
  '(org-export-creator-info nil)
@@ -42,7 +42,7 @@
  '(python-shell-interpreter "python")
  '(semantic-matlab-dependency-system-include-path
    (quote
-    ("/usr/local/R2012a/toolbox/matlab/funfun" "/usr/local/R2012a/toolbox/matlab/general")))
+    ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
  '(tool-bar-mode nil))
 
 (custom-set-faces
