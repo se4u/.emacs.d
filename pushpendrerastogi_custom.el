@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(browse-url-browser-function (quote browse-url-default-macosx-browser))
+ '(dired-mode-hook (quote (ede-turn-on-hook)))
  '(ecb-options-version "2.40")
  '(flycheck-checkers
    (quote
@@ -15,6 +16,7 @@
  '(make-header-hook
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
+ '(matlab-shell-command-switches (quote ("-nodesktop -nosplash")))
  '(mlint-calculate-cyclic-complexity-flag t)
  '(mlint-programs (quote ("/usr/local/R2012a/bin/glnxa64/mlint")))
  '(mlint-verbose t)

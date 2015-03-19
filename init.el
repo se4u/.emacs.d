@@ -52,8 +52,6 @@
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
 	  'c-hook-func)
-(add-hook 'dired-mode-hook
-	  (lambda () (dired-omit-mode 1)))
 (add-hook 'find-file-hook
 	  'find-file-check-line-endings)
 (add-hook 'java-mode-hook

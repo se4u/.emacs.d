@@ -391,7 +391,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (execute-kbd-macro [?\C-u ?\C- ])))
 
 (defun c-hook-func()
-  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  ;;(setq ac-sources (append '(ac-source-semantic) ac-sources))
   (linum-mode t)
   (c-turn-on-eldoc-mode)
   (helm-gtags-mode)
@@ -429,7 +429,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq fill-column 76)
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
-  (matlab-shell-command-switches '("-nodesktop -nosplash")))
+  )
 
 (defun my-java-mode-hook ()
   (setq indent-tabs-mode t)
