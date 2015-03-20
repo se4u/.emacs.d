@@ -1,4 +1,14 @@
+;;; Commentary
+
 ;;; Code
+(defun my-generate-tags ()
+  (interactive)
+  (shell-command
+   (read-string
+    "CTAG CMD : "
+    (format "ctags -e  --language-force=%s -R ./" mode-name)
+    )))
+
 (defun set-region-read-only (begin end)
   "Sets the read-only text property on the marked region.
    Use `set-region-writeable' to remove this property."
@@ -473,6 +483,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (progn (jedi:setup)   (setq jedi:complete-on-dot t))
   ;; (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
+  (ecb-activate)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
