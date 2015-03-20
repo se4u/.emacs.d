@@ -470,6 +470,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (auto-make-header)
+  (progn (jedi:setup)   (setq jedi:complete-on-dot t))
+  ;; (add-to-list 'company-backends 'company-jedi)
+  (company-mode -1)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -505,6 +508,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-hook 'write-file-hooks 'auto-update-file-header)
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
+  (exec-path-from-shell-initialize)
   )
 (provide 'init_func)
 ;;; init_func.el ends here

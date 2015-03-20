@@ -39,13 +39,27 @@
 (column-number-mode 1)
 (fringe-mode '(nil . 0))
 (setq ediff-split-window-function 'split-window-horizontally)
-(progn
-  (if (string-equal (user-login-name) "pushpendrerastogi")
-      (if (display-graphic-p)
-	  (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
-	(setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
-    (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
-  (load custom-file))
+(when (equal system-type 'darwin)
+  (setq
+   mac-option-modifier 'meta
+   mac-command-modifier 'super 
+   mac-function-modifier 'hyper
+   redisplay-dont-pause t
+   scroll-margin 3
+   scroll-step 1
+   scroll-up-aggressively 0.01
+   scroll-down-aggressively 0.01
+   scroll-conservatively 100000
+   scroll-preserve-screen-position 1)
+  (add-to-list 'load-path "~/.emacs.d/w3m/")
+ 
+  (require 'w3m))
+(if (equal system-type 'darwin)
+    (if (display-graphic-p)
+	(setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
+      (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
+  (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
+(load custom-file)
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
@@ -268,6 +282,11 @@
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
+(global-set-key (kbd "H-<up>") 'scroll-down)
+(global-set-key (kbd "H-<down>") 'scroll-up)
+(global-set-key (kbd "H-<left>") 'beginning-of-buffer)
+(global-set-key (kbd "H-<right>") 'end-of-buffer)
+(global-set-key (kbd "H-<backspace>") 'kill-word)
 (define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 ;; Emacs Server

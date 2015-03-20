@@ -6,6 +6,7 @@
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(browse-url-browser-function (quote browse-url-default-macosx-browser))
+ '(column-number-mode t)
  '(company-idle-delay 1)
  '(custom-safe-themes
    (quote
@@ -18,12 +19,16 @@
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
  '(indent-tabs-mode t)
+ '(jedi:get-in-function-call-delay 600)
  '(magit-use-overlays nil)
  '(make-header-hook
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
+ '(menu-bar-mode nil)
  '(mlint-calculate-cyclic-complexity-flag t)
- '(mlint-programs (quote ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
+ '(mlint-programs
+   (quote
+    ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
  '(org-export-creator-info nil)
@@ -40,6 +45,8 @@
  '(python-python-command
    "/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python")
  '(python-shell-interpreter "python")
+ '(save-place t nil (saveplace))
+ '(scroll-bar-mode nil)
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
@@ -57,3 +64,4 @@
  '(magit-item-highlight ((t (:background "grey"))))
  '(semantic-decoration-on-unparsed-includes ((t (:background "#ffffff"))))
  '(semantic-highlight-func-current-tag-face ((t (:background "white")))))
+
