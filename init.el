@@ -79,6 +79,8 @@
 	  'my-matlab-shell-mode-hook)
 (add-hook 'matlab-mode-hook
 	  'my-matlab-mode-hook)
+(add-hook 'matlab-mode-hook
+	  'run-matlab-once)
 (add-hook 'makefile-gmake-mode-hook
 	  'sarcasm-makefile-mode-hook)
 (add-hook 'makefile-bsdmake-mode-hook
@@ -239,6 +241,8 @@
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
+(global-set-key [M-left] 'previous-multiframe-window)
+(global-set-key [M-right] 'next-multiframe-window)
 (global-set-key [27 down] 'transpose-line-down)
 (global-set-key [27 up] 'transpose-line-up)
 (global-set-key (kbd "M-0") 'delete-window)
@@ -288,6 +292,7 @@
 (global-set-key (kbd "H-<left>") 'beginning-of-buffer)
 (global-set-key (kbd "H-<right>") 'end-of-buffer)
 (global-set-key (kbd "H-<backspace>") 'kill-word)
+(global-set-key (kbd "H-6") 'undo)
 (define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 ;; Emacs Server

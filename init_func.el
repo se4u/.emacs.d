@@ -338,27 +338,12 @@ putting the matching lines in a buffer named *matching*"
     (pop-to-buffer result-buffer)))
 
 
-(defun run-python-new ()
-  "Spawn a new python shell - we must rename the existing python shell from *python* to something else"
-  (run-python nill nil t)
-  )
-
 (defun py-execute-current-line ()
   "Execute the current line assuming it's python"
   (interactive)
   (progn
     (python-send-region (line-beginning-position) (line-end-position))
     (message "Ran line in python")))
-
-(defun pychecker ()
-  "Run pychecker against the file behind the current buffer after                                                                                      
-  checking if unsaved buffers should be saved."
-  (interactive)
-  (let* ((file (buffer-file-name (current-buffer)))
-	 (command (concat "pychecker \"" file "\"")))
-    (save-some-buffers (not compilation-ask-about-save) nil) ; save  files.                                                               
-    (compile-internal command "No more errors or warnings" "pychecker"
-		      nil pychecker-regexp-alist)))
 
 (defun recentf-ido-find-file ()
   "Find a recent file using ido."
@@ -374,6 +359,7 @@ putting the matching lines in a buffer named *matching*"
   (font-lock-add-keywords nil '(("\\<\\(EXAMPLE\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\([#]\\)" 1 font-lock-warning-face t)))
   )
+
 (defun org-screenshot ()
   "Take a screenshot into a time stamped unique-named file in the same 
 directory as the org-buffer and insert a link to this file. This function wont work if the buffer is not saved to a file
@@ -389,6 +375,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   "Insert org-mode line to file"
   (interactive)
   (insert "-*- mode: org; -*-\n"))
+
 (defun org-refresh-everything()
   "An example of how to have emacs 'interact' with the minibuffer use a kbd macro"
   (interactive)
@@ -441,6 +428,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq matlab-verify-on-save-flag t); verify on save
   )
 
+(defun run-matlab-once ()
+  (remove-hook 'matlab-mode-hook 'run-matlab-once)
+  (matlab-shell))
+
 (defun my-java-mode-hook ()
   (setq indent-tabs-mode t)
   (setq java-indent 8)
@@ -484,6 +475,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;; (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
   (ecb-activate)
+  (run-python)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -523,4 +515,3 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 (provide 'init_func)
 ;;; init_func.el ends here
-
