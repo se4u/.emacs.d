@@ -1,4 +1,5 @@
 ;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
+;;; Code:
 (ido-mode t)
 (ido-everywhere 1)
 (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
@@ -91,10 +92,13 @@
           'my-python-mode-hook)
 (add-hook 'tex-mode-hook
 	  'my-tex-mode-hook)
-
 (add-hook 'text-mode-hook
 	  'remove-dos-eol)
-
+(add-hook 'write-file-hooks
+	  'auto-update-file-header)
+(add-hook 'write-file-hooks
+	  'delete-trailing-whitespace)
+  
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
@@ -154,7 +158,6 @@
 (setq browse-url-generic-program "open")
 
 ;; Eval AFTER load
-;; Eval After Load
 (eval-after-load "helm-gtags"
   '(progn
      (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
@@ -185,30 +188,34 @@
        #'(lambda nil (interactive) (org-todo "WAITING")))
      ))
 
-(eval-after-load "sgml-mode" '(progn
-                                (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
-                                (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
-                                (define-key sgml-mode-map [?\C-v] 'sgml-validate)
-                                (define-key sgml-mode-map (kbd "C--") 'sgml-tags-invisible)
-                                ;(define-key sgml-mode-map (kbd "C-r") 'am-annotate-and-close-tag)
-                                (define-key sgml-mode-map (kbd "C-]") 'surround-selected-text-with-tag)
-                                (define-key sgml-mode-map (kbd "C-t") 'am-annotate-tag)
-                                (define-key sgml-mode-map (kbd "M-.") 'end-of-buffer)
-                                (define-key sgml-mode-map (kbd "M-,") 'beginning-of-buffer)
-                                (define-key sgml-mode-map (kbd "C-.") 'end-of-buffer)
-                                (define-key sgml-mode-map (kbd "C-,") 'beginning-of-buffer)
-                                (define-key sgml-mode-map (kbd "C-p") 'previous-line)
-                                (define-key sgml-mode-map (kbd "C-=") 'surround-all-names-and-msp-with-tags)
-                                (define-key sgml-mode-map (kbd "C-+") 'surround-all-sms-language)
-                                (define-key sgml-mode-map (kbd "<tab>") 'right-word)
-                                (define-key sgml-mode-map (kbd "<backtab>") 'left-word)
-                                (define-key sgml-mode-map (kbd "<C-return>") 'hippie-expand)
-                                (define-key sgml-mode-map (kbd "M-=") (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 C-right 134217847 C-left 60 99 97 112 32 99 111 114 114 61 34 134217836 34 62 25 60 47 99 97 112 right 4] 0 "%d")) arg)))
-                                (define-key sgml-mode-map (kbd "<f11>") (lambda (&optional arg) "Keyboard macro." (interactive "p") (save-buffer) (kmacro-exec-ring-item (quote ([24 111 down 111] 0 "%d")) arg)))
-                                ;(define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
-                                ))
+(eval-after-load "sgml-mode"
+  '(progn
+     (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
+     (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
+     (define-key sgml-mode-map [?\C-v] 'sgml-validate)
+     (define-key sgml-mode-map (kbd "C--") 'sgml-tags-invisible)
+					;(define-key sgml-mode-map (kbd "C-r") 'am-annotate-and-close-tag)
+     (define-key sgml-mode-map (kbd "C-]") 'surround-selected-text-with-tag)
+     (define-key sgml-mode-map (kbd "C-t") 'am-annotate-tag)
+     (define-key sgml-mode-map (kbd "M-.") 'end-of-buffer)
+     (define-key sgml-mode-map (kbd "M-,") 'beginning-of-buffer)
+     (define-key sgml-mode-map (kbd "C-.") 'end-of-buffer)
+     (define-key sgml-mode-map (kbd "C-,") 'beginning-of-buffer)
+     (define-key sgml-mode-map (kbd "C-p") 'previous-line)
+     (define-key sgml-mode-map (kbd "C-=") 'surround-all-names-and-msp-with-tags)
+     (define-key sgml-mode-map (kbd "C-+") 'surround-all-sms-language)
+     (define-key sgml-mode-map (kbd "<tab>") 'right-word)
+     (define-key sgml-mode-map (kbd "<backtab>") 'left-word)
+     (define-key sgml-mode-map (kbd "<C-return>") 'hippie-expand)
+     (define-key sgml-mode-map (kbd "M-=") (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 C-right 134217847 C-left 60 99 97 112 32 99 111 114 114 61 34 134217836 34 62 25 60 47 99 97 112 right 4] 0 "%d")) arg)))
+     (define-key sgml-mode-map (kbd "<f11>") (lambda (&optional arg) "Keyboard macro." (interactive "p") (save-buffer) (kmacro-exec-ring-item (quote ([24 111 down 111] 0 "%d")) arg)))
+     ;; (define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
+     ))
+
 (eval-after-load "python-mode"
-  '(define-key python-mode-map (kbd "C-r") 'py-execute-current-line)) 
+  '(define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
+  '(define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
+  )
 
 (defadvice quit-window (before quit-window-always-kill)
   "When running `quit-window', always kill the buffer."
@@ -238,6 +245,7 @@
 (global-set-key [f7] 'my-generate-tags)
 ;; (global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
 (global-set-key [home] 'back-to-indentation)
+(global-set-key (kbd "DEL") 'hungry-delete-backward)
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
@@ -286,12 +294,14 @@
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
 (global-set-key (kbd "H-<up>") 'scroll-down)
 (global-set-key (kbd "H-<down>") 'scroll-up)
 (global-set-key (kbd "H-<left>") 'beginning-of-buffer)
 (global-set-key (kbd "H-<right>") 'end-of-buffer)
-(global-set-key (kbd "H-<backspace>") 'kill-word)
+(global-set-key (kbd "H-<backspace>") 'hungry-delete-forward)
+(global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "H-6") 'undo)
 (define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
@@ -310,4 +320,4 @@
 (require 'matlab-load)
 (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
 (matlab-cedet-setup)
-;(matlab-shell)
+

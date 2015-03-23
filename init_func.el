@@ -77,7 +77,7 @@
 ;;                                    dframe-attached-frame nil
 ;;                                    speedbar-buffer nil)
 ;;                              (speedbar-set-timer nil)))))
-;;     (set-window-buffer (selected-window) 
+;;     (set-window-buffer (selected-window)
 ;;                        (get-buffer my-speedbar-buffer-name)))
 
 
@@ -145,11 +145,11 @@
          (funcall temp))))
 (defun has-revisit-file-with-coding-windows-1252 ()
   "Re-opens currently visited file with the windows-1252 coding. (By: hassansrc at gmail dot com)
-    Example: 
+    Example:
     the currently opened file has french accents showing as codes such as:
-        french: t\342ches et activit\340s   (\340 is shown as a unique char) 
+        french: t\342ches et activit\340s   (\340 is shown as a unique char)
     then execute this function: has-revisit-file-with-coding-windows-1252
-      consequence: the file is reopened with the windows-1252 coding with no other action on the part of the user. 
+      consequence: the file is reopened with the windows-1252 coding with no other action on the part of the user.
                    Hopefully, the accents are now shown properly.
                    Otherwise, find another coding...
     "
@@ -305,7 +305,7 @@
                                               (goto-char (point-min))
                                               (move-end-of-line 1))))
 
-(add-hook 'sgml-mode                                      
+(add-hook 'sgml-mode
           (lambda ()
             (progn
               (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
@@ -324,15 +324,15 @@
 putting the matching lines in a buffer named *matching*"
   (interactive "sRegexp to match: ")
   (let ((result-buffer (get-buffer-create "*matching*")))
-    (with-current-buffer result-buffer 
+    (with-current-buffer result-buffer
       (erase-buffer))
-    (save-match-data 
+    (save-match-data
       (save-excursion
         (goto-char (point-min))
         (while (re-search-forward re nil t)
           (princ
            (buffer-substring-no-properties
-            (line-beginning-position) 
+            (line-beginning-position)
             (line-beginning-position 2))
            result-buffer))))
     (pop-to-buffer result-buffer)))
@@ -361,7 +361,7 @@ putting the matching lines in a buffer named *matching*"
   )
 
 (defun org-screenshot ()
-  "Take a screenshot into a time stamped unique-named file in the same 
+  "Take a screenshot into a time stamped unique-named file in the same
 directory as the org-buffer and insert a link to this file. This function wont work if the buffer is not saved to a file
 "
   (interactive)
@@ -432,6 +432,21 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (remove-hook 'matlab-mode-hook 'run-matlab-once)
   (matlab-shell))
 
+(defun my-ibuffer-mode-hook ()
+  (setq ibuffer-show-empty-filter-groups nil)
+  (setq ibuffer-saved-filter-groups
+	(quote (("default"
+		 ("dired" (mode . dired-mode))
+		 ("fundamental" (mode . fundamental-mode))
+		 ("Compilation" (mode . compilation-mode))
+		 ("Package" (mode . package-menu-mode))
+		 ("Python" (mode . python-mode))
+		 ("StarMark" (name . "*Help*"))
+		 ))))
+  (ibuffer-switch-to-saved-filter-groups "default")
+  ;;(ibuffer-filter-by-name "^[^*]")
+  )
+
 (defun my-java-mode-hook ()
   (setq indent-tabs-mode t)
   (setq java-indent 8)
@@ -490,7 +505,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode)
-  (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)    
+  (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command))
 
 (defun my-tex-mode-hook ()
@@ -500,18 +515,17 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
 
-
-
 (defun my-after-init-hook ()
   (add-package-managers)
   (recentf-mode 1)
   (global-company-mode 1)
   (autoload 'auto-update-file-header "header2")
   (autoload 'auto-make-header "header2")
-  (add-hook 'write-file-hooks 'auto-update-file-header)
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (exec-path-from-shell-initialize)
+  (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
+  (global-hungry-delete-mode)
   )
 (provide 'init_func)
 ;;; init_func.el ends here

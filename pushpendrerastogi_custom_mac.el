@@ -18,8 +18,9 @@
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
+ '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(indent-tabs-mode t)
- '(jedi:get-in-function-call-delay 600)
+ '(jedi:get-in-function-call-delay 5200)
  '(magit-use-overlays nil)
  '(make-header-hook
    (quote
@@ -62,6 +63,8 @@
  '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))
  '(font-lock-warning-face ((t (:inherit error))))
  '(magit-item-highlight ((t (:background "grey"))))
- '(semantic-decoration-on-unparsed-includes ((t (:background "#ffffff"))))
- '(semantic-highlight-func-current-tag-face ((t (:background "white")))))
+ '(semantic-decoration-on-unknown-includes ((t nil)))
+ '(semantic-decoration-on-unparsed-includes ((t nil)))
+ '(semantic-highlight-func-current-tag-face ((t (:background "white"))))
+ '(semantic-tag-boundary-face ((t nil))))
 
