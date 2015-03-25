@@ -489,14 +489,15 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (progn (jedi:setup)   (setq jedi:complete-on-dot t))
   ;; (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
-  (ecb-activate)
-  (run-python)
+  (message "maybe you want to (ecb-activate) ?")
+  ;; (run-python)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
      ("\\([0123456789]\\)"  0 'font-lock-constant-face)
      ("\\([][{}]\\)" 0 'font-lock-builtin-face)
-     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face))))
+     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
+  )
 
 (defun my-org-mode-hook ()
   (font-lock-add-keywords
@@ -515,6 +516,23 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
 
+(defun my-latex-mode-hook ()
+  (require 'company-auctex)
+  (company-auctex-init)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (visual-line-mode)
+  (flyspell-mode)
+  (LaTeX-math-mode)
+  (turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+  (turn-on-reftex)
+  (writegood-mode)
+  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  )
+
+
 (defun my-after-init-hook ()
   (add-package-managers)
   (recentf-mode 1)
@@ -526,6 +544,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (exec-path-from-shell-initialize)
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
+  (yas-global-mode)
+  (load "auctex.el" nil t t)
   )
 (provide 'init_func)
 ;;; init_func.el ends here
