@@ -555,7 +555,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (yas-global-mode)
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
-
+  (setq ido-ignore-buffers
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*"))
+  (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   )
 (provide 'init_func)
 ;;; init_func.el ends here

@@ -19,7 +19,6 @@
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
- '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(indent-tabs-mode t)
  '(jedi:get-in-function-call-delay 5200)
  '(magit-use-overlays nil)
