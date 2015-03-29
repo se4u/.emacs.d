@@ -33,6 +33,7 @@
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
+ '(org-entities-user (quote (("flat" "\\\\flat" t "&flat;" "b" "b" "♭"))))
  '(org-export-creator-info nil)
  '(org-export-with-timestamps nil)
  '(org-hide-emphasis-markers t)
