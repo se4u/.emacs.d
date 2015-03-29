@@ -235,6 +235,7 @@
 ;;(global-set-key [f5] 'org-screenshot)
 (global-set-key [f7] 'my-generate-tags)
 ;; (global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
+(global-set-key [f16] 'magit-status)
 (global-set-key [f19] 'keyboard-quit)
 (global-set-key [home] 'back-to-indentation)
 (global-set-key (kbd "DEL") 'hungry-delete-backward)
