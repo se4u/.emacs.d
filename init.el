@@ -205,7 +205,7 @@
   '(progn
      (define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
      (define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
-     (run-python))
+     )
   )
 
 (defadvice quit-window (before quit-window-always-kill)

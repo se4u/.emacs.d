@@ -490,7 +490,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
   (message "maybe you want to (ecb-activate) ?")
-  ;; (run-python)
+  (run-python "python")
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
