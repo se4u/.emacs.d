@@ -507,7 +507,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
-  (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command))
+  (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
+  (auto-fill-mode)
+  )
 
 (defun my-tex-mode-hook ()
   (font-lock-add-keywords
@@ -515,6 +517,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
+
+(defun my-text-mode-hook ()
+  (remove-dos-eol)
+  ;; (auto-fill-mode)
+  (writegood-mode)
+  )
 
 (defun my-latex-mode-hook ()
   (require 'company-auctex)

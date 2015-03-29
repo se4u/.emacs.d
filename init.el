@@ -92,7 +92,7 @@
 (add-hook 'tex-mode-hook
 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
-	  'remove-dos-eol)
+	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
 	  'auto-update-file-header)
 (add-hook 'write-file-hooks
