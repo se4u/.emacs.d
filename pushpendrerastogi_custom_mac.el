@@ -53,6 +53,7 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
+ ;; '(tags-add-tables 'ask-user))
  '(tool-bar-mode nil))
 
 (custom-set-faces

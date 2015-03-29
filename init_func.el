@@ -6,8 +6,9 @@
   (shell-command
    (read-string
     "CTAG CMD : "
-    (format "ctags -e  --language-force=%s -R ./" mode-name)
-    )))
+    (format "ctags -e -R --extra=+fq --exclude=db --exclude=test --exclude=.git --language-force=%s ./" mode-name)
+    ))
+  (visit-tags-table "TAGS"))
 
 (defun set-region-read-only (begin end)
   "Sets the read-only text property on the marked region.
@@ -391,7 +392,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;;(setq ac-sources (append '(ac-source-semantic) ac-sources))
   (linum-mode t)
   (c-turn-on-eldoc-mode)
-  (helm-gtags-mode)
   (font-lock-add-keywords nil
 			  '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
 			    ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face))))
@@ -546,6 +546,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (global-hungry-delete-mode)
   (yas-global-mode)
   (load "auctex.el" nil t t)
+  (setq tags-case-fold-search nil)
+
   )
 (provide 'init_func)
 ;;; init_func.el ends here
