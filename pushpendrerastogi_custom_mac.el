@@ -19,7 +19,11 @@
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
- '(indent-tabs-mode t)
+ '(ido-ignore-buffers
+   (quote
+    ("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*")))
+ '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
+ '(indent-tabs-mode nil)
  '(jedi:get-in-function-call-delay 5200)
  '(magit-use-overlays nil)
  '(make-header-hook
@@ -52,7 +56,11 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
- ;; '(tags-add-tables 'ask-user))
+ '(tags-add-tables (quote ask-user))
+ '(tags-case-fold-search nil)
+ '(tags-table-list
+   (quote
+    ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
  '(tool-bar-mode nil))
 
 (custom-set-faces
