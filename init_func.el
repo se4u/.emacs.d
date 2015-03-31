@@ -523,7 +523,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (autoload 'auto-make-header "header2")
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
-  (exec-path-from-shell-initialize)
+  (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
   )
