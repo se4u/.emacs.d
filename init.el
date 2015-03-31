@@ -7,20 +7,19 @@
 (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
 ;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
 ;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-(semantic-mode 1)
+(semantic-mode)
+(show-paren-mode)
 (global-semantic-idle-completions-mode)
 (global-semantic-decoration-mode)
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
 ;; (semantic-complete-analyze-inline)
-(global-ede-mode 1)
+(global-ede-mode)
 (add-hook 'before-save-hook 'time-stamp)
-;; (yas-global-mode 1)
-
 (setq shift-select-mode t)
 ;; (electric-pair-mode)
-(transient-mark-mode 1)
+(transient-mark-mode)
 ;; This turns on auto-fill only in the comments line
 (progn (auto-fill-mode 1)
        (setq comment-auto-fill-only-comments t))
@@ -43,7 +42,7 @@
 (when (equal system-type 'darwin)
   (setq
    mac-option-modifier 'meta
-   mac-command-modifier 'super 
+   mac-command-modifier 'super
    mac-function-modifier 'hyper
    redisplay-dont-pause t
    scroll-margin 3
@@ -53,7 +52,7 @@
    scroll-conservatively 100000
    scroll-preserve-screen-position 1)
   (add-to-list 'load-path "~/.emacs.d/w3m/")
- 
+
   (require 'w3m))
 (if (equal system-type 'darwin)
     (if (display-graphic-p)
@@ -66,8 +65,6 @@
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 ;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
-(add-hook 'asm-mode-hook
-	  'helm-gtags-mode)
 (add-hook 'c-mode-hook
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
@@ -76,6 +73,8 @@
 	  'find-file-check-line-endings)
 (add-hook 'java-mode-hook
 	  'my-java-mode-hook)
+(add-hook 'LaTeX-mode-hook
+	  'my-latex-mode-hook)
 (add-hook 'matlab-shell-mode-hook
 	  'my-matlab-shell-mode-hook)
 (add-hook 'matlab-mode-hook
@@ -93,16 +92,16 @@
 (add-hook 'tex-mode-hook
 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
-	  'remove-dos-eol)
+	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
 	  'auto-update-file-header)
 (add-hook 'write-file-hooks
 	  'delete-trailing-whitespace)
-  
+
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
-       '("active-learn" 
+       '("active-learn"
          :base-directory "~/Dropbox/org/"
          :base-extension "org"
          :publishing-directory "~/public_html/notes/"
@@ -158,16 +157,6 @@
 (setq browse-url-generic-program "open")
 
 ;; Eval AFTER load
-(eval-after-load "helm-gtags"
-  '(progn
-     (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
-     (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
-     (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
-     (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
-     (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-     (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
-     (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
-
 (eval-after-load "org"
   '(progn
      '(defun org-return (&optional indent) "" (interactive) (newline-and-indent))
@@ -212,9 +201,11 @@
      ;; (define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
      ))
 
-(eval-after-load "python-mode"
-  '(define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
-  '(define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
+(eval-after-load "python"
+  '(progn
+     (define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
+     (define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
+     )
   )
 
 (defadvice quit-window (before quit-window-always-kill)
@@ -238,12 +229,19 @@
 ;; Key bindings
 ;; They should be set last so that they override any other mode
 (global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key [f1] (quote call-last-kbd-macro))
-;; (global-set-key [f3] (lambda () (interactive) (manual-entry (current-word))))
+(global-set-key [f1] 'call-last-kbd-macro)
+(global-set-key (kbd "<f2> <f2>") 'describe-key-briefly)
+(global-set-key (kbd "<f2> 1") 'describe-char)
+(global-set-key (kbd "<f2> 2") 'describe-function)
+(global-set-key (kbd "<f2> 3") 'describe-bindings)
+(global-set-key (kbd "<f2> 4") 'describe-mode)
+(global-set-key [f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f4] 'flymake-goto-next-error)
-;;(global-set-key [f5] 'org-screenshot)
 (global-set-key [f7] 'my-generate-tags)
-;; (global-set-key [f8]  '(lambda (x) (interactive "P") (write-input-and-come-back x "^")))
+(global-set-key [f16] 'magit-status)
+(global-set-key [f17] '(lambda () (interactive) (message "[f17] is too close to KILL, intentionally left empty.")))
+(global-set-key [f18] 'kill-this-buffer)
+(global-set-key [f19] 'keyboard-quit)
 (global-set-key [home] 'back-to-indentation)
 (global-set-key (kbd "DEL") 'hungry-delete-backward)
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
@@ -255,6 +253,8 @@
 (global-set-key [27 up] 'transpose-line-up)
 (global-set-key (kbd "M-0") 'delete-window)
 (global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "M-2") 'split-window-below)
+(global-set-key (kbd "M-3") 'split-window-horizontally)
 (global-set-key (kbd "M-6")  'enlarge-window)
 (global-set-key (kbd "M-8") 'pop-tag-mark)
 (global-set-key (kbd "M-9") 'keyboard-quit)
@@ -267,7 +267,6 @@
 (global-set-key (kbd "M-RET") 'save-buffer)
 (global-set-key (kbd "M-D") 'kill-whole-line)
 (global-set-key (kbd "M-,") (lambda () (interactive) (set-mark-command t)))
-(global-set-key (kbd "M-.")  'ctags-search)
 (global-set-key (kbd "M-'") 'ido-switch-buffer)
 (global-set-key (kbd "M-a") 'align-current)
 (global-set-key (kbd "M-}") 'mark-sexp)
@@ -287,6 +286,7 @@
 (global-set-key (kbd "C-x C-k") 'ido-kill-buffer)
 (global-set-key (kbd "C-x C-f") 'find-file)
 (global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
 (global-set-key (kbd "C-c a") 'org-todo-list)
@@ -298,13 +298,21 @@
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
 (global-set-key (kbd "H-<up>") 'scroll-down)
 (global-set-key (kbd "H-<down>") 'scroll-up)
-(global-set-key (kbd "H-<left>") 'beginning-of-buffer)
-(global-set-key (kbd "H-<right>") 'end-of-buffer)
+(global-set-key (kbd "H-<left>") 'back-to-indentation)
+(global-set-key (kbd "H-<right>") 'move-end-of-line)
+(global-set-key (kbd "C-H-<left>") 'beginning-of-buffer)
+(global-set-key (kbd "C-H-<right>") 'end-of-buffer)
 (global-set-key (kbd "H-<backspace>") 'hungry-delete-forward)
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "H-6") 'undo)
-(define-key key-translation-map (kbd "s-c") (kbd "C-c C-c"))
+(global-set-key (kbd "<kp-equal>") 'save-buffer)
+(global-set-key (kbd "<kp-divide>") 'describe-key)
+(global-set-key (kbd "<kp-equal>") 'describe-function)
+(global-set-key (kbd "<kp-equal>") 'save-buffer)
+(global-set-key (kbd "s-v") 'yank)
+(global-set-key (kbd "s-c") 'kill-ring-save)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
+(define-key key-translation-map [f19] (kbd "C-g"))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 
@@ -320,4 +328,3 @@
 (require 'matlab-load)
 (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
 (matlab-cedet-setup)
-

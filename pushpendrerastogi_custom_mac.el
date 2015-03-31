@@ -11,6 +11,7 @@
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+ '(dired-use-ls-dired nil)
  '(ecb-options-version "2.40")
  '(flycheck-checkers
    (quote
@@ -18,8 +19,11 @@
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
+ '(ido-ignore-buffers
+   (quote
+    ("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*")))
  '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
- '(indent-tabs-mode t)
+ '(indent-tabs-mode nil)
  '(jedi:get-in-function-call-delay 5200)
  '(magit-use-overlays nil)
  '(make-header-hook
@@ -32,6 +36,7 @@
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
+ '(org-entities-user (quote (("flat" "\\\\flat" t "&flat;" "b" "b" "♭"))))
  '(org-export-creator-info nil)
  '(org-export-with-timestamps nil)
  '(org-hide-emphasis-markers t)
@@ -51,6 +56,11 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
+ '(tags-add-tables (quote ask-user))
+ '(tags-case-fold-search nil)
+ '(tags-table-list
+   (quote
+    ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
  '(tool-bar-mode nil))
 
 (custom-set-faces
@@ -61,10 +71,9 @@
  '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
  '(flycheck-warning ((t (:background "white"))))
  '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))
- '(font-lock-warning-face ((t (:inherit error))))
- '(magit-item-highlight ((t (:background "grey"))))
+ '(font-lock-warning-face ((t (:inherit error :background "yellow"))))
+ '(magit-item-highlight ((t (:weight semi-bold))))
  '(semantic-decoration-on-unknown-includes ((t nil)))
  '(semantic-decoration-on-unparsed-includes ((t nil)))
  '(semantic-highlight-func-current-tag-face ((t (:background "white"))))
  '(semantic-tag-boundary-face ((t nil))))
-

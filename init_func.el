@@ -6,8 +6,9 @@
   (shell-command
    (read-string
     "CTAG CMD : "
-    (format "ctags -e  --language-force=%s -R ./" mode-name)
-    )))
+    (format "ctags -e -R --extra=+fq --exclude=db --exclude=test --exclude=.git --language-force=%s ./" mode-name)
+    ))
+  (visit-tags-table "TAGS"))
 
 (defun set-region-read-only (begin end)
   "Sets the read-only text property on the marked region.
@@ -391,7 +392,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;;(setq ac-sources (append '(ac-source-semantic) ac-sources))
   (linum-mode t)
   (c-turn-on-eldoc-mode)
-  (helm-gtags-mode)
   (font-lock-add-keywords nil
 			  '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
 			    ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face))))
@@ -487,16 +487,20 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (auto-make-header)
   (progn (jedi:setup)   (setq jedi:complete-on-dot t))
-  ;; (add-to-list 'company-backends 'company-jedi)
+  (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
-  (ecb-activate)
-  (run-python)
+  (message "maybe you want to (ecb-activate) ?")
+  (run-python "python")
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
      ("\\([0123456789]\\)"  0 'font-lock-constant-face)
      ("\\([][{}]\\)" 0 'font-lock-builtin-face)
-     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face))))
+     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)
+     ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
+  )
 
 (defun my-org-mode-hook ()
   (font-lock-add-keywords
@@ -506,7 +510,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
-  (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command))
+  (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
+  (auto-fill-mode)
+  )
 
 (defun my-tex-mode-hook ()
   (font-lock-add-keywords
@@ -514,6 +520,29 @@ directory as the org-buffer and insert a link to this file. This function wont w
    '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
+
+(defun my-text-mode-hook ()
+  (remove-dos-eol)
+  ;; (auto-fill-mode)
+  (writegood-mode)
+  )
+
+(defun my-latex-mode-hook ()
+  (require 'company-auctex)
+  (company-auctex-init)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (visual-line-mode)
+  (flyspell-mode)
+  (LaTeX-math-mode)
+  (turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+  (turn-on-reftex)
+  (writegood-mode)
+  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  )
+
 
 (defun my-after-init-hook ()
   (add-package-managers)
@@ -526,6 +555,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
+  (yas-global-mode)
+  (load "auctex.el" nil t t)
+  (setq tags-case-fold-search nil)
+  (setq ido-ignore-buffers
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*"))
+  (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   )
 (provide 'init_func)
 ;;; init_func.el ends here
