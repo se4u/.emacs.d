@@ -496,7 +496,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
      ("\\([0123456789]\\)"  0 'font-lock-constant-face)
      ("\\([][{}]\\)" 0 'font-lock-builtin-face)
-     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)))
+     ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)
+     ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
   )
 
 (defun my-org-mode-hook ()
@@ -556,7 +559,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   )
 (provide 'init_func)
