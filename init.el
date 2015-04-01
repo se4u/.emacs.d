@@ -229,7 +229,7 @@
 ;; Key bindings
 ;; They should be set last so that they override any other mode
 (global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key [f1] 'call-last-kbd-macro)
+(global-set-key [f1] 'kmacro-end-or-call-macro)
 (global-set-key (kbd "<f2> <f2>") 'describe-key-briefly)
 (global-set-key (kbd "<f2> 1") 'describe-char)
 (global-set-key (kbd "<f2> 2") 'describe-function)
