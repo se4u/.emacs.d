@@ -266,6 +266,11 @@
 (global-set-key (kbd "M-K") 'ido-find-file)
 (global-set-key (kbd "M-RET") 'save-buffer)
 (global-set-key (kbd "M-D") 'kill-whole-line)
+(global-set-key (kbd "M-O V") 'my-generate-tags)
+(global-set-key (kbd "M-O W") 'buffer-save)
+(global-set-key (kbd "M-O X") 'menu-bar-open)
+(global-set-key (kbd "M-O Y") 'magit-status)
+(global-set-key (kbd "M-O Z") 'kill-this-buffer)
 (global-set-key (kbd "M-,") (lambda () (interactive) (set-mark-command t)))
 (global-set-key (kbd "M-'") 'ido-switch-buffer)
 (global-set-key (kbd "M-a") 'align-current)
@@ -313,6 +318,7 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
+(define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 
