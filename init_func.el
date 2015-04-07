@@ -559,8 +559,24 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
+  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+  ;; (require 'emms-setup)
+  ;; (emms-standard)
+  ;; (emms-default-players)
+  ;; (require 'emms-player-vlc)
+  ;; (define-emms-simple-player vlc '(file url)
+  ;;   (concat "\\`\\(https?\\|mms\\)://\\|"
+  ;;           (emms-player-simple-regexp
+  ;;            "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
+  ;;            "mov" "avi" "divx" "ogm" "ogv" "asf" "mkv"
+  ;;            "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"))
+  ;;   "vlc" "--intf=rc")
+  ;; (setq emms-player-vlc-command-name "/Applications/VLC.app/Contents/MacOS/VLC")
   )
 (provide 'init_func)
 ;;; init_func.el ends here
