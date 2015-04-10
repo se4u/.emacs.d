@@ -320,6 +320,7 @@
 (global-set-key (kbd "<kp-decimal>") 'repeat)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
+(global-set-key (kbd "s-s") 'save-buffer)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
