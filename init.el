@@ -245,7 +245,7 @@
 (global-set-key [f14] 'auto-fill-mode)
 (global-set-key [f15] 'toggle-truncate-lines)
 (global-set-key [f16] 'magit-status)
-(global-set-key [f17] '(lambda () (interactive) (message "[f17] is too close to KILL, intentionally left empty.")))
+(global-set-key [f17] 'keyboard-quit)
 (global-set-key [f18] 'kill-this-buffer)
 (global-set-key [f19] 'keyboard-quit)
 (global-set-key [home] 'back-to-indentation)
