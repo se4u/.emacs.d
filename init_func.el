@@ -491,7 +491,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
     (define-key python-mode-map (kbd "C-;") 'jedi:show-doc)
     (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
-    (define-key python-mode-map (kbd "C-u C-.") 'jedi:goto-definition-pop-marker)
+    (define-key python-mode-map (kbd "C-/") 'jedi:get-in-function-call)
     (jedi:setup))
   (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)

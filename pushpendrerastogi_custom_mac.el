@@ -25,9 +25,10 @@
     ("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*")))
  '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(indent-tabs-mode nil)
- '(jedi:get-in-function-call-delay 1000)
+ '(jedi:get-in-function-call-delay 4000)
  '(jedi:key-complete [C-\'])
  '(jedi:key-goto-definition [C-\.])
+ '(jedi:key-related-names nil)
  '(jedi:key-show-doc [C-\;])
  '(magit-use-overlays nil)
  '(make-header-hook
