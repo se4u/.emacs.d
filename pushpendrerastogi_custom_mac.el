@@ -12,6 +12,7 @@
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(dired-use-ls-dired nil)
+ '(doc-view-continuous t)
  '(ecb-options-version "2.40")
  '(flycheck-checkers
    (quote
@@ -24,7 +25,10 @@
     ("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*")))
  '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(indent-tabs-mode nil)
- '(jedi:get-in-function-call-delay 5200)
+ '(jedi:get-in-function-call-delay 1000)
+ '(jedi:key-complete [C-\'])
+ '(jedi:key-goto-definition [C-\.])
+ '(jedi:key-show-doc [C-\;])
  '(magit-use-overlays nil)
  '(make-header-hook
    (quote

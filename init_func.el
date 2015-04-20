@@ -486,7 +486,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (auto-make-header)
-  (progn (jedi:setup)   (setq jedi:complete-on-dot t))
+  (progn
+    (setq jedi:complete-on-dot t)
+    (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
+    (define-key python-mode-map (kbd "C-;") 'jedi:show-doc)
+    (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
+    (define-key python-mode-map (kbd "C-u C-.") 'jedi:goto-definition-pop-marker)
+    (jedi:setup))
   (add-to-list 'company-backends 'company-jedi)
   (company-mode -1)
   (message "maybe you want to (ecb-activate) ?")
@@ -542,7 +548,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   )
-
 
 (defun my-after-init-hook ()
   (add-package-managers)
