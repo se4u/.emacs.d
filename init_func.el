@@ -6,7 +6,7 @@
   (shell-command
    (read-string
     "CTAG CMD : "
-    (format "ctags -e -R --extra=+fq --exclude=db --exclude=test --exclude=.git --language-force=%s ./" mode-name)
+    (format "ctags -e -R --extra=+fq --exclude=db --exclude=test --exclude=.git -a -f TAGS --language-force=%s ./" mode-name)
     ))
   (visit-tags-table "TAGS"))
 
