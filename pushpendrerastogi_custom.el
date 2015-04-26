@@ -43,9 +43,11 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
  '(flycheck-warning ((t (:background "white"))))
+ '(font-lock-comment-face ((t (:foreground "red"))))
  '(font-lock-keyword-face ((t (:foreground "lightblue"))))
  '(font-lock-warning-face ((t (:inherit error))))
  '(magit-item-highlight ((t (:background "grey"))))
+ '(semantic-decoration-on-fileless-includes ((t (:background "white"))))
  '(semantic-decoration-on-unknown-includes ((t nil)))
  '(semantic-decoration-on-unparsed-includes ((t nil)))
  '(semantic-highlight-func-current-tag-face ((t (:background "white"))))
