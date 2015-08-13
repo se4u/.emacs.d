@@ -171,6 +171,12 @@
   (message (concat "Copied path " (buffer-file-name) " to clipboard"))
   (kill-new (file-truename buffer-file-name)))
 
+(defun add-css-jekyll ()
+  "Shows the full path file name in the minibuffer an dcopies it to kill-ring"
+  (interactive)
+  (message "Create a _sass/<NAME>.scss file and import it from css/main.scss" )
+)
+
 (defun save-line-to-kill-ring ()
   "Saves line (cursor to end) to kill ring (without killing)"
   (interactive)
@@ -465,38 +471,28 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun transpose-line-up ()
   (interactive) (transpose-lines 1) (beginning-of-line -1))
 
-(define-skeleton python-header-tmpl
-  "Insert a comment block containing the module title, author, etc."
-  ""
-  "# -*- Mode: Python -*-"
-  "\n# Filename        : " (buffer-name)
-  "\n# Description     : " "NA"
-  "\n# Author          : " (user-login-name)
-  "\n# Created On      : " (current-time-string)
-  "\n# Time-stamp: <>"
-  "\n")
-
-(defun python-header ()
-  "Insert a descriptive header at the top of the file."
-  (interactive "*")
-  (save-excursion
-    (goto-char (point-min))
-    (python-header-tmpl)))
+(defun my-dired-mode-hook ()
+  (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  (auto-make-header)
-  (progn
-    (setq jedi:complete-on-dot t)
-    (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
-    (define-key python-mode-map (kbd "C-;") 'jedi:show-doc)
-    (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
-    (define-key python-mode-map (kbd "C-/") 'jedi:get-in-function-call)
-    (jedi:setup))
-  (add-to-list 'company-backends 'company-jedi)
-  (company-mode -1)
-  (message "maybe you want to (ecb-activate) ?")
+  (add-to-list 'company-backends 'company-anaconda)
+  ;; (message "maybe you want to (ecb-activate) ?")
   (run-python "python")
+  (anaconda-mode)
+  (orgtbl-mode)
+  (autoload 'auto-update-file-header "header2")
+  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
+       (progn (insert "header") (message "Press [TAB] to insert header")))
+  (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
+  (add-hook 'after-save-hook
+            '(lambda ()
+               (shell-command (concat
+                               "autopep8 --in-place "
+                               (buffer-file-name)))
+               (reload-buffer-no-confirm))
+            nil
+            'make-it-local)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -534,27 +530,25 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-latex-mode-hook ()
-  (require 'company-auctex)
-  (company-auctex-init)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-  (visual-line-mode)
+  (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (LaTeX-math-mode)
   (turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t)
-  (turn-on-reftex)
   (writegood-mode)
+  (require 'company-auctex)
+  (company-auctex-init)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  (setq comment-auto-fill-only-comments nil)
   )
 
 (defun my-after-init-hook ()
   (add-package-managers)
   (recentf-mode 1)
-  (global-company-mode 1)
-  (autoload 'auto-update-file-header "header2")
-  (autoload 'auto-make-header "header2")
+  (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
+  (company-quickhelp-mode 1)  ;; Company quickhelp shows documentation in a popup.
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
@@ -570,6 +564,22 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
   (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
   (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq org-src-fontify-natively t)
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+        backup-by-copying t    ; Don't delink hardlinks
+        version-control t      ; Use version numbers on backups
+        delete-old-versions t  ; Automatically delete excess backups
+        kept-new-versions 20   ; how many of the newest versions to keep
+        kept-old-versions 5    ; and how many of the old
+        )
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/.emacs.d/plantuml.jar"))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+  (require 'expand-region)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  ;; http://draketo.de/light/english/free-software/read-your-python-module-documentation-emacs
+  ;; https://bitbucket.org/jonwaltman/pydoc-info
+  (require 'pydoc-info)
   )
 (provide 'init_func)
 ;;; init_func.el ends here

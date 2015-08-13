@@ -1,24 +1,14 @@
 ;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
 ;;; Code:
-(ido-mode t)
+(display-time)  ;; Displays time in minibuffer
+(ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
-(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
-;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-(semantic-mode)
-(show-paren-mode)
-(global-semantic-idle-completions-mode)
-(global-semantic-decoration-mode)
-;; (global-semantic-highlight-func-mode)
-;; (global-semantic-show-unmatched-syntax-mode nil)
-;; (global-srecode-minor-mode 1)
-;; (semantic-complete-analyze-inline)
-(global-ede-mode)
+(show-paren-mode)  ;; Highlights parenthesis
+;; (electric-pair-mode)
+(semantic-mode)    ;; Emacs parses buffers in this mode.
+;; (global-ede-mode)  ;; EDE is a project manager
 (add-hook 'before-save-hook 'time-stamp)
 (setq shift-select-mode t)
-;; (electric-pair-mode)
 (transient-mark-mode)
 ;; This turns on auto-fill only in the comments line
 (progn (auto-fill-mode 1)
@@ -69,6 +59,8 @@
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
 	  'c-hook-func)
+(add-hook 'dired-mode-hook
+          'my-dired-mode-hook)
 (add-hook 'find-file-hook
 	  'find-file-check-line-endings)
 (add-hook 'java-mode-hook
@@ -93,8 +85,6 @@
 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
-(add-hook 'write-file-hooks
-	  'auto-update-file-header)
 (add-hook 'write-file-hooks
 	  'delete-trailing-whitespace)
 
@@ -228,6 +218,7 @@
   )
 ;; Key bindings
 ;; They should be set last so that they override any other mode
+(global-set-key (kbd "<S-kp-9>") '(lambda () (interactive) (insert "(")))
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key [f1] 'kmacro-end-or-call-macro)
 (global-set-key (kbd "<f2> <f2>") 'describe-key-briefly)
@@ -297,7 +288,7 @@
 (global-set-key (kbd "C-c r") 'reload-buffer-no-confirm)
 (global-set-key (kbd "C-x C-k") 'ido-kill-buffer)
 (global-set-key (kbd "C-x C-f") 'find-file)
-(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
@@ -327,6 +318,7 @@
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
+
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 

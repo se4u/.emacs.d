@@ -7,13 +7,21 @@
    [default default default italic underline success warning error])
  '(browse-url-browser-function (quote browse-url-default-macosx-browser))
  '(column-number-mode t)
+ '(company-abort-manual-when-too-short t)
+ '(company-auto-complete t)
+ '(company-auto-complete-chars (quote (32 40 46)))
  '(company-idle-delay 1)
+ '(company-minimum-prefix-length 2)
+ '(company-show-numbers t)
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(dired-use-ls-dired nil)
  '(doc-view-continuous t)
+ '(ecb-layout-name "left9")
  '(ecb-options-version "2.40")
+ '(ecb-show-sources-in-directories-buffer (quote always))
+ '(ecb-tip-of-the-day nil)
  '(flycheck-checkers
    (quote
     (ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd elixir emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck haml handlebars haskell-ghc haskell-hlint html-tidy javascript-jshint javascript-eslint javascript-gjslint json-jsonlint less lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-pylint python-flake8 python-pycompile r-lintr racket rpm-rpmlint rst rst-sphinx ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
@@ -30,10 +38,13 @@
  '(jedi:key-goto-definition [C-\.])
  '(jedi:key-related-names nil)
  '(jedi:key-show-doc [C-\;])
+ '(jedi:server-command
+   (quote
+    (list "/Users/pushpendrerastogi/anaconda/envs/emacs-jedi")))
  '(magit-use-overlays nil)
  '(make-header-hook
    (quote
-    (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
+    (header-file-name header-description header-author header-creation-date header-modification-date header-update-count header-end-line)))
  '(menu-bar-mode nil)
  '(mlint-calculate-cyclic-complexity-flag t)
  '(mlint-programs
@@ -41,7 +52,16 @@
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
- '(org-entities-user (quote (("flat" "\\\\flat" t "&flat;" "b" "b" "♭"))))
+ '(org-entities-user
+   (quote
+    (("brokebar" "|" nil "|" "" "" "¦")
+     ("implies" "\\Rightarrow" t "" "=>" "=>" "⇒")
+     ("flat" "\\flat" t "&flat;" "b" "b" "♭")
+     ("entails" "\\vDash" t "&#8872;" "|=" "|=" "⊨")
+     ("notentails" "\\notvDash" t "" "|=/=" "U+22AD" "⊭")
+     ("notprovable" "\\notvdash" t "" "|-\\-" "U+22AC" "⊬")
+     ("provable" "\\vdash" t "&#8866;" "|-" "U+22A2" "⊢")
+     ("defines" "\\triangleq" t ":=" ":=" ":=" "≜"))))
  '(org-export-creator-info nil)
  '(org-export-with-timestamps nil)
  '(org-hide-emphasis-markers t)
@@ -58,6 +78,9 @@
  '(python-shell-interpreter "python")
  '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
+ '(semantic-default-submodes
+   (quote
+    (global-semantic-decoration-mode global-semantic-idle-completions-mode global-semanticdb-minor-mode global-semantic-mru-bookmark-mode)))
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
