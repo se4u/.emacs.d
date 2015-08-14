@@ -18,7 +18,6 @@ mail
 *.SCORE
 marks
 .session
-abbrev_defs
 scratch
 secret.org
 .emacs.desktop*

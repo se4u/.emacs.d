@@ -29,6 +29,10 @@
 (column-number-mode 1)
 (fringe-mode '(nil . 0))
 (setq ediff-split-window-function 'split-window-horizontally)
+;; Settings for the abbreviation mode
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs") ;; Where to save/read abbrevs
+(setq save-abbrevs t)
+(setq-default abbrev-mode t) ;; Turn abbrev mode by default
 (when (equal system-type 'darwin)
   (setq
    mac-option-modifier 'meta
@@ -53,6 +57,7 @@
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
 ;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
 (add-hook 'c-mode-hook
@@ -320,7 +325,7 @@
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
-
+(define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 
