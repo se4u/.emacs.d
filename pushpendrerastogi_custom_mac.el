@@ -9,7 +9,7 @@
  '(column-number-mode t)
  '(company-abort-manual-when-too-short t)
  '(company-auto-complete t)
- '(company-auto-complete-chars (quote (32 40 46)))
+ '(company-auto-complete-chars nil)
  '(company-idle-delay 1)
  '(company-minimum-prefix-length 2)
  '(company-show-numbers t)
