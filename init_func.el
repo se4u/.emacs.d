@@ -312,14 +312,13 @@
                                               (goto-char (point-min))
                                               (move-end-of-line 1))))
 
-(add-hook 'sgml-mode
-          (lambda ()
-            (progn
-              (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
-              (setq flyspell-issue-message-flag nil)
+
+(defun my-sgml-mode-hook ()
+  (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
+  (setq flyspell-issue-message-flag nil)
 					;(flyspell-mode 1)
-              (setq case-fold-search nil)
-              (modify-syntax-entry 92 "w" sgml-mode-syntax-table))))
+  (setq case-fold-search nil)
+  (modify-syntax-entry 92 "w" sgml-mode-syntax-table))
 
 (defun quickly-add-tags (tag) (insert tag) (next-line) (move-end-of-line 1))
 

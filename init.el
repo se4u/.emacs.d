@@ -81,6 +81,8 @@
 	  'my-org-mode-hook)
 (add-hook 'python-mode-hook
           'my-python-mode-hook)
+(add-hook 'sgml-mode
+          'my-sgml-mode-hook)
 (add-hook 'tex-mode-hook
 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
