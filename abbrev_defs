@@ -11,6 +11,8 @@
 
 (define-abbrev-table 'TeX-output-mode-abbrev-table '())
 
+(define-abbrev-table 'anaconda-nav-mode-abbrev-table '())
+
 (define-abbrev-table 'apropos-mode-abbrev-table '())
 
 (define-abbrev-table 'awk-mode-abbrev-table
@@ -75,8 +77,135 @@
 
 (define-abbrev-table 'git-rebase-mode-abbrev-table '())
 
-(define-abbrev-table 'global-abbrev-table
+(define-abbrev-table 'grep-mode-abbrev-table '())
+
+(define-abbrev-table 'helm-grep-mode-abbrev-table '())
+
+(define-abbrev-table 'helm-moccur-mode-abbrev-table '())
+
+(define-abbrev-table 'help-mode-abbrev-table '())
+
+(define-abbrev-table 'html-mode-abbrev-table '())
+
+(define-abbrev-table 'ibuffer-mode-abbrev-table '())
+
+(define-abbrev-table 'idl-mode-abbrev-table '())
+
+(define-abbrev-table 'image-dired-display-image-mode-abbrev-table '())
+
+(define-abbrev-table 'image-dired-thumbnail-mode-abbrev-table '())
+
+(define-abbrev-table 'inferior-python-mode-abbrev-table '())
+
+(define-abbrev-table 'internal-ange-ftp-mode-abbrev-table '())
+
+(define-abbrev-table 'java-mode-abbrev-table
   '(
+   ))
+
+(define-abbrev-table 'jython-mode-abbrev-table '())
+
+(define-abbrev-table 'latex-mode-abbrev-table '())
+
+(define-abbrev-table 'lisp-mode-abbrev-table '())
+
+(define-abbrev-table 'log-edit-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-branch-manager-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-cherry-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-commit-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-diff-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-log-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-process-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-reflog-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-status-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-wazzup-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-automake-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-bsdmake-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-gmake-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-imake-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-makepp-mode-abbrev-table '())
+
+(define-abbrev-table 'makefile-mode-abbrev-table '())
+
+(define-abbrev-table 'message-mode-abbrev-table '())
+
+(define-abbrev-table 'messages-buffer-mode-abbrev-table '())
+
+(define-abbrev-table 'objc-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'occur-edit-mode-abbrev-table '())
+
+(define-abbrev-table 'occur-mode-abbrev-table '())
+
+(define-abbrev-table 'org-mode-abbrev-table '())
+
+(define-abbrev-table 'outline-mode-abbrev-table '())
+
+(define-abbrev-table 'package-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'pike-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'plain-tex-mode-abbrev-table '())
+
+(define-abbrev-table 'process-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'prog-mode-abbrev-table '())
+
+(define-abbrev-table 'python-mode-abbrev-table '())
+
+(define-abbrev-table 'python-mode-skeleton-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'select-tags-table-mode-abbrev-table '())
+
+(define-abbrev-table 'sgml-mode-abbrev-table '())
+
+(define-abbrev-table 'sh-mode-abbrev-table '())
+
+(define-abbrev-table 'shell-mode-abbrev-table '())
+
+(define-abbrev-table 'slitex-mode-abbrev-table '())
+
+(define-abbrev-table 'snippet-mode-abbrev-table '())
+
+(define-abbrev-table 'special-mode-abbrev-table '())
+
+(define-abbrev-table 'speedbar-mode-abbrev-table '())
+
+(define-abbrev-table 'srecode-template-mode-abbrev-table '())
+
+(define-abbrev-table 'tabulated-list-mode-abbrev-table '())
+
+(define-abbrev-table 'tar-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-shell-abbrev-table '())
+
+(define-abbrev-table 'texinfo-mode-abbrev-table '())
+
+(define-abbrev-table 'text-mode-abbrev-table '(
     ("abbout" "about" nil 0)
     ("abotu" "about" nil 0)
     ("abouta" "about a" nil 0)
@@ -292,7 +421,9 @@
     ("consistant" "consistent" nil 0)
     ("consonent" "consonant" nil 0)
     ("conspiricy" "conspiracy" nil 0)
+    ("consrtuct" "construct" nil 0)
     ("constuction" "construction" nil 0)
+    ("consturct" "construct" nil 2)
     ("consultent" "consultant" nil 0)
     ("consumeable" "consumable" nil 0)
     ("contitions" "conditions" nil 0)
@@ -352,6 +483,7 @@
     ("developors" "developers" nil 0)
     ("develpment" "development" nil 0)
     ("devloped" "developed" nil 0)
+    ("diable" "disable" nil 0)
     ("diaplay" "display" nil 0)
     ("didint" "didn't" nil 0)
     ("didnot" "did not" nil 0)
@@ -367,6 +499,7 @@
     ("directer" "director" nil 0)
     ("directers" "directors" nil 0)
     ("directiosn" "direction" nil 0)
+    ("disalbe" "disable" nil 0)
     ("disatisfied" "dissatisfied" nil 0)
     ("discoverd" "discovered" nil 0)
     ("disign" "design" nil 0)
@@ -398,7 +531,7 @@
     ("eforts" "efforts" nil 0)
     ("ehr" "her" nil 0)
     ("eligable" "eligible" nil 0)
-    ("emacs" "Emacs" nil 0)
+    ("emacs" "Emacs" nil 1)
     ("embarass" "embarrass" nil 0)
     ("emigre" "emigre" nil 0)
     ("enahancements" "enhancements" nil 0)
@@ -521,7 +654,7 @@
     ("hvae" "have" nil 0)
     ("hvaing" "having" nil 0)
     ("hwich" "which" nil 0)
-    ("i" "I" nil 0)
+    ("i" "I" nil 25)
     ("idae" "idea" nil 0)
     ("idaes" "ideas" nil 0)
     ("identifiy" "identify" nil 0)
@@ -606,6 +739,7 @@
     ("lookign" "looking" nil 0)
     ("lookup" "look up" nil 0)
     ("maintenence" "maintenance" nil 0)
+    ("makefil" "makefile" nil 0)
     ("makeing" "making" nil 0)
     ("managment" "management" nil 0)
     ("mantain" "maintain" nil 0)
@@ -655,7 +789,7 @@
     ("omre" "more" nil 0)
     ("oneof" "one of" nil 0)
     ("onepoint" "one point" nil 0)
-    ("online" "on-line" nil 0)
+    ("online" "on-line" nil 7)
     ("ont he" "on the" nil 0)
     ("onthe" "on the" nil 0)
     ("onyl" "only" nil 0)
@@ -841,6 +975,7 @@
     ("speach" "speech" nil 0)
     ("specificaly" "specifically" nil 0)
     ("specificalyl" "specifically" nil 0)
+    ("srtucture" "structure" nil 0)
     ("statment" "statement" nil 0)
     ("statments" "statements" nil 0)
     ("stnad" "stand" nil 0)
@@ -1001,123 +1136,10 @@
     ("ytou" "you" nil 0)
     ("yuo" "you" nil 0)
     ("yuor" "your" nil 0)
-   ))
-
-(define-abbrev-table 'grep-mode-abbrev-table '())
-
-(define-abbrev-table 'helm-grep-mode-abbrev-table '())
-
-(define-abbrev-table 'helm-moccur-mode-abbrev-table '())
-
-(define-abbrev-table 'help-mode-abbrev-table '())
-
-(define-abbrev-table 'html-mode-abbrev-table '())
-
-(define-abbrev-table 'ibuffer-mode-abbrev-table '())
-
-(define-abbrev-table 'idl-mode-abbrev-table '())
-
-(define-abbrev-table 'image-dired-display-image-mode-abbrev-table '())
-
-(define-abbrev-table 'image-dired-thumbnail-mode-abbrev-table '())
-
-(define-abbrev-table 'inferior-python-mode-abbrev-table '())
-
-(define-abbrev-table 'internal-ange-ftp-mode-abbrev-table '())
-
-(define-abbrev-table 'java-mode-abbrev-table
-  '(
-   ))
-
-(define-abbrev-table 'jython-mode-abbrev-table '())
-
-(define-abbrev-table 'latex-mode-abbrev-table '())
-
-(define-abbrev-table 'lisp-mode-abbrev-table '())
-
-(define-abbrev-table 'log-edit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-branch-manager-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-cherry-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-commit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-diff-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-log-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-process-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-reflog-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-status-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-wazzup-mode-abbrev-table '())
-
-(define-abbrev-table 'message-mode-abbrev-table '())
-
-(define-abbrev-table 'messages-buffer-mode-abbrev-table '())
-
-(define-abbrev-table 'objc-mode-abbrev-table
-  '(
-   ))
-
-(define-abbrev-table 'occur-edit-mode-abbrev-table '())
-
-(define-abbrev-table 'occur-mode-abbrev-table '())
-
-(define-abbrev-table 'org-mode-abbrev-table '())
-
-(define-abbrev-table 'outline-mode-abbrev-table '())
-
-(define-abbrev-table 'package-menu-mode-abbrev-table '())
-
-(define-abbrev-table 'pike-mode-abbrev-table
-  '(
-   ))
-
-(define-abbrev-table 'plain-tex-mode-abbrev-table '())
-
-(define-abbrev-table 'process-menu-mode-abbrev-table '())
-
-(define-abbrev-table 'prog-mode-abbrev-table '())
-
-(define-abbrev-table 'python-mode-abbrev-table '())
-
-(define-abbrev-table 'select-tags-table-mode-abbrev-table '())
-
-(define-abbrev-table 'sgml-mode-abbrev-table '())
-
-(define-abbrev-table 'sh-mode-abbrev-table '())
-
-(define-abbrev-table 'shell-mode-abbrev-table '())
-
-(define-abbrev-table 'slitex-mode-abbrev-table '())
-
-(define-abbrev-table 'snippet-mode-abbrev-table '())
-
-(define-abbrev-table 'special-mode-abbrev-table '())
-
-(define-abbrev-table 'speedbar-mode-abbrev-table '())
-
-(define-abbrev-table 'srecode-template-mode-abbrev-table '())
-
-(define-abbrev-table 'tabulated-list-mode-abbrev-table '())
-
-(define-abbrev-table 'tar-mode-abbrev-table '())
-
-(define-abbrev-table 'tex-mode-abbrev-table '())
-
-(define-abbrev-table 'tex-shell-abbrev-table '())
-
-(define-abbrev-table 'text-mode-abbrev-table '())
+    ))
 
 (define-abbrev-table 'url-cookie-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-git-log-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-git-log-view-mode-abbrev-table '())
-

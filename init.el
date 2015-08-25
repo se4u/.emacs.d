@@ -3,6 +3,7 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+(auto-fill-mode 1) ;; Turn on auto fill mode globally
 (show-paren-mode)  ;; Highlights parenthesis
 ;; (electric-pair-mode)
 (semantic-mode)    ;; Emacs parses buffers in this mode.
@@ -10,9 +11,6 @@
 (add-hook 'before-save-hook 'time-stamp)
 (setq shift-select-mode t)
 (transient-mark-mode)
-;; This turns on auto-fill only in the comments line
-(progn (auto-fill-mode 1)
-       (setq comment-auto-fill-only-comments t))
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
 (global-font-lock-mode t)
@@ -60,6 +58,8 @@
 
 ;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
+(add-hook 'auto-fill-mode-hook
+          #'(lambda () (setq comment-auto-fill-only-comments t)))
 (add-hook 'c-mode-hook
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
@@ -79,9 +79,9 @@
 (add-hook 'matlab-mode-hook
 	  'run-matlab-once)
 (add-hook 'makefile-gmake-mode-hook
-	  'sarcasm-makefile-mode-hook)
+	  'my-makefile-mode-hook)
 (add-hook 'makefile-bsdmake-mode-hook
-	  'sarcasm-makefile-mode-hook)
+	  'my-makefile-mode-hook)
 (add-hook 'org-mode-hook
 	  'my-org-mode-hook)
 (add-hook 'python-mode-hook
@@ -94,7 +94,10 @@
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
 	  'delete-trailing-whitespace)
-
+(add-hook 'yaml-mode-hook
+          'my-yaml-mode-hook)
+(add-hook 'prog-mode-hook
+          'fci-mode)
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list

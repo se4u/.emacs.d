@@ -404,12 +404,15 @@ putting the matching lines in a buffer named *matching*"
     (when file
       (find-file file))))
 
-(defun sarcasm-makefile-mode-hook ()
+(defun my-makefile-mode-hook ()
   "Hooks for Makefile mode."
   (font-lock-add-keywords nil '(("\\<\\(TARGET\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(EXPECTATION\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(OPTIONS\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\<\\(SOURCE\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\<\\(EXAMPLE\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\([#]\\)" 1 font-lock-warning-face t)))
+  (auto-fill-mode)
   )
 
 (defun org-screenshot ()
@@ -510,6 +513,21 @@ directory as the org-buffer and insert a link to this file. This function wont w
 	       '("marmalade" . "http://marmalade-repo.org/packages/") t))
 
 
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
 (defun transpose-line-down ()
   (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0))
 
@@ -518,6 +536,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-dired-mode-hook ()
   (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
+
+(defun my-python-after-save-hook ()
+  (shell-command (concat "autopep8 --in-place " (buffer-file-name)))
+  (reload-buffer-no-confirm))
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
@@ -530,14 +552,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
        (progn (insert "header") (message "Press [TAB] to insert header")))
   (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
-  (add-hook 'after-save-hook
-            '(lambda ()
-               (shell-command (concat
-                               "autopep8 --in-place "
-                               (buffer-file-name)))
-               (reload-buffer-no-confirm))
-            nil
-            'make-it-local)
+  (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -547,7 +562,18 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
+  (auto-fill-mode 1)
+  (eldoc-mode)
   )
+
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+(defun my-yaml-mode-hook ()
+  (abbrev-mode -1))
 
 (defun my-org-mode-hook ()
   (font-lock-add-keywords
@@ -582,6 +608,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (flyspell-mode)
   (LaTeX-math-mode)
   (turn-on-reftex)
+  (auto-fill-mode)
   (writegood-mode)
   (require 'company-auctex)
   (company-auctex-init)
@@ -603,7 +630,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
@@ -625,6 +652,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;; http://draketo.de/light/english/free-software/read-your-python-module-documentation-emacs
   ;; https://bitbucket.org/jonwaltman/pydoc-info
   (require 'pydoc-info)
+  (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
+  (add-to-list 'load-path "~/.emacs.d/mymodes")
+  (require 'yaml-mode)
   )
 (provide 'init_func)
 ;;; init_func.el ends here
