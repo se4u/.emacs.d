@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ifis
+# key: ifis
+# binding: direct-keybinding
+# --
+if $1 is ${2:None}:
+    $1 = $0

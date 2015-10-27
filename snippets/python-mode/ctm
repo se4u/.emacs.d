@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ctm
+# key: ctm
+# binding: direct-keybinding
+# --
+from contextlib import contextmanager
+@contextmanager
+def ${1:cntxt}(${2:}):
+    $0
+    yield

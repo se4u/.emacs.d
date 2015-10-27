@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: rectifiedlinear_layer
+# key: rectifiedlinear
+# binding: direct-keybinding
+# --
+!obj:pylearn2.models.mlp.RectifiedLinear {
+    layer_name: 'linear_activation',
+    dim: $0,
+    irange: 0.01,
+}

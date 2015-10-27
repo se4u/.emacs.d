@@ -1,0 +1,23 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: sphinx_emacs_info
+# key: sphinx
+# binding: direct-keybinding
+# --
+
+# Add at the bottom of conf.py
+texinfo_documents = [
+    ('index',  # startdocname, keep this!
+     '$1',  # targetname
+     '${1:$(capitalize yas-text)} Documentation',  # title
+     '${1:$(capitalize yas-text)} Dev',  # author
+     '${1:$(capitalize yas-text)}',  # dir_entry
+     '${1:$(capitalize yas-text)} Documentation',  # description
+     'Software Development',  # category
+     False),  # better keep this, too, i think.
+]
+# Run the following commnds in shell.$0
+sphinx-build -b texinfo ${2:doc}/ texinfo/
+cd texinfo
+makeinfo $1.texi
+sudo install-info --info-dir=/usr/share/info $1.info
+sudo ln -s -f $PWD/$1.info* /usr/share/info/

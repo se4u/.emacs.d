@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: argparse
+# key: argparse
+# binding: direct-keybinding
+# --
+import argparse
+arg_parser = argparse.ArgumentParser(description='$1')
+arg_parser.add_argument('--seed', default=0, type=int, help='Default={0}')
+arg_parser.add_argument('--$2', default=$3, type=$4, help='Default={$3}')$0
+args=arg_parser.parse_args()
+#import random
+#random.seed(args.seed)
+#np.random.seed(args.seed)

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: descriptive_print
+# key: dp
+# binding: direct-keybinding
+# --
+'$1', $1$0

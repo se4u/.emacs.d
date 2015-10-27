@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: answer
+# key: a
+# binding: direct-keybinding
+# --
+\answer{$0}

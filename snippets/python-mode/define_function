@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: define_function
+# key: def
+# binding: direct-keybinding
+# --
+def $1($2):
+    d$0

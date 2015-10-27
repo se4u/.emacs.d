@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: mlp_layer
+# key: mlp
+# binding: direct-keybinding
+# --
+!obj:pylearn2.models.mlp.MLP {
+    layer_name: '$1_mlp_layer',
+    layers: [
+        $0
+    ],
+}

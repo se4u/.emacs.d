@@ -1,0 +1,61 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: typecheck
+# key: typecheck
+# binding: direct-keybinding
+# --
+class typecheck(object):
+
+    '''Decorator class for checking the type of functions.
+    The arguments can be a class, type or tuple of classes and types
+
+    Examples
+    --------
+    >>> @typecheck((int, float)) # Or just float, or just int
+    def f(a):
+        return a
+    >>> f(1)
+    1
+    >>> f("1")
+    AssertionError: Fun f, Arg 0, Expected (<type 'int'>, <type 'float'>), Received <type 'str'>
+    '''
+
+    def __init__(self, *args_type, **kwargs_type):
+        self.args_type = args_type
+        self.kwargs_type = kwargs_type
+        return
+
+    def __call__(self, f):
+        def runtime_wrapper(*args, **kwargs):
+            if __debug__:
+                def same(received, expected):
+                    try:
+                        return (isinstance(received, expected)
+                                or any(isinstance(received, e)
+                                       for e in expected))
+                    except TypeError:
+                        return False
+                for idx, arg in enumerate(args):
+                    expected = self.args_type[idx]
+                    received = arg
+                    assert same(received, expected), \
+                        "Fun %s, Arg %d, Expected %s, Received %s" % (
+                            f.__name__,
+                            idx,
+                            str(expected),
+                            str(type(received)))
+                for idx, key in enumerate(kwargs):
+                    expected = self.kwargs_type[key]
+                    received = kwargs[key]
+                    assert same(received, expected), \
+                        "Fun %s, Arg %d, Expected %s, Received %s" % (
+                            f.__name__,
+                            idx,
+                            str(expected),
+                            str(type(received)))
+            else:
+                pass
+            return f(*args, **kwargs)
+        return runtime_wrapper
+
+
+@typecheck()

@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: footnote
+# key: footnote
+# binding: direct-keybinding
+# --
+$0
+## Footnotes ##
+{:.no_toc}
+{% footnotes %}
+   {% fnbody %}
+      $1
+   {% endfnbody %}
+{% endfootnotes %}

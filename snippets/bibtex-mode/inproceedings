@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: inproceedings
+# key: proc
+# binding: direct-keybinding
+# --
+@inproceedings{$1,
+	Author = {$2},
+	Booktitle = {$3},
+	Title = {$4},
+	Year = {$5}}
+$0

@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: glue_layer
+# key: glue
+# binding: direct-keybinding
+# --
+!obj:glue_composite_layer.GlueLayer {
+    layer_name: '$1_glue',
+    dim: $2,
+    nonlinearity: ${3:(you can delete this line)!obj:glue_composite_layer.Rectifier \{ \}},
+    operation: !!python/name:operator.add ,
+}$0

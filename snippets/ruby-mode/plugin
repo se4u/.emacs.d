@@ -1,0 +1,19 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: plugin
+# key: plugin
+# binding: direct-keybinding
+# --
+module Jekyll
+  class $1${2:Tag} < Liquid::$2
+    def initialize(tag_name, text, tokens)
+      super
+      @text = text
+      @tokens = tokens
+    end
+
+    def render(context)
+      $0
+    end
+  end
+end
+Liquid::Template.register_tag('${1:$(downcase yas-text)}', Jekyll::$1${2:$(capitalize yas-text)})

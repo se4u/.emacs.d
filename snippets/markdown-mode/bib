@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: bib
+# key: bib
+# binding: direct-keybinding
+# --
+###Bibliography###
+{:.no_toc}
+{% bibliography --cited %}

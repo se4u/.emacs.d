@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: theano.tensor.
+# key: T.
+# binding: direct-keybinding
+# --
+theano.tensor.

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: test_file
+# key: unittest
+# group : testing
+# --
+import unittest
+tcs$0
+if __name__ == '__main__':
+    unittest.main()

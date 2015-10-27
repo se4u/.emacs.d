@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ang
+# key: ang
+# binding: direct-keybinding
+# --
+\langle $1, $2 \rangle$0

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: python_develop
+# key: pydev
+# binding: direct-keybinding
+# --
+# from setuptools import setup
+# python setup.py develop

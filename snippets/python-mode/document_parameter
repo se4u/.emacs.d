@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: document_parameter
+# key: docparam
+# binding: C-c C-d
+# --
+${1:machine type}
+$2${3:purpose}

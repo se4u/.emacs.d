@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: assertAlmostEqual
+# key: aae
+# group: testing
+# --
+self.assertAlmostEqual($1, $2)

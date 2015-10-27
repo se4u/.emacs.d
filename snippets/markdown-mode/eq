@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: eq
+# key: eq
+# binding: direct-keybinding
+# --
+
+$$
+\begin{equation}
+$1
+\end{equation}
+$$
+
+$0

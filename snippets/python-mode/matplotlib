@@ -1,0 +1,16 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: matplotlib
+# key: mpl
+# binding: direct-keybinding
+# --
+plt = None
+
+
+def load_modules():
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot
+    matplotlib.pyplot.style.use('ggplot')
+    global plt
+    plt = matplotlib.pyplot
+    return

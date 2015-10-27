@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: fut
+# key: fut
+# binding: direct-keybinding
+# --
+from __future__ import division
+from __future__ import print_function
+from __future__ import with_statement$0

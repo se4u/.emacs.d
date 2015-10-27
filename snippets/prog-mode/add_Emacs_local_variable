@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: add_Emacs_local_variable
+# key: elv
+# binding: direct-keybinding
+# --
+# Local Variables:
+# eval: (read-only-mode)
+# End:
