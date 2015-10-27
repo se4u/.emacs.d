@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: self_property_init
+# key: sp
+# binding: direct-keybinding
+# --
+self.$1 = $1

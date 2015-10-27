@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: deco
+# key: deco
+# binding: direct-keybinding
+# --
+class ${1:deconame}(object):
+    def __init__(self${2:, *args}${3:, **kwargs}):$4
+        return
+
+    def __call__(self, f):$5
+        def runtime_wrapper(*args, **kwargs):
+            return f(*args, **kwargs)
+        return runtime_wrapper
+
+@$1($6, key=$7)

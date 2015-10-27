@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cite_pending
+# key: cp
+# binding: direct-keybinding
+# --
+\cite{pending}

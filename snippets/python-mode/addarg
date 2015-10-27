@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: addarg
+# key: addarg
+# binding: direct-keybinding
+# --
+arg_parser.add_argument('--$1', default=$2, type=$3, help='Default={$2}')$0

@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: metaclass
+# key: abc
+# group: object oriented
+# --
+import abc
+class $1Base(object):
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def __init__(self$2):
+        pass
+
+# Register concrete implementations of this baseclass.
+$1Base.register()

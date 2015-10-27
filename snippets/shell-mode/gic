@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: gic
+# key: gic
+# binding: direct-keybinding
+# --
+git commit -m"$1"$0

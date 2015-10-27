@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: assertLess
+# key: al
+# group: testing
+# --
+self.assertLess${1:Equal}($2, $0)

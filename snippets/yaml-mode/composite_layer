@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: composite_layer
+# key: composite
+# binding: direct-keybinding
+# --
+!obj:pylearn2.models.mlp.CompositeLayer {
+    layer_name: '${1:%(layer_name)s_composite}',
+    layers: [
+        $0
+    ],
+}

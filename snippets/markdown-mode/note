@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: note
+# key: note
+# binding: direct-keybinding
+# --
+<div markdown="1" class="note">
+$1
+</div>
+$0

@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: tictoc
+# key: tictoc
+# binding: direct-keybinding
+# --
+from contextlib import contextmanager
+import time
+@contextmanager
+def tictoc(msg):
+    t = time.time()
+    print "Started", msg
+    yield
+    print "Completed", msg, "in %ds"%(time.time() - t)

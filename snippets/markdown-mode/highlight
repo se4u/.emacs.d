@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: highlight
+# key: highlight
+# binding: direct-keybinding
+# --
+{% highlight ${1:python} %}
+$0
+{% endhighlight %}

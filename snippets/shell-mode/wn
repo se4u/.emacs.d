@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: wn
+# key: wn
+# binding: direct-keybinding
+# --
+from nltk.corpus import wordnet as wn

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: assertGreater
+# key: ag
+# group: testing
+# --
+self.assertGreater${1:Equal}($2, $0)

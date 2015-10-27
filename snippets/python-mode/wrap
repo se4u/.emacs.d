@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: wrap
+# key: wrap
+# binding: direct-keybinding
+# --
+@wraps(Layer.$1)
+def $1(self$2):
