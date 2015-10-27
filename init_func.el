@@ -1,5 +1,5 @@
-;;; Commentary
-
+;;; Requires
+(require 'cl-lib)
 ;;; Code
 (defun my-generate-tags ()
   (interactive)
@@ -512,6 +512,57 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'package-archives
 	       '("marmalade" . "http://marmalade-repo.org/packages/") t))
 
+(defun python-split-args (arg-string)
+  "Split a python argument string into ((name, default)..) tuples"
+  (mapcar (lambda (x)
+             (split-string x "[[:blank:]]*=[[:blank:]]*" t))
+          (split-string arg-string "[[:blank:]]*,[[:blank:]]*" t)))
+
+
+(defun python-args-to-docstring-impl (yas-text)
+  (let* ((indent (concat "\n" (make-string (current-column) 32)))
+         (args (cl-remove-if
+                (lambda (x) (or (string-equal (car x) "self")
+                                (string-equal (car x) "cls")))
+                (python-split-args yas-text)))
+         (max-len (if args
+                      (apply 'max (mapcar (lambda (x) (length (nth 0 x))) args))
+                    0))
+         (formatted-args (mapconcat
+                (lambda (x)
+                   (concat (nth 0 x) (make-string (- max-len (length (nth 0 x))) ? ) " : "
+                           (if (nth 1 x) (concat "\(default " (nth 1 x) "\)"))))
+                args
+                indent)))
+    (unless (string= formatted-args "")
+      (mapconcat 'identity (list "Params" "------" formatted-args) indent))))
+
+(defun python-args-to-docstring ()
+  "return docstring format for the python arguments in yas-text"
+  (python-args-to-docstring-impl yas-text))
+
+(defun python-param-populator ()
+  "The python-args-to-docstring-impl function is inside
+   elpa/yasnippet-20150318.348/snippets/python-mode/.yas-setup.el"
+  (save-excursion
+    (let ((arg-start nil) (arg-end nil) (curcol (current-column)))
+       (save-excursion
+          (python-nav-beginning-of-defun)
+          (move-end-of-line nil)
+          (backward-char)
+          (setq arg-end (- (point) 1))
+          (backward-sexp)
+          (setq arg-start (+ 1 (point)))
+          )
+       (insert "'''\n")
+       (insert (make-string curcol ? ))
+       (insert (python-args-to-docstring-impl (buffer-substring arg-start arg-end)))
+       (insert (concat "\n" (make-string curcol ? ) "'''"))))
+  (move-end-of-line nil))
+
+(defun insert-4-space ()
+  (interactive)
+  (insert (make-string 4 ? )))
 
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
@@ -564,6 +615,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
   (auto-fill-mode 1)
   (eldoc-mode)
+  (hs-minor-mode)
+  (define-key python-mode-map (kbd "<H-left>") 'hs-hide-block)
+  (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
   )
 
 (defun what-face (pos)
@@ -578,19 +632,32 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-org-mode-hook ()
   (font-lock-add-keywords
    nil
-   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-     ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
-     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-  (writegood-mode)
+   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(GOAL:\\)" 1 font-lock-string-face t)
+     ("\\<\\(UTILITY:\\)" 1 font-lock-string-face t)
+     ("\\<\\(PROOF:\\)" 1 font-lock-string-face t)
+     ("\\<\\(GUESS:\\)" 1 font-lock-string-face t)
+     ("\\<\\(ToProve:.*\\)" 1 font-lock-warning-face t)))
+  (writegood-mode -1)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
+  (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
+  (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
+  ;; (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
+  ;; (define-key org-mode-map (kbd "C-=") 'er/expand-region)
   (auto-fill-mode)
+  (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
+                             ("/" italic "<i>" "</i>")
+                             ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+                             ("=" org-code "<code>" "</code>" verbatim)
+                             ("~" org-verbatim "<code>" "</code>" verbatim)))
   )
 
 (defun my-tex-mode-hook ()
   (font-lock-add-keywords
    nil
-   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
 
@@ -655,6 +722,21 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
   (add-to-list 'load-path "~/.emacs.d/mymodes")
   (require 'yaml-mode)
+  (require 'math-symbol-lists)
+  (quail-define-package "math" "UTF-8" "Ω" t)
+  (quail-define-rules ; Manual overrides for the Tex Input method
+   ("\\from"    #X2190)
+   ("\\to"      #X2192)
+   ("\\lhd"     #X22B2)
+   ("\\rhd"     #X22B3)
+   ("\\unlhd"   #X22B4)
+   ("\\unrhd"   #X22B5))
+  (mapc (lambda (x)
+        (if (cddr x)
+            (quail-defrule (cadr x) (car (cddr x)))))
+      (append math-symbol-list-basic math-symbol-list-extended))
   )
 (provide 'init_func)
+;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs
+;; or use customize-face and set height to 100.
 ;;; init_func.el ends here

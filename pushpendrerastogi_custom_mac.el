@@ -97,7 +97,12 @@
  '(org-directory "~/Dropbox/org")
  '(org-entities-user
    (quote
-    (("brokebar" "|" nil "|" "" "" "¦")
+    (("real" "\\mathbb{R}" nil "&#8477;" "R" "+211D" "ℝ")
+     ("nat" "\\mathbb{N}" nil "&#8469;" "N" "+2115" "ℕ")
+     ("circ" "\\circ" nil "&#8728;" "o" "" "∘")
+     ("rrb" "\\rrbracket" nil "&#27E7;" "]]" "" "⟧")
+     ("llb" "\\llbracket" nil "&#27E6;" "[[" "" "⟦")
+     ("brokebar" "|" nil "|" "" "" "¦")
      ("implies" "\\Rightarrow" t "" "=>" "=>" "⇒")
      ("flat" "\\flat" t "&flat;" "b" "b" "♭")
      ("entails" "\\vDash" t "&#8872;" "|=" "|=" "⊨")
@@ -112,7 +117,15 @@
  '(org-latex-to-pdf-process
    (quote
     ("/usr/texbin/pdflatex -interaction nonstopmode -output-directory %o %f" "/usr/texbin/pdflatex -interaction nonstopmode -output-directory %o %f" "/usr/texbin/pdflatex -interaction nonstopmode -output-directory %o %f")))
+ '(org-link-frame-setup
+   (quote
+    ((vm . vm-visit-folder-other-frame)
+     (vm-imap . vm-visit-imap-folder-other-frame)
+     (gnus . org-gnus-no-new-news)
+     (file . find-file-other-frame)
+     (wl . wl-other-frame))))
  '(org-pretty-entities t)
+ '(org-return-follows-link t)
  '(package-selected-packages
    (quote
     (magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yasnippet yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))

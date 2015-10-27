@@ -30,7 +30,9 @@
 ;; Settings for the abbreviation mode
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs") ;; Where to save/read abbrevs
 (setq save-abbrevs t)
-(setq-default abbrev-mode t) ;; Turn abbrev mode by default
+;; Do not turn on abbrev mode till you have time to figure out
+;; how to make sure it doesn't turn on in comint, shells and programming modes.
+;; (setq-default abbrev-mode t) ;; Turn abbrev mode by default
 (when (equal system-type 'darwin)
   (setq
    mac-option-modifier 'meta
@@ -205,6 +207,7 @@
   '(progn
      (define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
      (define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
+     (define-key python-mode-map (kbd "C-<tab>") 'insert-4-space)
      )
   )
 
@@ -266,6 +269,7 @@
 (global-set-key (kbd "M-8") 'pop-tag-mark)
 (global-set-key (kbd "M-9") 'keyboard-quit)
 (global-set-key (kbd "M-p") 'next-multiframe-window)
+(global-set-key (kbd "M-P") 'next-multiframe-window)
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region)
 (progn (define-key key-translation-map (kbd "M-o") (kbd "C-x M-n"))
        (global-set-key (kbd "C-x M-n") 'previous-multiframe-window))
@@ -309,6 +313,7 @@
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
+(global-set-key (kbd "C-l") 'recenter)
 (global-set-key (kbd "H-6") 'undo) ; H-6 means clear
 (global-set-key (kbd "H--") 'shrink-window-horizontally)
 (global-set-key (kbd "H-=") 'enlarge-window-horizontally)
@@ -322,6 +327,7 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
+(global-set-key (kbd "s-.") 'find-file-at-point)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)
