@@ -1,5 +1,5 @@
-;;; Commentary
-
+;;; Requires
+(require 'cl-lib)
 ;;; Code
 (defun my-generate-tags ()
   (interactive)
@@ -81,6 +81,52 @@
 ;;     (set-window-buffer (selected-window)
 ;;                        (get-buffer my-speedbar-buffer-name)))
 
+;; http://endlessparentheses.com/fixing-double-capitals-as-you-type.html
+;; http://emacs.stackexchange.com/q/13970/50
+;; Note that this mode automatically changes words that start with two
+;; caps to single cap like THe -> The but it does not change THE.
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+
+(define-minor-mode dubcaps-mode
+  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to
+Single Capitals as you type."
+  :init-value nil
+  :lighter (" DC")
+  (if dubcaps-mode
+      (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+    (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
+
+;; http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html
+;; Basically this setting gradually learns from your mistakes and maps
+(defun endless/ispell-word-then-abbrev (p)
+  "Call `ispell-word', then create an abbrev for it.
+With prefix P, create local abbrev. Otherwise it will
+be global."
+  (interactive "P")
+  (let ((bef (downcase (or (thing-at-point 'word)
+                           "")))
+        aft)
+    (call-interactively 'ispell-word)
+    (setq aft (downcase
+               (or (thing-at-point 'word) "")))
+    (unless (or (string= aft bef)
+                (string= aft "")
+                (string= bef ""))
+      (message "\"%s\" now expands to \"%s\" %sally"
+               bef aft (if p "loc" "glob"))
+      (define-abbrev
+        (if p local-abbrev-table global-abbrev-table)
+        bef aft))))
 
 (defun fix-indentation-xml ()
   "Reformats xml to make it readable (respects current selection)."
@@ -170,6 +216,12 @@
   (interactive)
   (message (concat "Copied path " (buffer-file-name) " to clipboard"))
   (kill-new (file-truename buffer-file-name)))
+
+(defun add-css-jekyll ()
+  "Shows the full path file name in the minibuffer an dcopies it to kill-ring"
+  (interactive)
+  (message "Create a _sass/<NAME>.scss file and import it from css/main.scss" )
+)
 
 (defun save-line-to-kill-ring ()
   "Saves line (cursor to end) to kill ring (without killing)"
@@ -306,14 +358,13 @@
                                               (goto-char (point-min))
                                               (move-end-of-line 1))))
 
-(add-hook 'sgml-mode
-          (lambda ()
-            (progn
-              (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
-              (setq flyspell-issue-message-flag nil)
+
+(defun my-sgml-mode-hook ()
+  (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
+  (setq flyspell-issue-message-flag nil)
 					;(flyspell-mode 1)
-              (setq case-fold-search nil)
-              (modify-syntax-entry 92 "w" sgml-mode-syntax-table))))
+  (setq case-fold-search nil)
+  (modify-syntax-entry 92 "w" sgml-mode-syntax-table))
 
 (defun quickly-add-tags (tag) (insert tag) (next-line) (move-end-of-line 1))
 
@@ -353,12 +404,15 @@ putting the matching lines in a buffer named *matching*"
     (when file
       (find-file file))))
 
-(defun sarcasm-makefile-mode-hook ()
+(defun my-makefile-mode-hook ()
   "Hooks for Makefile mode."
   (font-lock-add-keywords nil '(("\\<\\(TARGET\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(EXPECTATION\\):" 1 font-lock-keyword-face t)))
+  (font-lock-add-keywords nil '(("\\<\\(OPTIONS\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\<\\(SOURCE\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\<\\(EXAMPLE\\):" 1 font-lock-keyword-face t)))
   (font-lock-add-keywords nil '(("\\([#]\\)" 1 font-lock-warning-face t)))
+  (auto-fill-mode)
   )
 
 (defun org-screenshot ()
@@ -458,6 +512,72 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'package-archives
 	       '("marmalade" . "http://marmalade-repo.org/packages/") t))
 
+(defun python-split-args (arg-string)
+  "Split a python argument string into ((name, default)..) tuples"
+  (mapcar (lambda (x)
+             (split-string x "[[:blank:]]*=[[:blank:]]*" t))
+          (split-string arg-string "[[:blank:]]*,[[:blank:]]*" t)))
+
+
+(defun python-args-to-docstring-impl (yas-text)
+  (let* ((indent (concat "\n" (make-string (current-column) 32)))
+         (args (cl-remove-if
+                (lambda (x) (or (string-equal (car x) "self")
+                                (string-equal (car x) "cls")))
+                (python-split-args yas-text)))
+         (max-len (if args
+                      (apply 'max (mapcar (lambda (x) (length (nth 0 x))) args))
+                    0))
+         (formatted-args (mapconcat
+                (lambda (x)
+                   (concat (nth 0 x) (make-string (- max-len (length (nth 0 x))) ? ) " : "
+                           (if (nth 1 x) (concat "\(default " (nth 1 x) "\)"))))
+                args
+                indent)))
+    (unless (string= formatted-args "")
+      (mapconcat 'identity (list "Params" "------" formatted-args) indent))))
+
+(defun python-args-to-docstring ()
+  "return docstring format for the python arguments in yas-text"
+  (python-args-to-docstring-impl yas-text))
+
+(defun python-param-populator ()
+  "The python-args-to-docstring-impl function is inside
+   elpa/yasnippet-20150318.348/snippets/python-mode/.yas-setup.el"
+  (save-excursion
+    (let ((arg-start nil) (arg-end nil) (curcol (current-column)))
+       (save-excursion
+          (python-nav-beginning-of-defun)
+          (move-end-of-line nil)
+          (backward-char)
+          (setq arg-end (- (point) 1))
+          (backward-sexp)
+          (setq arg-start (+ 1 (point)))
+          )
+       (insert "'''\n")
+       (insert (make-string curcol ? ))
+       (insert (python-args-to-docstring-impl (buffer-substring arg-start arg-end)))
+       (insert (concat "\n" (make-string curcol ? ) "'''"))))
+  (move-end-of-line nil))
+
+(defun insert-4-space ()
+  (interactive)
+  (insert (make-string 4 ? )))
+
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
 
 (defun transpose-line-down ()
   (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0))
@@ -465,26 +585,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun transpose-line-up ()
   (interactive) (transpose-lines 1) (beginning-of-line -1))
 
-(define-skeleton python-header-tmpl
-  "Insert a comment block containing the module title, author, etc."
-  ""
-  "# -*- Mode: Python -*-"
-  "\n# Filename        : " (buffer-name)
-  "\n# Description     : " "NA"
-  "\n# Author          : " (user-login-name)
-  "\n# Created On      : " (current-time-string)
-  "\n# Time-stamp: <>"
-  "\n")
+(defun my-dired-mode-hook ()
+  (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
-(defun python-header ()
-  "Insert a descriptive header at the top of the file."
-  (interactive "*")
-  (save-excursion
-    (goto-char (point-min))
-    (python-header-tmpl)))
+(defun my-python-after-save-hook ()
+  (shell-command (concat "autopep8 --in-place " (buffer-file-name)))
+  (reload-buffer-no-confirm))
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+<<<<<<< HEAD
   (auto-make-header)
   ;; (progn
   ;;   (setq jedi:complete-on-dot t)
@@ -495,8 +605,15 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;;   (jedi:setup))
   ;; (add-to-list 'company-backends 'company-jedi)
   ;; (company-mode -1)
-  (message "maybe you want to (ecb-activate) ?")
+  (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
+  (anaconda-mode)
+  (orgtbl-mode)
+  (autoload 'auto-update-file-header "header2")
+  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
+       (progn (insert "header") (message "Press [TAB] to insert header")))
+  (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
+  (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -506,24 +623,51 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
+  (auto-fill-mode 1)
+  (eldoc-mode)
+  (hs-minor-mode)
+  (define-key python-mode-map (kbd "<H-left>") 'hs-hide-block)
+  (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
   )
+
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+(defun my-yaml-mode-hook ()
+  (abbrev-mode -1))
 
 (defun my-org-mode-hook ()
   (font-lock-add-keywords
    nil
-   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
-     ("\\<\\(BOOKMARK\\)" 1 font-lock-warning-face t)
-     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-  (writegood-mode)
+   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
+     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(GOAL:\\)" 1 font-lock-string-face t)
+     ("\\<\\(UTILITY:\\)" 1 font-lock-string-face t)
+     ("\\<\\(PROOF:\\)" 1 font-lock-string-face t)
+     ("\\<\\(GUESS:\\)" 1 font-lock-string-face t)
+     ("\\<\\(ToProve:.*\\)" 1 font-lock-warning-face t)))
+  (writegood-mode -1)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
+  (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
+  (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
+  ;; (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
+  ;; (define-key org-mode-map (kbd "C-=") 'er/expand-region)
   (auto-fill-mode)
+  (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
+                             ("/" italic "<i>" "</i>")
+                             ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+                             ("=" org-code "<code>" "</code>" verbatim)
+                             ("~" org-verbatim "<code>" "</code>" verbatim)))
   )
 
 (defun my-tex-mode-hook ()
   (font-lock-add-keywords
    nil
-   '(("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
+   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
   (writegood-mode))
 
@@ -534,27 +678,26 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-latex-mode-hook ()
-  (require 'company-auctex)
-  (company-auctex-init)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-  (visual-line-mode)
+  (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (LaTeX-math-mode)
   (turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t)
-  (turn-on-reftex)
+  (auto-fill-mode)
   (writegood-mode)
+  (require 'company-auctex)
+  (company-auctex-init)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  (setq comment-auto-fill-only-comments nil)
   )
 
 (defun my-after-init-hook ()
   (add-package-managers)
   (recentf-mode 1)
-  (global-company-mode 1)
-  (autoload 'auto-update-file-header "header2")
-  (autoload 'auto-make-header "header2")
+  (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
+  (company-quickhelp-mode 1)  ;; Company quickhelp shows documentation in a popup.
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
@@ -564,12 +707,46 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
   (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
   (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq org-src-fontify-natively t)
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+        backup-by-copying t    ; Don't delink hardlinks
+        version-control t      ; Use version numbers on backups
+        delete-old-versions t  ; Automatically delete excess backups
+        kept-new-versions 20   ; how many of the newest versions to keep
+        kept-old-versions 5    ; and how many of the old
+        )
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/.emacs.d/plantuml.jar"))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+  (require 'expand-region)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  ;; http://draketo.de/light/english/free-software/read-your-python-module-documentation-emacs
+  ;; https://bitbucket.org/jonwaltman/pydoc-info
+  (require 'pydoc-info)
+  (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
+  (add-to-list 'load-path "~/.emacs.d/mymodes")
+  (require 'yaml-mode)
+  (require 'math-symbol-lists)
+  (quail-define-package "math" "UTF-8" "Ω" t)
+  (quail-define-rules ; Manual overrides for the Tex Input method
+   ("\\from"    #X2190)
+   ("\\to"      #X2192)
+   ("\\lhd"     #X22B2)
+   ("\\rhd"     #X22B3)
+   ("\\unlhd"   #X22B4)
+   ("\\unrhd"   #X22B5))
+  (mapc (lambda (x)
+        (if (cddr x)
+            (quail-defrule (cadr x) (car (cddr x)))))
+      (append math-symbol-list-basic math-symbol-list-extended))
   )
 (provide 'init_func)
+;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs
+;; or use customize-face and set height to 100.
 ;;; init_func.el ends here

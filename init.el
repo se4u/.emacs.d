@@ -1,8 +1,8 @@
 ;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
 ;;; Code:
-(ido-mode t)
+(display-time)  ;; Displays time in minibuffer
+(ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
-(show-paren-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
@@ -15,14 +15,16 @@
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
 ;; (semantic-complete-analyze-inline)
-(global-ede-mode)
+
+
+(auto-fill-mode 1) ;; Turn on auto fill mode globally
+(show-paren-mode)  ;; Highlights parenthesis
+;; (electric-pair-mode)
+(semantic-mode)    ;; Emacs parses buffers in this mode.
+;; (global-ede-mode)  ;; EDE is a project manager
 (add-hook 'before-save-hook 'time-stamp)
 (setq shift-select-mode t)
-;; (electric-pair-mode)
 (transient-mark-mode)
-;; This turns on auto-fill only in the comments line
-(progn (auto-fill-mode 1)
-       (setq comment-auto-fill-only-comments t))
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
 (global-font-lock-mode t)
@@ -39,6 +41,12 @@
 (column-number-mode 1)
 (fringe-mode '(nil . 0))
 (setq ediff-split-window-function 'split-window-horizontally)
+;; Settings for the abbreviation mode
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs") ;; Where to save/read abbrevs
+(setq save-abbrevs t)
+;; Do not turn on abbrev mode till you have time to figure out
+;; how to make sure it doesn't turn on in comint, shells and programming modes.
+;; (setq-default abbrev-mode t) ;; Turn abbrev mode by default
 (when (equal system-type 'darwin)
   (setq
    mac-option-modifier 'meta
@@ -63,12 +71,17 @@
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
 ;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
+(add-hook 'auto-fill-mode-hook
+          #'(lambda () (setq comment-auto-fill-only-comments t)))
 (add-hook 'c-mode-hook
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
 	  'c-hook-func)
+(add-hook 'dired-mode-hook
+          'my-dired-mode-hook)
 (add-hook 'find-file-hook
 	  'find-file-check-line-endings)
 (add-hook 'java-mode-hook
@@ -82,22 +95,25 @@
 (add-hook 'matlab-mode-hook
 	  'run-matlab-once)
 (add-hook 'makefile-gmake-mode-hook
-	  'sarcasm-makefile-mode-hook)
+	  'my-makefile-mode-hook)
 (add-hook 'makefile-bsdmake-mode-hook
-	  'sarcasm-makefile-mode-hook)
+	  'my-makefile-mode-hook)
 (add-hook 'org-mode-hook
 	  'my-org-mode-hook)
 (add-hook 'python-mode-hook
           'my-python-mode-hook)
+(add-hook 'sgml-mode
+          'my-sgml-mode-hook)
 (add-hook 'tex-mode-hook
 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
-	  'auto-update-file-header)
-(add-hook 'write-file-hooks
 	  'delete-trailing-whitespace)
-
+(add-hook 'yaml-mode-hook
+          'my-yaml-mode-hook)
+(add-hook 'prog-mode-hook
+          'fci-mode)
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
@@ -205,6 +221,7 @@
   '(progn
      (define-key python-mode-map (kbd "DEL") 'hungry-delete-backward)
      (define-key python-mode-map (kbd "H-<backspace>") 'hungry-delete-forward)
+     (define-key python-mode-map (kbd "C-<tab>") 'insert-4-space)
      )
   )
 
@@ -228,6 +245,7 @@
   )
 ;; Key bindings
 ;; They should be set last so that they override any other mode
+(global-set-key (kbd "<S-kp-9>") '(lambda () (interactive) (insert "(")))
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key [f1] 'kmacro-end-or-call-macro)
 (global-set-key (kbd "<f2> <f2>") 'describe-key-briefly)
@@ -265,6 +283,7 @@
 (global-set-key (kbd "M-8") 'pop-tag-mark)
 (global-set-key (kbd "M-9") 'keyboard-quit)
 (global-set-key (kbd "M-p") 'next-multiframe-window)
+(global-set-key (kbd "M-P") 'next-multiframe-window)
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region)
 (progn (define-key key-translation-map (kbd "M-o") (kbd "C-x M-n"))
        (global-set-key (kbd "C-x M-n") 'previous-multiframe-window))
@@ -297,7 +316,7 @@
 (global-set-key (kbd "C-c r") 'reload-buffer-no-confirm)
 (global-set-key (kbd "C-x C-k") 'ido-kill-buffer)
 (global-set-key (kbd "C-x C-f") 'find-file)
-(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
@@ -308,6 +327,7 @@
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
+(global-set-key (kbd "C-l") 'recenter)
 (global-set-key (kbd "H-6") 'undo) ; H-6 means clear
 (global-set-key (kbd "H--") 'shrink-window-horizontally)
 (global-set-key (kbd "H-=") 'enlarge-window-horizontally)
@@ -321,12 +341,14 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
+(global-set-key (kbd "s-.") 'find-file-at-point)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
+(define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 
