@@ -2,15 +2,15 @@
 ;;; Code:
 (ido-mode t)
 (ido-everywhere 1)
-(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
-;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-(semantic-mode)
 (show-paren-mode)
-(global-semantic-idle-completions-mode)
-(global-semantic-decoration-mode)
+;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
+;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+;; (semantic-mode)
+;; (global-semantic-idle-completions-mode)
+;; (global-semantic-decoration-mode)
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
