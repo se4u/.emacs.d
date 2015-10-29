@@ -3,6 +3,20 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
+;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+;; (semantic-mode)
+;; (global-semantic-idle-completions-mode)
+;; (global-semantic-decoration-mode)
+;; (global-semantic-highlight-func-mode)
+;; (global-semantic-show-unmatched-syntax-mode nil)
+;; (global-srecode-minor-mode 1)
+;; (semantic-complete-analyze-inline)
+
+
 (auto-fill-mode 1) ;; Turn on auto fill mode globally
 (show-paren-mode)  ;; Highlights parenthesis
 ;; (electric-pair-mode)
@@ -98,8 +112,9 @@
 	  'delete-trailing-whitespace)
 (add-hook 'yaml-mode-hook
           'my-yaml-mode-hook)
-(add-hook 'prog-mode-hook
-          'fci-mode)
+(if (display-graphic-p)
+    (add-hook 'prog-mode-hook 'fci-mode)
+  ())
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
