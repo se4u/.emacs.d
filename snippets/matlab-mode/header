@@ -1,0 +1,24 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: header
+# key: header
+# binding: direct-keybinding
+# --
+%{
+Filename    : `(buffer-name)`
+Description : $1
+Author      : Pushpendre Rastogi
+Created     : `(format-time-string "%a %b %e %T %Y (%z)")`
+Last-Updated: .
+          By: .
+    Update #: 0$2
+
+
+Inputs
+======
+
+
+Outputs
+=======
+
+
+%}
