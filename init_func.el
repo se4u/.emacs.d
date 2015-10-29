@@ -480,6 +480,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq fill-column 76)
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
+  (if (display-graphic-p) (fci-mode) ())
   )
 
 (defun run-matlab-once ()
@@ -734,7 +735,11 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (mapc (lambda (x)
         (if (cddr x)
             (quail-defrule (cadr x) (car (cddr x)))))
-      (append math-symbol-list-basic math-symbol-list-extended))
+        (append math-symbol-list-basic math-symbol-list-extended))
+  (add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
+  (require 'matlab-load)
+  (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
+  (matlab-cedet-setup)
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

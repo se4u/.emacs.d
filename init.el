@@ -345,8 +345,3 @@
 ;; SETUP Package Managers
 (add-hook 'after-init-hook
 	  'my-after-init-hook)
-
-(add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
-(require 'matlab-load)
-(add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-(matlab-cedet-setup)
