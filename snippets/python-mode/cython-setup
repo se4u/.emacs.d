@@ -1,0 +1,39 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cython-setup
+# key: cython-setup
+# binding: direct-keybinding
+# --
+# Usage : python setup.py
+# Running setup.py without extra arguments builds the module inplace.
+import sys
+if len(sys.argv) == 1:
+    sys.argv.append('build_ext')
+    sys.argv.append('--inplace')
+
+import distutils
+from distutils import core
+from Cython import Build
+
+# Remove the "-Wstrict-prototypes" compiler option, which isn't valid for C++.
+import distutils.sysconfig
+cfg_vars = distutils.sysconfig.get_config_vars()
+for key, value in cfg_vars.items():
+    if type(value) == str:
+        cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
+
+# Extension
+E = distutils.extension.Extension("$1",
+              sources=['$1.pyx'],
+              extra_compile_args=[
+                  "-Ofast", "-ffast-math"],
+              undef_macros=['CYTHON_REFNANNY'])
+# Extension Module
+ext_module = Cython.Build.cythonize([E], gdb_debug=False)
+import numpy
+distutils.core.setup(name='$2',
+      version='1.0',
+      description='$3',
+      author='Pushpendre Rastogi',
+      packages=['$2'],
+      include_dirs=[numpy.get_include()],
+      ext_modules=ext_module)

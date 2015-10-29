@@ -594,8 +594,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-<<<<<<< HEAD
-  (auto-make-header)
   ;; (progn
   ;;   (setq jedi:complete-on-dot t)
   ;;   (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
@@ -603,8 +601,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;;   (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
   ;;   (define-key python-mode-map (kbd "C-/") 'jedi:get-in-function-call)
   ;;   (jedi:setup))
-  ;; (add-to-list 'company-backends 'company-jedi)
-  ;; (company-mode -1)
   (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
   (anaconda-mode)
@@ -697,7 +693,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-package-managers)
   (recentf-mode 1)
   (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
-  (company-quickhelp-mode 1)  ;; Company quickhelp shows documentation in a popup.
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
@@ -707,7 +702,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*Python*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)

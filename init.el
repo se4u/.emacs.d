@@ -112,8 +112,9 @@
 	  'delete-trailing-whitespace)
 (add-hook 'yaml-mode-hook
           'my-yaml-mode-hook)
-(add-hook 'prog-mode-hook
-          'fci-mode)
+(if (display-graphic-p)
+    (add-hook 'prog-mode-hook 'fci-mode)
+  ())
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
