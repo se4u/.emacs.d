@@ -13,7 +13,6 @@
  '(flycheck-flake8rc "~/.emacs.d/.flake8rc")
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
- '(goal-column 1)
  '(header-date-format t)
  '(indent-tabs-mode nil)
  '(make-header-hook
