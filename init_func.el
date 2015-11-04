@@ -614,7 +614,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
-     ("\\([0123456789]\\)"  0 'font-lock-constant-face)
+     ("\\<\\([0-9]+\\([eE][+-]?[0-9]*\\)?\\)\\>"  0 'font-lock-constant-face)
      ("\\([][{}]\\)" 0 'font-lock-builtin-face)
      ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)
      ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
