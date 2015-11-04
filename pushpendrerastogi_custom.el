@@ -15,6 +15,7 @@
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(header-date-format t)
  '(indent-tabs-mode nil)
+ '(magit-push-always-verify nil)
  '(make-header-hook
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-modification-author header-update-count header-commentary header-end-line)))
