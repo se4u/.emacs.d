@@ -1,5 +1,7 @@
 ;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
 ;;; Code:
+(setq-default bidi-display-reordering nil)
+(setq-default line-move-visual nil)
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
