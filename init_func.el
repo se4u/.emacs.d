@@ -1,6 +1,34 @@
 ;;; Requires
 (require 'cl-lib)
 ;;; Code
+
+(defmacro measure-time (&rest body)
+  "Macro to measure time. Wrap function call as body of this macro."
+  ;; Example : (measure-time
+  ;; (cl-loop for i from 1 to 10 collect (json-encode-string ss)))
+ `(let ((time (current-time)))
+    ,@body
+    (message "%.06f" (float-time (time-since time)))))
+
+;; Override the default json encoding mechanism because it is too slow.
+(eval-after-load "json"
+  '(defun json-encode-string (string)
+     "Return a JSON representation of STRING."
+     (with-temp-buffer
+       (insert string)
+       (goto-char (point-min))
+       ;; Skip over ASCIIish printable characters.
+       (while (re-search-forward "\\([\"\\/\b\f\n\r\t]\\)\\|[^ -~]" nil t)
+         (let ((c (char-before)))
+           (replace-match
+            (if (match-beginning 1)
+                ;; Special JSON character (\n, \r, etc.).
+                (string ?\\ (car (rassq c json-special-chars)))
+              ;; Fallback: UCS code point in \uNNNN form.
+              (format "\\u%04x" c))
+            t t)))
+       (concat "\"" (buffer-string) "\""))))
+
 (defun my-generate-tags ()
   (interactive)
   (shell-command
