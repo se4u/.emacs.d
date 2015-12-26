@@ -29,6 +29,11 @@
             t t)))
        (concat "\"" (buffer-string) "\""))))
 
+;; Remove the pesky pre-command-refresh function from the pre-command-hook
+;; that eldoc mode unnecessarily adds.
+;; (eval-after-load "eldoc"
+;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area t nil))
+
 (defun my-generate-tags ()
   (interactive)
   (shell-command
@@ -509,6 +514,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
   (if (display-graphic-p) (fci-mode) ())
+  (company-mode -1)
   )
 
 (defun run-matlab-once ()
@@ -623,13 +629,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  ;; (progn
-  ;;   (setq jedi:complete-on-dot t)
-  ;;   (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
-  ;;   (define-key python-mode-map (kbd "C-;") 'jedi:show-doc)
-  ;;   (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
-  ;;   (define-key python-mode-map (kbd "C-/") 'jedi:get-in-function-call)
-  ;;   (jedi:setup))
   (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
   (anaconda-mode)
@@ -653,6 +652,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (hs-minor-mode)
   (define-key python-mode-map (kbd "<H-left>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
+  (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
   )
 
 (defun what-face (pos)
