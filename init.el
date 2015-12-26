@@ -1,10 +1,16 @@
-;; Now setup IDO, Semantic. Features that help with auto completion, IDE like features
+;;; package --- Setup.
+;;; Commentary:
 ;;; Code:
 (setq-default bidi-display-reordering nil)
-(setq-default line-move-visual nil)
+;; Setting line move visual to nil is very annoying. When you
+;; do this then the pointer moves by logical lines and skips over
+;; wrapped visual lines. The following is default behavior so I dont
+;; need to do something explicitly but I keep this as reminder for future.
+;; (setq-default line-move-visual 1)
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
 ;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
