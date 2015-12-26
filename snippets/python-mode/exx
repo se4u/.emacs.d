@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: exx
+# key: exx
+# binding: direct-keybinding
+# --
+exit(1)

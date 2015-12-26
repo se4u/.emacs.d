@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: doc
+# key: d
+# --
+`(python-param-populator)`
+Returns
+-------

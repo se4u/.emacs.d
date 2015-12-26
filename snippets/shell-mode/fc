@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: fc
+# key: fc
+# binding: direct-keybinding
+# --
+THEANO_FLAGS=mode=FAST_COMPILE
