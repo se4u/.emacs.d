@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cx
+# key: cx
+# binding: direct-keybinding
+# --
+chmod 755

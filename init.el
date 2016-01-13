@@ -112,6 +112,8 @@
 	  'delete-trailing-whitespace)
 (add-hook 'yaml-mode-hook
           'my-yaml-mode-hook)
+(add-hook 'ess-mode-hook
+          'my-ess-mode-hook)
 (if (display-graphic-p)
     (add-hook 'prog-mode-hook 'fci-mode)
   ())

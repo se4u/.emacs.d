@@ -645,9 +645,11 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(UTILITY:\\)" 1 font-lock-string-face t)
      ("\\<\\(PROOF:\\)" 1 font-lock-string-face t)
      ("\\<\\(GUESS:\\)" 1 font-lock-string-face t)
+     ("\\<\\(SKIP:\\)" 1 font-lock-string-face t)
      ("\\<\\(ToProve:.*\\)" 1 font-lock-warning-face t)))
   (writegood-mode -1)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
+  (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
   (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
   (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
@@ -689,6 +691,22 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   (setq comment-auto-fill-only-comments nil)
   )
+
+(defun my-ess-mode-hook ()
+  (ess-set-style 'C++ 'quiet)
+  ;; Because
+  ;;                                 DEF GNU BSD K&R C++
+  ;; ess-indent-level                  2   2   8   5   4
+  ;; ess-continued-statement-offset    2   2   8   5   4
+  ;; ess-brace-offset                  0   0  -8  -5  -4
+  ;; ess-arg-function-offset           2   4   0   0   0
+  ;; ess-expression-offset             4   2   8   5   4
+  ;; ess-else-offset                   0   0   0   0   0
+  ;; ess-close-brace-offset            0   0   0   0   0
+  (add-hook 'local-write-file-hooks
+            (lambda ()
+              (ess-nuke-trailing-whitespace))))
+
 
 (defun my-after-init-hook ()
   (add-package-managers)
@@ -745,6 +763,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (require 'matlab-load)
   (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
   (matlab-cedet-setup)
+  (setq ess-nuke-trailing-whitespace-p t)
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

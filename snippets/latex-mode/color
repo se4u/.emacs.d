@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: color
+# key: color
+# binding: direct-keybinding
+# --
+\usepackage{xcolor}
+{\leavevmode\color{red}[$1]}

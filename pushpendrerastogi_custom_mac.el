@@ -84,6 +84,7 @@
  '(jedi:server-command
    (quote
     (list "/Users/pushpendrerastogi/anaconda/envs/emacs-jedi")))
+ '(line-move-visual t)
  '(magit-use-overlays nil)
  '(make-header-hook
    (quote
@@ -132,6 +133,9 @@
  '(python-python-command
    "/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python")
  '(python-shell-interpreter "python")
+ '(safe-local-variable-values
+   (quote
+    ((whitespace-style face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-mark tab-mark newline-mark))))
  '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
  '(semantic-default-submodes

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: fp
+# key: fp
+# binding: direct-keybinding
+# --
+fprintf(2, '\n $1 %f ', $1);

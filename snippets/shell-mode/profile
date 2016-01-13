@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: profile
+# key: profile
+# binding: direct-keybinding
+# --
+# http://stefaanlippens.net/python_profiling_with_pstats_interactive_mode
+# python -m pstats barbazzr.profile
+python -m cProfile -o tmp.profile $1.py
