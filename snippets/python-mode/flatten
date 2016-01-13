@@ -1,0 +1,57 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: flatten
+# key: flatten
+# binding: direct-keybinding
+# --
+def flat(X):
+    if X.ndim == 0:
+        return X
+    elif X.ndim == 1:
+        return X
+    else:
+        return numpy.concatenate([flat(e) for e in X], axis=0)
+
+def reverse(lst):
+    if len(lst) == 0:
+        return []
+    else:
+        l = reverse(lst[1:])
+        l.append(lst[0])
+        return l
+
+def scanl(op, lst, init):
+    if len(lst) == 0:
+        return lst
+    elif len(lst) == 1:
+        return [op(init, lst[0])]
+    else:
+        new_init = op(init, lst[0])
+        scan_rest = scanl(op, lst[1:], new_init)
+        return [new_init] + scan_rest
+
+def shape(X, new_shape):
+    if len(new_shape) == 0:
+        return X
+    elif len(new_shape) == 1:
+        return X
+    else:
+        stride = reduce(lambda x, y: x * y, new_shape[1:], 1)
+        remaining_shape = new_shape[1:]
+        lst = []
+        for e in range(new_shape[0]):
+            tmp = shape(X[e*stride:(e+1)*stride], remaining_shape)
+            lst.append(tmp)
+        return numpy.vstack(lst)
+
+# The reshape operator is ''self inverting'' in the way that
+# if X.shape == (i, j, k)
+# X.reshape((i', j', k')).reshape(i, j, k) == X
+# Actually the underlying invariant is that flat(X) == flat(X')
+def reshape(X, new_shape):
+    assert numpy.prod(X.shape) == numpy.prod(new_shape)
+    if X.ndim == 0:
+       return X
+    elif X.ndim == 1:
+       return shape(X, new_shape)
+    else:
+       return reshape(flat(X), new_shape)

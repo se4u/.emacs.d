@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: fp
-# key: fp
+# name: pp
+# key: pp
 # binding: direct-keybinding
 # --
-fprintf(2, '\n $1 %f ', $1);
+from pprint import pprint as pp

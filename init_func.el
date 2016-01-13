@@ -1,6 +1,39 @@
 ;;; Requires
 (require 'cl-lib)
 ;;; Code
+
+(defmacro measure-time (&rest body)
+  "Macro to measure time. Wrap function call as body of this macro."
+  ;; Example : (measure-time
+  ;; (cl-loop for i from 1 to 10 collect (json-encode-string ss)))
+ `(let ((time (current-time)))
+    ,@body
+    (message "%.06f" (float-time (time-since time)))))
+
+;; Override the default json encoding mechanism because it is too slow.
+(eval-after-load "json"
+  '(defun json-encode-string (string)
+     "Return a JSON representation of STRING."
+     (with-temp-buffer
+       (insert string)
+       (goto-char (point-min))
+       ;; Skip over ASCIIish printable characters.
+       (while (re-search-forward "\\([\"\\/\b\f\n\r\t]\\)\\|[^ -~]" nil t)
+         (let ((c (char-before)))
+           (replace-match
+            (if (match-beginning 1)
+                ;; Special JSON character (\n, \r, etc.).
+                (string ?\\ (car (rassq c json-special-chars)))
+              ;; Fallback: UCS code point in \uNNNN form.
+              (format "\\u%04x" c))
+            t t)))
+       (concat "\"" (buffer-string) "\""))))
+
+;; Remove the pesky pre-command-refresh function from the pre-command-hook
+;; that eldoc mode unnecessarily adds.
+;; (eval-after-load "eldoc"
+;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area t nil))
+
 (defun my-generate-tags ()
   (interactive)
   (shell-command
@@ -481,6 +514,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
   (if (display-graphic-p) (fci-mode) ())
+  (company-mode -1)
   )
 
 (defun run-matlab-once ()
@@ -558,7 +592,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
        (insert "'''\n")
        (insert (make-string curcol ? ))
        (insert (python-args-to-docstring-impl (buffer-substring arg-start arg-end)))
-       (insert (concat "\n" (make-string curcol ? ) "'''"))))
+       (insert (concat "\n" (make-string curcol ? ) "Returns\n" (make-string curcol ? ) "-------\n" (make-string curcol ? ) "'''"))))
   (move-end-of-line nil))
 
 (defun insert-4-space ()
@@ -595,13 +629,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  ;; (progn
-  ;;   (setq jedi:complete-on-dot t)
-  ;;   (define-key python-mode-map (kbd "<C-'>") 'jedi:complete)
-  ;;   (define-key python-mode-map (kbd "C-;") 'jedi:show-doc)
-  ;;   (define-key python-mode-map (kbd "C-.") 'jedi:goto-definition)
-  ;;   (define-key python-mode-map (kbd "C-/") 'jedi:get-in-function-call)
-  ;;   (jedi:setup))
   (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
   (anaconda-mode)
@@ -614,7 +641,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
-     ("\\([0123456789]\\)"  0 'font-lock-constant-face)
+     ("\\<\\([0-9]+\\([eE][+-]?[0-9]*\\)?\\)\\>"  0 'font-lock-constant-face)
      ("\\([][{}]\\)" 0 'font-lock-builtin-face)
      ("\\([=+*/-]\\)" 0 'font-lock-builtin-face)
      ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
@@ -625,6 +652,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (hs-minor-mode)
   (define-key python-mode-map (kbd "<H-left>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
+  (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
   )
 
 (defun what-face (pos)

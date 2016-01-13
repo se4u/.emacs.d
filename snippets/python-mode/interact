@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: interact
+# key: interact
+# binding: direct-keybinding
+# --
+import readline, code
+vars = globals().copy()
+vars.update(locals())
+code.InteractiveConsole(locals()).interact()

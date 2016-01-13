@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: fp
-# key: fp
+# name: fc
+# key: fc
 # binding: direct-keybinding
 # --
-fprintf(2, '\n $1 %f ', $1);
+THEANO_FLAGS=mode=FAST_COMPILE
