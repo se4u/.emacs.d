@@ -624,7 +624,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
 (defun my-python-after-save-hook ()
-  (shell-command (concat "autopep8 --in-place " (buffer-file-name)))
+  (shell-command (concat "autopep8 --in-place " (buffer-file-name) " &"))
   (reload-buffer-no-confirm))
 
 (defun my-python-mode-hook ()
@@ -691,18 +691,24 @@ directory as the org-buffer and insert a link to this file. This function wont w
                              ("~" org-verbatim "<code>" "</code>" verbatim)))
   )
 
-(defun my-tex-mode-hook ()
-  (font-lock-add-keywords
-   nil
-   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
-     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-  (writegood-mode))
+;; (defun my-tex-mode-hook ()
+;;   (font-lock-add-keywords
+;;    nil
+;;    '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
+;;      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+;;   (writegood-mode)
+;;   )
 
 (defun my-text-mode-hook ()
   (remove-dos-eol)
   ;; (auto-fill-mode)
   (writegood-mode)
   )
+
+(defun my-latex-after-save-hook ()
+  (call-process-shell-command
+   (concat "latexmk " (buffer-file-name) " &") nil "*Shell Command Output*" nil)
+  (reload-buffer-no-confirm))
 
 (defun my-latex-mode-hook ()
   (setq TeX-auto-save t)
@@ -718,10 +724,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (company-auctex-init)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   (setq comment-auto-fill-only-comments nil)
+  (add-hook 'after-save-hook 'my-latex-after-save-hook nil 'make-it-local)
   )
 
 (defun my-ess-mode-hook ()
   (ess-set-style 'C++ 'quiet)
+  (ess-toggle-underscore nil)
+  ;; (setq ess-smart-S-assign-key ";")
   ;; Because
   ;;                                 DEF GNU BSD K&R C++
   ;; ess-indent-level                  2   2   8   5   4
@@ -734,7 +743,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-hook 'local-write-file-hooks
             (lambda ()
               (ess-nuke-trailing-whitespace))))
-
 
 (defun my-after-init-hook ()
   (add-package-managers)
@@ -792,6 +800,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
   (matlab-cedet-setup)
   (setq ess-nuke-trailing-whitespace-p t)
+  (autoload 'R-mode "ess-site.el" "" t)
+  (add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

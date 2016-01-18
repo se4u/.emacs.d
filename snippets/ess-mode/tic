@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: tic
+# key: tic
+# binding: direct-keybinding
+# --
+tic = proc.time()[3]
+$0
+print(paste("time for $1=", proc.time()[3] - tic))

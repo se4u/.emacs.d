@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: print
-# key: pr
+# name: lib
+# key: lib
 # binding: direct-keybinding
 # --
-print
+library("$1")$0

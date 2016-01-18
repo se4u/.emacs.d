@@ -135,7 +135,10 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((whitespace-style face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-mark tab-mark newline-mark))))
+    ((eval remove-hook
+           (quote write-file-hooks)
+           (quote delete-trailing-whitespace))
+     (whitespace-style face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-mark tab-mark newline-mark))))
  '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
  '(semantic-default-submodes

@@ -112,8 +112,8 @@
           'my-python-mode-hook)
 (add-hook 'sgml-mode
           'my-sgml-mode-hook)
-(add-hook 'tex-mode-hook
-	  'my-tex-mode-hook)
+;; (add-hook 'tex-mode-hook
+;; 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
