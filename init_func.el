@@ -624,7 +624,11 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
 (defun my-python-after-save-hook ()
-  (shell-command (concat "autopep8 --in-place " (buffer-file-name) " &"))
+  (call-process-shell-command
+   (concat "autopep8 --in-place " (buffer-file-name) " &")
+   nil
+   "*Shell Command Output*"
+   nil)
   (reload-buffer-no-confirm))
 
 (defun my-python-mode-hook ()
@@ -705,10 +709,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   )
 
-(defun my-latex-after-save-hook ()
-  (call-process-shell-command
-   (concat "latexmk " (buffer-file-name) " &") nil "*Shell Command Output*" nil)
-  (reload-buffer-no-confirm))
+(defun my-latex-after-save-hook () ())
+;;   (call-process-shell-command
+;;    (concat "latexmk " (buffer-file-name) " &") nil "*Shell Command Output*" nil))
 
 (defun my-latex-mode-hook ()
   (setq TeX-auto-save t)
