@@ -149,7 +149,23 @@
          "* TODO %?\n %i\n")
         ))
 (setq org-alphabetical-lists t
-      org-startup-indented t
+      ;; NOTE: I spent 4 and 5 Feb debugging crashes that happened while I
+      ;; worked on org files that contained some pretty-entities and tables.
+      ;; I noted that the crashes did not occur when I start with -Q flag.
+      ;; I also noticed ;; that the crashes did not occur when I commented out
+      ;; the `org-startup-indented` flag.
+      ;;
+      ;; This behavior was consistent on the
+      ;; carbon-mac-port as well as the stock DMG that's distributed at
+      ;; emacsformac. Also, I found an old bug report stating that
+      ;; org-startup-indented used to cause crashed in emacs 23 and that this
+      ;; bug was fixed.
+      ;;
+      ;; Although that bug was fixed, what seems to have
+      ;; happened is that a combination of flags need to be set to crash emacs,
+      ;; one of which is the org-startup-indented flag.  However at this point
+      ;; since I have the workaround, I have stopped investigating further.
+      ;; org-startup-indented t
       org-enforce-todo-checkbox-dependencies t
       org-enforce-todo-dependencies t
       org-clock-persist 'history
