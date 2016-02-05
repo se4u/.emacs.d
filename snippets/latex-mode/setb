@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: setb
+# key: setb
+# binding: direct-keybinding
+# --
+\setbeamertemplate{${1:frametitle}}${2:[default][center]}$0
