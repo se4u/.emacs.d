@@ -3,6 +3,7 @@
 # key: header
 # binding: direct-keybinding
 # --
+#!/usr/bin/env python
 '''
 | Filename    : `(buffer-name)`
 | Description : $1

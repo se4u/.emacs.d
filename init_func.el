@@ -685,6 +685,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
   (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
   (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
+  (define-key org-mode-map  [f8] 'org-agenda-list)
   ;; (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   ;; (define-key org-mode-map (kbd "C-=") 'er/expand-region)
   (auto-fill-mode)

@@ -135,7 +135,15 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval remove-hook
+    ((eval progn
+           (hs-minor-mode -1)
+           (orgtbl-mode -1))
+     (eval progn
+           (company-mode -1)
+           (anaconda-mode -1)
+           (eldoc-mode -1))
+     (header-auto-update-enabled)
+     (eval remove-hook
            (quote write-file-hooks)
            (quote delete-trailing-whitespace))
      (whitespace-style face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-mark tab-mark newline-mark))))
