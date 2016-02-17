@@ -96,6 +96,15 @@
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
  '(org-directory "~/Dropbox/org")
+ '(org-emphasis-alist
+   (quote
+    (("*" bold "<b>" "</b>")
+     ("/" italic "<i>" "</i>")
+     ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+     ("=" org-code "<code>" "</code>" verbatim)
+     ("~" org-verbatim "<code>" "</code>" verbatim)
+     ("̅"
+      (:overline t)))))
  '(org-entities-user
    (quote
     (("real" "\\mathbb{R}" nil "&#8477;" "R" "+211D" "ℝ")

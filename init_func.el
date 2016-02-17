@@ -710,9 +710,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   )
 
-(defun my-latex-after-save-hook () ())
-;;   (call-process-shell-command
-;;    (concat "latexmk " (buffer-file-name) " &") nil "*Shell Command Output*" nil))
 
 (defun my-latex-mode-hook ()
   (setq TeX-auto-save t)
@@ -721,6 +718,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (LaTeX-math-mode)
+  (latex-extra-mode)
   (turn-on-reftex)
   (auto-fill-mode)
   (writegood-mode)
@@ -728,8 +726,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (company-auctex-init)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   (setq comment-auto-fill-only-comments nil)
-  (add-hook 'after-save-hook 'my-latex-after-save-hook nil 'make-it-local)
-  )
 
 (defun my-ess-mode-hook ()
   (ess-set-style 'C++ 'quiet)

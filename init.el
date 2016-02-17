@@ -112,8 +112,6 @@
           'my-python-mode-hook)
 (add-hook 'sgml-mode
           'my-sgml-mode-hook)
-;; (add-hook 'tex-mode-hook
-;; 	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
@@ -376,6 +374,7 @@
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
 (define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
+(global-set-key (kbd "M-`") (lambda () (interactive) (insert "̅")))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 
