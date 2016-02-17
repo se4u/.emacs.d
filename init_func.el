@@ -726,6 +726,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (company-auctex-init)
   (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   (setq comment-auto-fill-only-comments nil)
+  (require #'latex-pretty-symbols))
 
 (defun my-ess-mode-hook ()
   (ess-set-style 'C++ 'quiet)
