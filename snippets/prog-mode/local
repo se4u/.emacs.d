@@ -3,6 +3,6 @@
 # key: local
 # binding: direct-keybinding
 # --
-# Local Variables:
-# eval: ($0)
-# End: 
+`(insert comment-start)` Local Variables:
+`(insert comment-start)` eval: ($0)
+`(insert comment-start)` End:
