@@ -712,21 +712,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 
 (defun my-latex-mode-hook ()
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq reftex-plug-into-AUCTeX t)
-  (flyspell-mode)
-  (LaTeX-math-mode)
+  (message "running my-latex-mode-hook")
+  (require 'company-auctex) (company-auctex-init)
+  (require #'latex-pretty-symbols)
+  ;; Navigating and folding by sections.
   (latex-extra-mode)
   (turn-on-reftex)
   (auto-fill-mode)
-  (writegood-mode)
-  (require 'company-auctex)
-  (company-auctex-init)
-  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
   (setq comment-auto-fill-only-comments nil)
-  (require #'latex-pretty-symbols))
+  (writegood-mode)
+  ;; Automatically save style information when saving the buffer.
+  (setq TeX-auto-save t)
+  ;; Parse file after loading it if no style hook is found for it.
+  (setq TeX-parse-self t)
+  ;; The master file associated with the current buffer.
+  ;; (setq-default TeX-master nil)
+  (setq reftex-plug-into-AUCTeX t)
+  (flyspell-mode)
+  ;; A minor mode with easy access to TeX math macros.
+  (LaTeX-math-mode)
+  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  ;; http://tex.stackexchange.com/questions/113970/emacs-auctex-customization-of-keyword-highlight-syntax
+  ;; http://tex.stackexchange.com/questions/81680/emacsauctex-lost-highlighting
+  ;; http://stackoverflow.com/tags/font-lock/hot
+  (latex-unicode-simplified) ;; This doen't work due to some mysterious reason.
+  )
 
 (defun my-ess-mode-hook ()
   (ess-set-style 'C++ 'quiet)
@@ -755,7 +765,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
   (yas-global-mode)
-  (load "auctex.el" nil t t)
+  ;; (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
 	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
