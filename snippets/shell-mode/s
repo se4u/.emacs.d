@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: s
-# key: s
+# name: dbstep
+# key: dbs
 # binding: direct-keybinding
 # --
 dbstep

@@ -10,6 +10,8 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+(blink-cursor-mode -1)
+(set-cursor-color "DimGray")
 ;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
 ;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)

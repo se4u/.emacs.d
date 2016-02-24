@@ -3,7 +3,7 @@
 # key: sec
 # binding: direct-keybinding
 # --
-`(insert comment-start)`-${1:$(make-string (string-width yas-text) ?\-)}-`(insert comment-start)`
-`(insert comment-start)` $1 `(insert comment-start)`
-`(insert comment-start)`-${1:$(make-string (string-width yas-text) ?\-)}-`(insert comment-start)`
+`(insert comment-start)`${1:$(make-string (string-width yas-text) ?\-)} `(insert comment-start)`
+`(insert comment-start)`$1 `(insert comment-start)`
+`(insert comment-start)`${1:$(make-string (string-width yas-text) ?\-)} `(insert comment-start)`
 $0
