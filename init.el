@@ -39,7 +39,7 @@
 (transient-mark-mode)
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
-(global-font-lock-mode t)
+;; (global-font-lock-mode t)
 (defvar font-lock-operator-face 'font-lock-operator-face)
 (defface font-lock-operator-face ()
   "Basic face for highlighting."
@@ -124,7 +124,7 @@
           'my-yaml-mode-hook)
 (add-hook 'ess-mode-hook
           'my-ess-mode-hook)
-(add-hook 'shell-mode-hook 
+(add-hook 'shell-mode-hook
 	  'ansi-color-for-comint-mode-on)
 
 (if (display-graphic-p)
