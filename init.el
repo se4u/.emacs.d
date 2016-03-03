@@ -10,6 +10,7 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+
 (blink-cursor-mode -1)
 (set-cursor-color "DimGray")
 ;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
@@ -21,6 +22,7 @@
 ;; (semantic-mode)
 ;; (global-semantic-idle-completions-mode)
 ;; (global-semantic-decoration-mode)
+
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
@@ -122,9 +124,14 @@
           'my-yaml-mode-hook)
 (add-hook 'ess-mode-hook
           'my-ess-mode-hook)
+(add-hook 'shell-mode-hook 
+	  'ansi-color-for-comint-mode-on)
+
 (if (display-graphic-p)
     (add-hook 'prog-mode-hook 'fci-mode)
   ())
+
+
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
