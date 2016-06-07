@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: paragraph
+# key: pg
+# --
+\paragraph{$1}$0

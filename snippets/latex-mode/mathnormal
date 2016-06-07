@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mathnormal
+# key: mnr
+# --
+\mathnormal{$1}$0

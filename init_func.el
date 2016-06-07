@@ -391,14 +391,6 @@ be global."
                                               (goto-char (point-min))
                                               (move-end-of-line 1))))
 
-
-(defun my-sgml-mode-hook ()
-  (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
-  (setq flyspell-issue-message-flag nil)
-					;(flyspell-mode 1)
-  (setq case-fold-search nil)
-  (modify-syntax-entry 92 "w" sgml-mode-syntax-table))
-
 (defun quickly-add-tags (tag) (insert tag) (next-line) (move-end-of-line 1))
 
 (defun quickly-kill () (interactive) (save-buffer) (kill-this-buffer))
@@ -631,6 +623,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
    nil)
   (reload-buffer-no-confirm))
 
+(defun my-insert-header ()
+  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
+       (progn (insert "header") (message "Press [TAB] to insert header"))))
+
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (add-to-list 'company-backends 'company-anaconda)
@@ -638,8 +634,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (anaconda-mode)
   (orgtbl-mode)
   (autoload 'auto-update-file-header "header2")
-  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
-       (progn (insert "header") (message "Press [TAB] to insert header")))
+  (my-insert-header)
   (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
   (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   (font-lock-add-keywords
@@ -658,6 +653,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
   )
+
+(defun my-html-mode-hook ()
+  (my-insert-header)
+  (define-key html-mode-map (kbd "C-p") 'save-line-to-kill-ring)
+  (local-set-key (kbd "C-p") 'save-line-to-kill-ring)
+  (highlight-indent-guides-mode)
+  (set-face-background 'highlight-indent-guides-even-face "grey")
+  (set-face-background 'highlight-indent-guides-odd-face "lightgrey")
+  ;;(add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
+  ;;(add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
+  )
+
+(defun my-sgml-mode-hook ()
+  (define-key sgml-mode-map (kbd "C-c C-p") 'sgml-skip-tag-backward)
+  (define-key sgml-mode-map (kbd "C-c C-n") 'sgml-skip-tag-forward)
+  )
+
+(defun my-js-mode-hook ()
+  (font-lock-add-keywords
+   'js-mode
+   '(("\\<\\(angular\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(module\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(controller\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(factory\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(service\\)" 1 font-lock-keyword-face t))))
 
 (defun what-face (pos)
   (interactive "d")
@@ -685,15 +705,18 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
   (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
   (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
+  (define-key org-mode-map (kbd "<M-up>") 'org-shiftmetaup)
+  (define-key org-mode-map (kbd "<M-down>") 'org-shiftmetadown)
   (define-key org-mode-map  [f8] 'org-agenda-list)
   ;; (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   ;; (define-key org-mode-map (kbd "C-=") 'er/expand-region)
   (auto-fill-mode)
-  (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
-                             ("/" italic "<i>" "</i>")
-                             ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
-                             ("=" org-code "<code>" "</code>" verbatim)
-                             ("~" org-verbatim "<code>" "</code>" verbatim)))
+  ;; Do not set org-emphasis-alist over here. Customize it.
+  ;; (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
+  ;;                            ("/" italic "<i>" "</i>")
+  ;;                            ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+  ;;                            ("=" org-code "<code>" "</code>" verbatim)
+  ;;                            ("~" org-verbatim "<code>" "</code>" verbatim)))
   )
 
 ;; (defun my-tex-mode-hook ()
@@ -713,29 +736,49 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-latex-mode-hook ()
   (message "running my-latex-mode-hook")
-  (require 'company-auctex) (company-auctex-init)
-  (require #'latex-pretty-symbols)
+  (require 'company-auctex)
+  (company-auctex-init)
+  ;; Disable latex-pretty-symbols
+  ;; (require #'latex-pretty-symbols)
+
   ;; Navigating and folding by sections.
+  ;; C-c C-a `latex/compile-commands-until-done'
+  ;; C-c C-n `latex/next-section'
+  ;; C-M-a `latex/beginning-of-environment'
+  ;; C-c C-p `latex/previous-section'
   (latex-extra-mode)
-  (turn-on-reftex)
-  (auto-fill-mode)
-  (setq comment-auto-fill-only-comments nil)
-  (writegood-mode)
+
   ;; Automatically save style information when saving the buffer.
   (setq TeX-auto-save t)
+
   ;; Parse file after loading it if no style hook is found for it.
   (setq TeX-parse-self t)
-  ;; The master file associated with the current buffer.
-  ;; (setq-default TeX-master nil)
-  (setq reftex-plug-into-AUCTeX t)
-  (flyspell-mode)
+
   ;; A minor mode with easy access to TeX math macros.
+  ;; Easy insertion of LaTeX math symbols.  If you give a prefix argument,
+  ;; the symbols will be surrounded by dollar signs.
   (LaTeX-math-mode)
-  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+
   ;; http://tex.stackexchange.com/questions/113970/emacs-auctex-customization-of-keyword-highlight-syntax
   ;; http://tex.stackexchange.com/questions/81680/emacsauctex-lost-highlighting
   ;; http://stackoverflow.com/tags/font-lock/hot
-  (latex-unicode-simplified) ;; This doen't work due to some mysterious reason.
+  ;; (latex-unicode-simplified) ;; This doen't work due to some mysterious reason.
+  (turn-on-reftex)
+
+  (auto-fill-mode 1)
+  (setq comment-auto-fill-only-comments nil)
+  (writegood-mode)
+  (setq reftex-plug-into-AUCTeX t)
+  (flyspell-mode)
+  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+
+  ;; warn every time we write would
+  (font-lock-add-keywords
+   'latex-mode
+   '(("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords
+   'tex-mode
+   '(("\\<\\(would\\)" 1 font-lock-warning-face t)))
   )
 
 (defun my-ess-mode-hook ()
@@ -754,6 +797,26 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-hook 'local-write-file-hooks
             (lambda ()
               (ess-nuke-trailing-whitespace))))
+
+(defun un-camelcase-string (s &optional sep start)
+  "Convert CamelCase string S to lower case with word separator SEP.
+   Default for SEP is a hyphen. If third argument START is non-nil,
+   convert words after that index in STRING."
+  (let ((case-fold-search nil))
+    (while (string-match "[A-Z]" s (or start 1))
+      (setq s (replace-match (concat (or sep "-")
+                                     (downcase (match-string 0 s)))
+                             t nil s)))
+    (downcase s)))
+
+(defun create-file-at-point ()
+  (interactive)
+  (call-process-shell-command
+   (concat "touch " (thing-at-point 'filename))
+   nil
+   "*Shell Command Output*"
+   nil)
+  )
 
 (defun my-after-init-hook ()
   (add-package-managers)

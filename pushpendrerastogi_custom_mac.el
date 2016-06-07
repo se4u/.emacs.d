@@ -59,6 +59,8 @@
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(dired-use-ls-dired nil)
+ '(display-time-format "%H:%M:%S")
+ '(display-time-interval 1)
  '(doc-view-continuous t)
  '(ecb-layout-name "left9")
  '(ecb-options-version "2.40")
@@ -67,9 +69,11 @@
  '(fill-column 80)
  '(flycheck-checkers
    (quote
-    (ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd elixir emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck haml handlebars haskell-ghc haskell-hlint html-tidy javascript-jshint javascript-eslint javascript-gjslint json-jsonlint less lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-pylint python-flake8 python-pycompile r-lintr racket rpm-rpmlint rst rst-sphinx ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
+    (ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd elixir emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck haml handlebars haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-gjslint json-jsonlint less lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-pylint python-flake8 python-pycompile r-lintr racket rpm-rpmlint rst rst-sphinx ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
+ '(font-lock-maximum-decoration 2)
+ '(global-flycheck-mode t)
  '(header-date-format t)
  '(ido-ignore-buffers
    (quote
@@ -84,6 +88,8 @@
  '(jedi:server-command
    (quote
     (list "/Users/pushpendrerastogi/anaconda/envs/emacs-jedi")))
+ '(jit-lock-stealth-nice nil)
+ '(jit-lock-stealth-time nil)
  '(line-move-visual t)
  '(magit-use-overlays nil)
  '(make-header-hook
@@ -98,12 +104,14 @@
  '(org-directory "~/Dropbox/org")
  '(org-emphasis-alist
    (quote
-    (("*" bold "<b>" "</b>")
+    (("*"
+      (:overline t :foreground "red" :underline t :weight bold)
+      "<b>" "</b>")
      ("/" italic "<i>" "</i>")
      ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
      ("=" org-code "<code>" "</code>" verbatim)
      ("~" org-verbatim "<code>" "</code>" verbatim)
-     ("̅"
+     ("`"
       (:overline t)))))
  '(org-entities-user
    (quote
@@ -119,7 +127,8 @@
      ("notentails" "\\notvDash" t "" "|=/=" "U+22AD" "⊭")
      ("notprovable" "\\notvdash" t "" "|-\\-" "U+22AC" "⊬")
      ("provable" "\\vdash" t "&#8866;" "|-" "U+22A2" "⊢")
-     ("defines" "\\triangleq" t ":=" ":=" ":=" "≜"))))
+     ("defines" "\\triangleq" t ":=" ":=" ":=" "≜")
+     ("nimplies" "\\nRightArrow" t "/=>" "/=>" "U+21CF" "⇏"))))
  '(org-export-creator-info nil)
  '(org-export-with-timestamps nil)
  '(org-hide-emphasis-markers t)
@@ -145,6 +154,59 @@
  '(safe-local-variable-values
    (quote
     ((eval progn
+           (flycheck-mode -1)
+           (company-mode -1)
+           (orgtbl-mode -1))
+     (eval progn
+           (flycheck-mode -1)
+           (hs-minor-mode -1))
+     (eval progn
+           (anaconda-mode -1)
+           (company-mode -1)
+           (eldoc-mode -1))
+     (eval progn
+           (flycheck-mode -1)
+           (company-mode -1))
+     (eval progn
+           (flycheck-mode -1)
+           (writegood-mode -1)
+           (orgtbl-mode -1)
+           (company-mode -1)
+           (auto-revert-mode -1))
+     (eval progn
+           (flychek-mode -1)
+           (writegood-mode -1)
+           (orgtbl-mode -1)
+           (company-mode -1))
+     (eval progn
+           (linum-mode 1)
+           (eldoc-mode -1)
+           (company-mode -1))
+     (eval progn
+           (linum-mode 1)
+           (anaconda-mode -1)
+           (eldoc-mode -1)
+           (company-mode -1))
+     (eval progn
+           (linum-mode 1)
+           (anaconda-mode -1)
+           (eldoc-mode -1))
+     (eval progn
+           (anaconda-mode -1))
+     (eval progn
+           (flycheck-mode -1)
+           (anaconda-mode -1))
+     (eval progn
+           (flycheck-mode -1))
+     (eval
+      (flycheck-mode -1))
+     (eval
+      (anaconda-mode nil)
+      (flycheck-mode -1))
+     (eval
+      (anaconda-mode -1)
+      (flycheck-mode -1))
+     (eval progn
            (hs-minor-mode -1)
            (orgtbl-mode -1))
      (eval progn
@@ -170,9 +232,12 @@
    (quote
     ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
  '(tool-bar-mode nil)
+ '(warning-suppress-types "(undo discard-info)")
  '(yaml-block-literal-electric-alist nil)
  '(yaml-imenu-generic-expression (quote ((nil "^\\(:?[a-zA-Z_!-]+\\):" 1))))
- '(yaml-indent-offset 4))
+ '(yaml-indent-offset 4)
+ '(yas-triggers-in-field t)
+ '(yas-wrap-around-region nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -181,6 +246,8 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
  '(flycheck-warning ((t (:background "white"))))
+ '(font-latex-sectioning-5-face ((t (:inherit variable-pitch :foreground "blue4" :weight normal))))
+ '(font-latex-warning-face ((t (:foreground "red"))))
  '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))
  '(font-lock-warning-face ((t (:inherit error :background "yellow"))))
  '(magit-item-highlight ((t (:weight semi-bold))))

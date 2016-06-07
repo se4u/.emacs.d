@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ng
+# key: ng
+# --
+ng-$1${2:="$3"}

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: .component
+# key: .component
+# --
+.component('$1', {
+    templateUrl: '$2',
+    controller: function($scope, $element, $attrs){
+        var ctrl = this;$0
+    },
+    bindings: {},
+    require: {},
+    transclude: ${3:false}})

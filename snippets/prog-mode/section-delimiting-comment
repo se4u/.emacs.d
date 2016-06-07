@@ -1,9 +1,8 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: section-delimiting-comment
-# key: sec
+# key: sdc
 # binding: direct-keybinding
 # --
-`(insert comment-start)`${1:$(make-string (string-width yas-text) ?\-)} `(insert comment-start)`
-`(insert comment-start)`$1 `(insert comment-start)`
-`(insert comment-start)`${1:$(make-string (string-width yas-text) ?\-)} `(insert comment-start)`
-$0
+${2:#} ${1:$(make-string (string-width yas-text) ?\-)} $2
+$2 $1 $2
+$0$2 ${1:$(make-string (string-width yas-text) ?\-)} $2

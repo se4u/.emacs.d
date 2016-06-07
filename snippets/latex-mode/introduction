@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: introduction
+# key: introduction
+# --
+\section{Introduction}
+\label{sec:introduction}
+%%% Introduction can be redundant with the abstract.
+% 1. The nature and scopre of the problem investigated.
+$0
+% 2. Review the pertinent literature to orient the reader.
+
+% 3. State the method of the investigation.
+
+% 4. State the principal results of the investigation.
+
+% 5. State the principal conclusions.

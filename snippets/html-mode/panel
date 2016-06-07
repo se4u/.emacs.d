@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: panel
+# key: panel
+# --
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <${1:h3} class="panel-title">
+      $2
+    </$1>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item">
+
+      </li>
+    </ul>
+  </div>
+</div>

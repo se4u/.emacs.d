@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: ngctrl
+# key: ngctrl
+# --
+<div ng-controller="$1">
+
+</div>
+<script type="text/javascript" src="js/controllers/${1:$(un-camelcase-string yas-text)}.js"></script>
+
+(function() {
+    angular
+        .module("");
+        .controller("$1", $1);
+    function $1(){
+
+    }
+})()

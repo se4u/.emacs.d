@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: listing
+# key: listing
+# --
+${1:\usepackage{listings}
+\lstset{basicstyle=\small\ttfamily,%
+  columns=flexible,%
+  breaklines=true,%
+  linewidth=17cm,%
+  xleftmargin=-1cm,%
+  xrightmargin=-1cm}}
+\begin{lstlisting}
+$0
+\end{lstlisting}

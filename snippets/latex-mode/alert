@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: alert
+# key: alert
+# --
+\alert{`(or yas/selected-text (car kill-ring))`$0}

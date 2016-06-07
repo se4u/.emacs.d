@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tag
+# key: tag
+# --
+<${1:div} ${2:kv}>
+    $0
+</$1>

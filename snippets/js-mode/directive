@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: directive
+# key: .directive
+# --
+.directive('$1', function(){
+    return {
+        templateUrl: '$2.html',
+        restrict: '${3:AE}',
+        scope: {},
+        link: function(scope, elem, attrs) {
+            // Todo
+        }}})

@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: headerboot
+# key: headerboot
+# --
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet"
+          href="../../../../../tools/bootstrap-3.3.6/dist/css/bootstrap-theme.min.css">
+    <script src="../../../../../tools/bootstrap-3.3.6/dist/js/bootstrap.js"></script>
+  </head>
+  <body>
+    $0
+  </body>
+</html>
