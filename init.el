@@ -10,6 +10,7 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+
 (blink-cursor-mode -1)
 (set-cursor-color "DimGray")
 ;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
@@ -21,6 +22,7 @@
 ;; (semantic-mode)
 ;; (global-semantic-idle-completions-mode)
 ;; (global-semantic-decoration-mode)
+
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
@@ -37,7 +39,7 @@
 (transient-mark-mode)
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
-(global-font-lock-mode t)
+;; (global-font-lock-mode t)
 (defvar font-lock-operator-face 'font-lock-operator-face)
 (defface font-lock-operator-face ()
   "Basic face for highlighting."
@@ -128,9 +130,13 @@
           'my-html-mode-hook)
 (add-hook 'js-mode-hook
           'my-js-mode-hook)
+(add-hook 'shell-mode-hook
+	  'ansi-color-for-comint-mode-on)
 (if (display-graphic-p)
     (add-hook 'prog-mode-hook 'fci-mode)
   ())
+
+
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
