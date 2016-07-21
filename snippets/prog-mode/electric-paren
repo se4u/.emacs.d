@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: electric-paren
+# key: (
+# --
+($1)$0

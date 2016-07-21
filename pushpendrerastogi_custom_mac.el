@@ -153,7 +153,17 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval progn
+    ((eval add-hook
+           (quote after-save-hook)
+           (quote org-html-export-to-html)
+           nil
+           (quote make-it-local))
+     (eval add-hook
+           (quote write-file-hooks)
+           (quote org-html-export-to-html)
+           nil
+           (quote make-it-local))
+     (eval progn
            (flycheck-mode -1)
            (company-mode -1)
            (orgtbl-mode -1))
@@ -232,7 +242,7 @@
    (quote
     ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
  '(tool-bar-mode nil)
- '(warning-suppress-types "(undo discard-info)")
+ '(warning-suppress-types (quote (undo discard-info)))
  '(yaml-block-literal-electric-alist nil)
  '(yaml-imenu-generic-expression (quote ((nil "^\\(:?[a-zA-Z_!-]+\\):" 1))))
  '(yaml-indent-offset 4)

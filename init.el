@@ -90,6 +90,8 @@
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
 	  'c-hook-func)
+(add-hook 'cmake-mode-hook
+	  'my-cmake-mode-hook)
 (add-hook 'dired-mode-hook
           'my-dired-mode-hook)
 (add-hook 'find-file-hook
@@ -356,7 +358,7 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
-(global-set-key (kbd "s-.") 'find-file-at-point)
+(global-set-key (kbd "s-.") 'my-find-file-at-point-wrapper)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)

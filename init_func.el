@@ -495,6 +495,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
     )
   )
 
+(defun my-cmake-mode-hook ()
+  (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
+  (define-key cmake-mode-map (kbd "M-h") 'cmake-help)
+  )
 
 (defun my-matlab-shell-mode-hook ()
   (define-key matlab-shell-mode-map (kbd "TAB") 'matlab-shell-tab))
@@ -816,6 +820,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
    nil
    "*Shell Command Output*"
    nil)
+  )
+
+(defun my-find-file-at-point-wrapper (arg)
+  (interactive "P")
+  (when (eq arg 3) (split-window-horizontally))
+  (when (eq arg 2) (split-window-below))
+  (find-file-at-point)
   )
 
 (defun my-after-init-hook ()
