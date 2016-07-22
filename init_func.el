@@ -501,7 +501,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
       (magit-stage-modified)
     (magit-stage-file (buffer-file-name)))
   (when (magit-commit)
-    (sleep-for 3)
+    (while magit-process (sleep-for 0.25))
   ;; (when (setq args (magit-commit-assert nil))
   ;;   (when (with-editor "GIT_EDITOR"
   ;;           (let ((magit-process-popup-time -1))
