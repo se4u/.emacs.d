@@ -500,13 +500,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (if arg
       (magit-stage-modified)
     (magit-stage-file (buffer-file-name)))
-  (when (magit-commit)
-    (while magit-process (sleep-for 0.25))
-  ;; (when (setq args (magit-commit-assert nil))
-  ;;   (when (with-editor "GIT_EDITOR"
-  ;;           (let ((magit-process-popup-time -1))
-  ;;             (magit-run-git "commit" nil)))
-    (magit-push-current-to-upstream nil)))
+  (when (magit-commit-assert nil)
+    (magit-commit))
 
 (defun my-cmake-mode-hook ()
   (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
