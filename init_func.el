@@ -496,12 +496,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun magit-stage-commit-push (arg)
+  "Push whatever can be pushed upstream.
+   Then if the repo can be staged then stage it and commit it.
+   If Ctrl-U is prefixed then only stage the current file and commit that."
   (interactive "P") ;; Note that interactive requires an argument.
+  (magit-push-current-to-upstream nil)
   (if arg
       (magit-stage-modified)
     (magit-stage-file (buffer-file-name)))
   (when (magit-commit-assert nil)
-    (magit-commit))
+    (magit-commit)))
 
 (defun my-cmake-mode-hook ()
   (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
