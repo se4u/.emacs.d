@@ -495,6 +495,14 @@ directory as the org-buffer and insert a link to this file. This function wont w
     )
   )
 
+
+(defun magit-stage-commit-push (ctrl-u-stage-everything)
+  (interactive "P")
+  (if ctrl-u-stage-everything (magit-stage-modified) (magit-stage-file))
+  (magit-commit)
+  (magit-push-current-to-upstream)
+  )
+
 (defun my-cmake-mode-hook ()
   (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
   (define-key cmake-mode-map (kbd "M-h") 'cmake-help)

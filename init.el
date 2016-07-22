@@ -280,6 +280,7 @@
 (global-set-key [f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f4] 'flymake-goto-next-error)
 (global-set-key [f7] 'my-generate-tags)
+(global-set-key [f8] 'magit-stage-commit-push)
 (global-set-key [f13] 'pop-global-mark)
 (global-set-key [f14] 'auto-fill-mode)
 (global-set-key [f15] 'toggle-truncate-lines)
