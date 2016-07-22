@@ -496,11 +496,11 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 
-(defun magit-stage-commit-push (ctrl-u-stage-everything)
-  (interactive "P")
-  (if ctrl-u-stage-everything (magit-stage-modified) (magit-stage-file))
+(defun magit-stage-commit-push ()
+  (interactive
+   (if current-prefix-arg (magit-stage-modified) (magit-stage-file)))
   (magit-commit)
-  (magit-push-current-to-upstream)
+  (magit-push-current-to-upstream nil)
   )
 
 (defun my-cmake-mode-hook ()
