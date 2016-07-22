@@ -495,10 +495,15 @@ directory as the org-buffer and insert a link to this file. This function wont w
     )
   )
 
+;; (defun test (arg) ;; Note that this function requires an argument
+;;   (interactive "P")
+;;   (if current-prefix-arg (message "1") (message "0")))
 
-(defun magit-stage-commit-push ()
-  (interactive
-   (if current-prefix-arg (magit-stage-modified) (magit-stage-file)))
+(defun magit-stage-commit-push (arg)
+  (interactive "P")
+  (if arg
+      (magit-stage-modified)
+    (magit-stage-file (buffer-file-name)))
   (magit-commit)
   (magit-push-current-to-upstream nil)
   )
