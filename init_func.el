@@ -510,6 +510,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-cmake-mode-hook ()
   (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
   (define-key cmake-mode-map (kbd "M-h") 'cmake-help)
+  (define-key cmake-mode-map (kbd "M-H") (lambda ()
+                                           (interactive)
+                                           (message
+  "TODO: Figure out a good location for this information
+  CMAKE_INSTALL_PREFIX=/a/path | Install path is /a/path
+  BUILD_SHARED_LIBS=ON(1?)     | Build shared dynamic libraries
+  CMAKE_BUILD_TYPE=Debug       | Generate files with debug flags
+  CMAKE_C_COMPILER=icc         | Sets C language compiler to icc
+  CMAKE_CXX_FLAGS=\"-O3\"        | Sets Cpp flags
+  CMAKE_PREFIX_PATH=/a/path    | Search for dependencies in /a/path")))
   )
 
 (defun my-matlab-shell-mode-hook ()
