@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: pkl
+# key: pkl
+# --
+import cPickle as pkl

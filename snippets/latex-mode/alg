@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: alg
+# key: alg
+# --
+\begin{algorithm}
+\caption{$1}\label{${2:"waiting for reftex-label call..."$(unless yas/modified-p (reftex-label nil 'dont-insert))}}
+\begin{algorithmic}[1]
+\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+    \While{$r\not=0$}
+        \State $r$
+    \EndWhile\label{euclidendwhile}
+    \State \textbf{return}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

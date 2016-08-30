@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: arparseio
+# key: arparseio
+# --
+from rasengan import pklflow_ctx
+
+with pklflow_ctx(in_fn="data/",
+                 out_fn="data/") as ns:
+    out_data = {}
+    for entity, mentions in ns.data.iteritems():
+        out_data[entity] = []
+        for mention in mentions:
+            out_mention = []
+            $0
+            out_data[entity].append(out_mention)
+    ns.out_data = out_data

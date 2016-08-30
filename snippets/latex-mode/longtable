@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: longtable
+# key: longtable
+# --
+% tabular environments are set to be single-spaced in the
+% thesis class,  but long tables do not use tabular
+% to get around this, set the spacing to single spacing at
+% the start of the long table environment, and set it back
+% to double-spacing at the end of it
+\ssp
+\begin{longtable}{$1}
+\label{${2:tab:}} \\
+\hline
+${3:head1} \\\hline
+\endfirsthead
+\multicolumn{${5:1}}{@{}l}{\textbf{Table \thetable} \ldots continued} \\\hline
+${4:head2} \\\hline
+\endhead
+$0
+\hline
+\end{longtable}
+\dsp

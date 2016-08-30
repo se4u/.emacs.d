@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: exc_
+# key: exc_
+# --
+exc_type, exc_val, exc_tb

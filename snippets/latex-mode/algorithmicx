@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: algorithmicx
+# key: algorithmicx
+# --
+% ------------- algorithmicx --------------- %
+% The package algorithmicx itself doesn’t define any algorithmic commands
+% algpseudocode is the predefined command set that must be used.
+\usepackage{algorithm}
+\usepackage{algpseudocode}
