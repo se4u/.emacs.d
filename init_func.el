@@ -1,6 +1,63 @@
 ;;; Requires
 (require 'cl-lib)
 ;;; Code
+(defun kill-word-at-point ()
+  "Kill the word under cursor"
+  (interactive)
+  (let ((bound (bounds-of-thing-at-point 'word)))
+    (kill-region (car bound) (cdr bound))))
+
+(defun buffer-line-count ()
+  "Return the number of lines in this buffer."
+  (count-lines (point-min) (point-max)))
+
+(defun goto-random-line ()
+  "Go to a random line in this buffer."
+  (interactive) ;; (buffer-line-count)
+  (goto-line (1+ (random (buffer-line-count)))))
+
+(defun setup-markup ()
+  (interactive)
+  (yas-minor-mode-on)
+  (use-local-map (copy-keymap text-mode-map))
+  (local-set-key [right] 'markup-fnplus)
+  (define-derived-mode my-derived-mode text-mode
+    (setq font-lock-defaults
+	  '('(("text: " . font-lock-comment-face)
+              ("hypothesis: " . font-lock-constant-face)
+              ("entailed: .*" . font-lock-keyword-face)
+              )))
+    (setq mode-name "MY-DERIVED-MODE"))
+  (my-derived-mode)
+  )
+
+(defun markup-fnplus ()
+  (interactive)
+  (goto-random-line)
+  (re-search-forward "partof:")
+  (forward-line 1)
+  (recenter)
+  (yas-expand-snippet ;; $$(yas-choose-value '(\"Yes\" \"No\" \"Maybe\"))
+"hypothesis_grammatical: Yes
+judgement_valid: Yes$0\n")
+  )
+
+
+;; Note the extra listing
+(defun my-font-lock-derived-mode ()
+  "Create a mode called my-derived-mode which has the syntax highlighting we want"
+  (interactive)
+  (define-derived-mode my-derived-mode fundamental-mode
+    (setq font-lock-defaults
+	  '('(("[a-zA-z0-9]*.mode_[0-9]" . font-lock-function-name-face)
+	      ("[a-zA-z0-9]*.baseline" . font-lock-constant-face)
+	      ("Total entities" . font-lock-constant-face)
+              ("," . font-lock-comment-face)
+              ("|" . font-lock-comment-face)
+              ("http://en.wikipedia.org/wiki" . font-lock-keyword-face)
+              )))
+    (setq mode-name "MY-DERIVED-MODE"))
+  (my-derived-mode))
 
 (defmacro measure-time (&rest body)
   "Macro to measure time. Wrap function call as body of this macro."
@@ -658,7 +715,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
   (anaconda-mode)
-  (orgtbl-mode)
+  ;; (orgtbl-mode)
   (autoload 'auto-update-file-header "header2")
   (my-insert-header)
   (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
@@ -796,15 +853,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
-  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
-
+  (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
   ;; warn every time we write would
-  (font-lock-add-keywords
-   'latex-mode
-   '(("\\<\\(would\\)" 1 font-lock-warning-face t)))
-  (font-lock-add-keywords
-   'tex-mode
-   '(("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords 'latex-mode
+   '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)
+     ("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords 'tex-mode
+   '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)
+     ("\\<\\(would\\)" 1 font-lock-warning-face t)))
   )
 
 (defun my-ess-mode-hook ()
@@ -835,6 +893,15 @@ directory as the org-buffer and insert a link to this file. This function wont w
                              t nil s)))
     (downcase s)))
 
+(defun mark-file-at-point-as-executable ()
+  (interactive)
+  (call-process-shell-command
+   (concat "chmod +x " (thing-at-point 'filename))
+   nil
+   "*Shell Command Output*"
+   nil)
+  )
+
 (defun create-file-at-point ()
   (interactive)
   (call-process-shell-command
@@ -845,6 +912,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-find-file-at-point-wrapper (arg)
+  "Press M-2 to split window vertically"
   (interactive "P")
   (when (eq arg 3) (split-window-horizontally))
   (when (eq arg 2) (split-window-below))
@@ -888,6 +956,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (require 'pydoc-info)
   (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
   (add-to-list 'load-path "~/.emacs.d/mymodes")
+  (require 'stripes)
   (require 'yaml-mode)
   (require 'math-symbol-lists)
   (quail-define-package "math" "UTF-8" "Ω" t)
@@ -909,6 +978,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq ess-nuke-trailing-whitespace-p t)
   (autoload 'R-mode "ess-site.el" "" t)
   (add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
+  (setq-default TeX-master "root")
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

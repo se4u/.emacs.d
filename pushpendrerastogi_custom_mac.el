@@ -153,7 +153,13 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval add-hook
+    ((eval progn
+           (eldoc-mode -1)
+           (anaconda-mode -1)
+           (flycheck-mode -1)
+           (company-mode -1))
+     (eval org-toggle-pretty-entities)
+     (eval add-hook
            (quote after-save-hook)
            (quote org-html-export-to-html)
            nil
@@ -264,4 +270,5 @@
  '(semantic-decoration-on-unknown-includes ((t nil)))
  '(semantic-decoration-on-unparsed-includes ((t nil)))
  '(semantic-highlight-func-current-tag-face ((t (:background "white"))))
- '(semantic-tag-boundary-face ((t nil))))
+ '(semantic-tag-boundary-face ((t nil)))
+ '(whitespace-newline ((t (:background "Yellow" :distant-foreground "Yellow" :foreground "Red" :box (:line-width 2 :color "selectedControlTextColor" :style released-button) :weight normal)))))
