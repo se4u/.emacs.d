@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: multicolumn
+# key: multi
+# --
+\multicolumn{${1:4}}{ c }{${2:Header}}$0

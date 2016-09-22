@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: nav
+# key: nav
+# --
+<ul class="nav nav-${1:tabs} ${2:nav-justified}">
+  <li ng-class="{active: $3}">
+    <a href='#' ng-click="$4">$5</a>
+  </li>
+</ul>

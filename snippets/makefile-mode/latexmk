@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: latexmk
+# key: latexmk
+# --
+LATEXMK := latexmk -pvc -pdf
+PDFLATEXCMD := pdflatex %O -interaction=nonstopmode -synctex=1
+
+main: ${1:root}.tex
+	$0$(LATEXMK) -pdflatex='$(PDFLATEXCMD) "\input{%S}"' $<

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: electric_triple_quote
+# key: '''
+# --
+''' $0
+'''

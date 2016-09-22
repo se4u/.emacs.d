@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: chapter
+# key: chapter
+# --
+\chapter{${1:Name}}
+\label{${2:"waiting for reftex-label call..."$(unless yas/modified-p (reftex-label nil 'dont-insert))}}
+${0:\chaptermark{${3:Optional running chapter heading}}}

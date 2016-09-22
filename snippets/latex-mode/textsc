@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: textsc
+# key: tsc
+# --
+\textsc{`(yas-selected-text)`$1}$0

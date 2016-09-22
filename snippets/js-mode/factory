@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: factory
+# key: .factory
+# --
+.factory('$1', function(){
+    return { };
+    })

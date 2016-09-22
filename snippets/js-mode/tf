@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tf
+# key: tf
+# --
+this.$1 = function(){
+    $0
+};

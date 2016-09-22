@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: gloset
+# key: gloset
+# --
+(global-set-key (kbd "$1") '$2)

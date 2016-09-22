@@ -6,4 +6,4 @@
 import readline, code
 vars = globals().copy()
 vars.update(locals())
-code.InteractiveConsole(locals()).interact()
+code.InteractiveConsole(locals=vars).interact()

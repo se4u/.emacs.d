@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: header
+# key: header
+# --
+SHELL := /bin/bash
+.PHONY:
+.SECONDARY:
+
+default:
+	echo "Say specific target"

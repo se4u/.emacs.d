@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: ams
+# key: ams
+# --
+\usepackage{amssymb,amsmath,amsthm,graphicx,url,xspace,booktabs,microtype}
+\newcommand{\union}{\cup}
+\usepackage[]{todonotes} % insert [disable] to disable all notes.
+\newcommand{\Todo}[1]{\todo[author=Pushpendre,size=\small,inline]{#1}}
+% -------- eg --------- %
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\bigeg}{E.g.,\xspace}
+\newcommand{\etal}{\textit{et~al.\xspace}}
+\newcommand{\etc}{etc.\@\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\bigie}{I.e.,\xspace}
+% -------- refcmd ------ %
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}

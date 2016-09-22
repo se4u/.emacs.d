@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: expr
+# key: expr
+# --
+expr ${1:1} + ${2:2}

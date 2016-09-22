@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: textrm
+# key: trm
+# --
+\textrm{$1}$0

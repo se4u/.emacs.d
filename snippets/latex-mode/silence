@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: silence
+# key: silence
+# --
+% ------ silence ------- %
+\usepackage{silence}
+\WarningFilter{caption}{Unsupported document class}

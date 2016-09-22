@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: setup
+# key: setup
+# binding: direct-keybinding
+# --
+[metadata]
+description-file = README.md

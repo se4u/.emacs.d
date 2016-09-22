@@ -36,7 +36,7 @@
  '(org-pretty-entities t)
  '(package-selected-packages
    (quote
-    (gist company-anaconda anaconda-mode visual-fill-column json-mode json-reformat json-rpc json-snatcher pydoc-info fill-column-indicator expand-region async auto-complete auto-complete-pcmp company company-math concurrent ctable dash deferred direx epc epl flycheck flymake-easy git-commit-mode git-rebase-mode google helm hungry-delete jedi jedi-core log4e math-symbol-lists pkg-info popup python-environment yaxception auctex magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))
+    (gist company-anaconda anaconda-mode visual-fill-column json-mode json-reformat json-rpc json-snatcher pydoc-info fill-column-indicator expand-region async auto-complete auto-complete-pcmp company company-math concurrent ctable dash deferred direx epc epl flycheck flymake-easy google helm hungry-delete jedi jedi-core log4e math-symbol-lists pkg-info popup python-environment yaxception auctex magit header2 ess flymake-cursor jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yasnippet yaml-mode smex org multi-web-mode igrep flymake-shell flymake cython-mode)))
  '(python-shell-interpreter "ipython")
  '(safe-local-variable-values
    (quote

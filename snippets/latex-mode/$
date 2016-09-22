@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: $
+# key: $
+# expand-env: ((yas-triggers-in-field 1))
+# --
+$$1$$0

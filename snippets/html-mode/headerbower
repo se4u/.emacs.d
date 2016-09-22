@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: headerbower
+# key: headerbower
+# --
+<!DOCTYPE html>
+<html ng-app="$1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>$2</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <!-- HTML Content -->
+    $0
+    <!-- Third Party JS -->
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js "></script>
+    <!-- Our Application Script -->
+
+  </body>
+</html>

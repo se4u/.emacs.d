@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: awk
+# key: awk
+# --
+# substr(string, start, length)    
+# sub(regexp, replacement, target) 
+# sprintf(format, expression1,...) 
+# length(string)                   
+# index(in, find)                  
+# toupper(string)                  
+# tolower(string)                  
+# gsub(regexp, replacement, target)

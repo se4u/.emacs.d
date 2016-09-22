@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cite2
+# key: ct
+# --
+\cite{$1}$0

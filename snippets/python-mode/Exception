@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Exception
+# key: exc
+# --
+class ${1:MyException}(Exception):
+    pass
+$0

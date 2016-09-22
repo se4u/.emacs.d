@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: pydis
+# key: pydis
+# --
+# pylint: disable=$0

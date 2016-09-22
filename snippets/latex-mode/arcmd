@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: arcmd
+# key: arcmd
+# --
+% ------------ arcmd ------------- %
+% small in-text drawings of states and arcs
+% Should probably use picture mode instead to define state circles.
+\newcommand{\state}{\protect\raisebox{-1pt}{\Large $\circ$}}
+\newcommand{\finalstate}{\mbox{$\circledcirc$}}
+\newcommand{\staten}[1]{\protect\raisebox{1pt}{\overstrike{\mbox{\scriptsize #1}}{\bigcirc}}}
+\newcommand{\bigstaten}[1]{\overstrike{\protect\raisebox{1pt}{\mbox{\scriptsize #1}}}{\mbox{\Large $\bigcirc$}}}
+\newcommand{\statecdots}{\staten{\protect\raisebox{1pt}{\mbox{\tiny $\cdot\!\cdot\!\cdot$}}}}
+\def\overstrike#1#2{{\setbox0\hbox{$#2$}\hbox to \wd0{\hss$#1$\hss}\kern-\wd0\box0}} % stolen from wasysym.sty
+%% doesn't work because boxes are right-aligned
+%% \newlength{\statewidth}
+%% \newcommand{\staten}[1]{\newbox{\statebox}{\raisebox{-2pt}{\Huge \rule{10pt}{10pt}}}\setlength{\statewidth}{\wd\statebox}\makebox[0pt][c]{\usebox{\statebox}}\makebox[0pt][c]{\raisebox{2pt}{\small #1}}}
+\def\joinrel{\mathrel{\mkern-4mu}}  % originally defined as -3mu, not -4mu, but then \longrightarrow and \arc seem to contain gaps
+\newcommand{\longarc}[1]{\protect\raisebox{-1pt}{$\stackrel{#1}{\relbar\joinrel\relbar\joinrel\relbar\joinrel\relbar\joinrel\relbar\joinrel\relbar\joinrel\relbar\joinrel\longrightarrow}$}}
+\newcommand{\arc}[1]{\protect\raisebox{-1pt}{$\stackrel{#1}{\relbar\joinrel\relbar\joinrel\longrightarrow}$}}
+\newcommand{\shortarc}[1]{\protect\raisebox{-1pt}{$\stackrel{#1}{\longrightarrow}$}}
+\newcommand{\shortpath}[1]{\protect\raisebox{-1pt}{$\stackrel{#1}{\rightsquigarrow}$}}
+\newcommand{\selfarc}[1]{\stackrel{#1}{\input{fig/longselfloop.latex}}}
+\newcommand{\shortselfarc}[1]{\input{fig/selfloop.latex}^{\scriptsize #1}}
+\newcommand{\sym}[1]{\texttt{#1}}
+\newcommand{\edit}[2]{#1\!:\!#2}

@@ -1,6 +1,63 @@
 ;;; Requires
 (require 'cl-lib)
 ;;; Code
+(defun kill-word-at-point ()
+  "Kill the word under cursor"
+  (interactive)
+  (let ((bound (bounds-of-thing-at-point 'word)))
+    (kill-region (car bound) (cdr bound))))
+
+(defun buffer-line-count ()
+  "Return the number of lines in this buffer."
+  (count-lines (point-min) (point-max)))
+
+(defun goto-random-line ()
+  "Go to a random line in this buffer."
+  (interactive) ;; (buffer-line-count)
+  (goto-line (1+ (random (buffer-line-count)))))
+
+(defun setup-markup ()
+  (interactive)
+  (yas-minor-mode-on)
+  (use-local-map (copy-keymap text-mode-map))
+  (local-set-key [right] 'markup-fnplus)
+  (define-derived-mode my-derived-mode text-mode
+    (setq font-lock-defaults
+	  '('(("text: " . font-lock-comment-face)
+              ("hypothesis: " . font-lock-constant-face)
+              ("entailed: .*" . font-lock-keyword-face)
+              )))
+    (setq mode-name "MY-DERIVED-MODE"))
+  (my-derived-mode)
+  )
+
+(defun markup-fnplus ()
+  (interactive)
+  (goto-random-line)
+  (re-search-forward "partof:")
+  (forward-line 1)
+  (recenter)
+  (yas-expand-snippet ;; $$(yas-choose-value '(\"Yes\" \"No\" \"Maybe\"))
+"hypothesis_grammatical: Yes
+judgement_valid: Yes$0\n")
+  )
+
+
+;; Note the extra listing
+(defun my-font-lock-derived-mode ()
+  "Create a mode called my-derived-mode which has the syntax highlighting we want"
+  (interactive)
+  (define-derived-mode my-derived-mode fundamental-mode
+    (setq font-lock-defaults
+	  '('(("[a-zA-z0-9]*.mode_[0-9]" . font-lock-function-name-face)
+	      ("[a-zA-z0-9]*.baseline" . font-lock-constant-face)
+	      ("Total entities" . font-lock-constant-face)
+              ("," . font-lock-comment-face)
+              ("|" . font-lock-comment-face)
+              ("http://en.wikipedia.org/wiki" . font-lock-keyword-face)
+              )))
+    (setq mode-name "MY-DERIVED-MODE"))
+  (my-derived-mode))
 
 (defmacro measure-time (&rest body)
   "Macro to measure time. Wrap function call as body of this macro."
@@ -393,14 +450,6 @@ be global."
                                               (goto-char (point-min))
                                               (move-end-of-line 1))))
 
-
-(defun my-sgml-mode-hook ()
-  (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
-  (setq flyspell-issue-message-flag nil)
-					;(flyspell-mode 1)
-  (setq case-fold-search nil)
-  (modify-syntax-entry 92 "w" sgml-mode-syntax-table))
-
 (defun quickly-add-tags (tag) (insert tag) (next-line) (move-end-of-line 1))
 
 (defun quickly-kill () (interactive) (save-buffer) (kill-this-buffer))
@@ -505,6 +554,32 @@ directory as the org-buffer and insert a link to this file. This function wont w
     )
   )
 
+(defun magit-stage-commit-push (arg)
+  "Push whatever can be pushed upstream.
+   Then if the repo can be staged then stage it and commit it.
+   If Ctrl-U is prefixed then only stage the current file and commit that."
+  (interactive "P") ;; Note that interactive requires an argument.
+  (magit-push-current-to-upstream nil)
+  (if arg
+      (magit-stage-modified)
+    (magit-stage-file (buffer-file-name)))
+  (when (magit-commit-assert nil)
+    (magit-commit)))
+
+(defun my-cmake-mode-hook ()
+  (define-key cmake-mode-map (kbd "M-?") 'cmake-help)
+  (define-key cmake-mode-map (kbd "M-h") 'cmake-help)
+  (define-key cmake-mode-map (kbd "M-H") (lambda ()
+                                           (interactive)
+                                           (message
+  "TODO: Figure out a good location for this information
+  CMAKE_INSTALL_PREFIX=/a/path | Install path is /a/path
+  BUILD_SHARED_LIBS=ON(1?)     | Build shared dynamic libraries
+  CMAKE_BUILD_TYPE=Debug       | Generate files with debug flags
+  CMAKE_C_COMPILER=icc         | Sets C language compiler to icc
+  CMAKE_CXX_FLAGS=\"-O3\"        | Sets Cpp flags
+  CMAKE_PREFIX_PATH=/a/path    | Search for dependencies in /a/path")))
+  )
 
 (defun my-matlab-shell-mode-hook ()
   (define-key matlab-shell-mode-map (kbd "TAB") 'matlab-shell-tab))
@@ -626,18 +701,25 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
 (defun my-python-after-save-hook ()
-  (shell-command (concat "autopep8 --in-place " (buffer-file-name)))
+  (call-process-shell-command
+   (concat "autopep8 --in-place " (buffer-file-name) " &")
+   nil
+   "*Shell Command Output*"
+   nil)
   (reload-buffer-no-confirm))
+
+(defun my-insert-header ()
+  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
+       (progn (insert "header") (message "Press [TAB] to insert header"))))
 
 (defun my-python-mode-hook ()
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
   (anaconda-mode)
-  (orgtbl-mode)
+  ;; (orgtbl-mode)
   (autoload 'auto-update-file-header "header2")
-  (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
-       (progn (insert "header") (message "Press [TAB] to insert header")))
+  (my-insert-header)
   (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
   (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   (font-lock-add-keywords
@@ -657,6 +739,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
   )
 
+(defun my-html-mode-hook ()
+  (my-insert-header)
+  (define-key html-mode-map (kbd "C-p") 'save-line-to-kill-ring)
+  (local-set-key (kbd "C-p") 'save-line-to-kill-ring)
+  (highlight-indent-guides-mode)
+  (set-face-background 'highlight-indent-guides-even-face "grey")
+  (set-face-background 'highlight-indent-guides-odd-face "lightgrey")
+  ;;(add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
+  ;;(add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
+  )
+
+(defun my-sgml-mode-hook ()
+  (define-key sgml-mode-map (kbd "C-c C-p") 'sgml-skip-tag-backward)
+  (define-key sgml-mode-map (kbd "C-c C-n") 'sgml-skip-tag-forward)
+  )
+
+(defun my-js-mode-hook ()
+  (font-lock-add-keywords
+   'js-mode
+   '(("\\<\\(angular\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(module\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(controller\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(factory\\)" 1 font-lock-keyword-face t)
+     ("\\<\\(service\\)" 1 font-lock-keyword-face t))))
+
 (defun what-face (pos)
   (interactive "d")
   (let ((face (or (get-char-property (point) 'read-face-name)
@@ -675,28 +782,35 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(UTILITY:\\)" 1 font-lock-string-face t)
      ("\\<\\(PROOF:\\)" 1 font-lock-string-face t)
      ("\\<\\(GUESS:\\)" 1 font-lock-string-face t)
+     ("\\<\\(SKIP:\\)" 1 font-lock-string-face t)
      ("\\<\\(ToProve:.*\\)" 1 font-lock-warning-face t)))
   (writegood-mode -1)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
+  (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
   (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
   (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
+  (define-key org-mode-map (kbd "<M-up>") 'org-shiftmetaup)
+  (define-key org-mode-map (kbd "<M-down>") 'org-shiftmetadown)
+  (define-key org-mode-map  [f8] 'org-agenda-list)
   ;; (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   ;; (define-key org-mode-map (kbd "C-=") 'er/expand-region)
   (auto-fill-mode)
-  (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
-                             ("/" italic "<i>" "</i>")
-                             ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
-                             ("=" org-code "<code>" "</code>" verbatim)
-                             ("~" org-verbatim "<code>" "</code>" verbatim)))
+  ;; Do not set org-emphasis-alist over here. Customize it.
+  ;; (setq org-emphasis-alist '(("*" bold "<b>" "</b>")
+  ;;                            ("/" italic "<i>" "</i>")
+  ;;                            ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+  ;;                            ("=" org-code "<code>" "</code>" verbatim)
+  ;;                            ("~" org-verbatim "<code>" "</code>" verbatim)))
   )
 
-(defun my-tex-mode-hook ()
-  (font-lock-add-keywords
-   nil
-   '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
-     ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
-  (writegood-mode))
+;; (defun my-tex-mode-hook ()
+;;   (font-lock-add-keywords
+;;    nil
+;;    '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)
+;;      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)))
+;;   (writegood-mode)
+;;   )
 
 (defun my-text-mode-hook ()
   (remove-dos-eol)
@@ -704,20 +818,107 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   )
 
+
 (defun my-latex-mode-hook ()
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq reftex-plug-into-AUCTeX t)
-  (flyspell-mode)
-  (LaTeX-math-mode)
-  (turn-on-reftex)
-  (auto-fill-mode)
-  (writegood-mode)
+  (message "running my-latex-mode-hook")
   (require 'company-auctex)
   (company-auctex-init)
-  (define-key latex-mode-map (kbd "<C-return>") 'latex-insert-item)
+  ;; Disable latex-pretty-symbols
+  ;; (require #'latex-pretty-symbols)
+
+  ;; Navigating and folding by sections.
+  ;; C-c C-a `latex/compile-commands-until-done'
+  ;; C-c C-n `latex/next-section'
+  ;; C-M-a `latex/beginning-of-environment'
+  ;; C-c C-p `latex/previous-section'
+  (latex-extra-mode)
+
+  ;; Automatically save style information when saving the buffer.
+  (setq TeX-auto-save t)
+
+  ;; Parse file after loading it if no style hook is found for it.
+  (setq TeX-parse-self t)
+
+  ;; A minor mode with easy access to TeX math macros.
+  ;; Easy insertion of LaTeX math symbols.  If you give a prefix argument,
+  ;; the symbols will be surrounded by dollar signs.
+  (LaTeX-math-mode)
+
+  ;; http://tex.stackexchange.com/questions/113970/emacs-auctex-customization-of-keyword-highlight-syntax
+  ;; http://tex.stackexchange.com/questions/81680/emacsauctex-lost-highlighting
+  ;; http://stackoverflow.com/tags/font-lock/hot
+  ;; (latex-unicode-simplified) ;; This doen't work due to some mysterious reason.
+  (turn-on-reftex)
+
+  (auto-fill-mode 1)
   (setq comment-auto-fill-only-comments nil)
+  (writegood-mode)
+  (setq reftex-plug-into-AUCTeX t)
+  (flyspell-mode)
+  (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
+  ;; warn every time we write would
+  (font-lock-add-keywords 'latex-mode
+   '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)
+     ("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  (font-lock-add-keywords 'tex-mode
+   '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
+     ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)
+     ("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  )
+
+(defun my-ess-mode-hook ()
+  (ess-set-style 'C++ 'quiet)
+  (ess-toggle-underscore nil)
+  ;; (setq ess-smart-S-assign-key ";")
+  ;; Because
+  ;;                                 DEF GNU BSD K&R C++
+  ;; ess-indent-level                  2   2   8   5   4
+  ;; ess-continued-statement-offset    2   2   8   5   4
+  ;; ess-brace-offset                  0   0  -8  -5  -4
+  ;; ess-arg-function-offset           2   4   0   0   0
+  ;; ess-expression-offset             4   2   8   5   4
+  ;; ess-else-offset                   0   0   0   0   0
+  ;; ess-close-brace-offset            0   0   0   0   0
+  (add-hook 'local-write-file-hooks
+            (lambda ()
+              (ess-nuke-trailing-whitespace))))
+
+(defun un-camelcase-string (s &optional sep start)
+  "Convert CamelCase string S to lower case with word separator SEP.
+   Default for SEP is a hyphen. If third argument START is non-nil,
+   convert words after that index in STRING."
+  (let ((case-fold-search nil))
+    (while (string-match "[A-Z]" s (or start 1))
+      (setq s (replace-match (concat (or sep "-")
+                                     (downcase (match-string 0 s)))
+                             t nil s)))
+    (downcase s)))
+
+(defun mark-file-at-point-as-executable ()
+  (interactive)
+  (call-process-shell-command
+   (concat "chmod +x " (thing-at-point 'filename))
+   nil
+   "*Shell Command Output*"
+   nil)
+  )
+
+(defun create-file-at-point ()
+  (interactive)
+  (call-process-shell-command
+   (concat "touch " (thing-at-point 'filename))
+   nil
+   "*Shell Command Output*"
+   nil)
+  )
+
+(defun my-find-file-at-point-wrapper (arg)
+  "Press M-2 to split window vertically"
+  (interactive "P")
+  (when (eq arg 3) (split-window-horizontally))
+  (when (eq arg 2) (split-window-below))
+  (find-file-at-point)
   )
 
 (defun my-after-init-hook ()
@@ -757,6 +958,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (require 'pydoc-info)
   (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
   (add-to-list 'load-path "~/.emacs.d/mymodes")
+  (require 'stripes)
   (require 'yaml-mode)
   (require 'math-symbol-lists)
   (quail-define-package "math" "UTF-8" "Ω" t)
@@ -774,9 +976,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
   (require 'matlab-load)
   (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-  ;; (matlab-cedet-setup)
   (yas-global-mode 1)
-  )
+  (matlab-cedet-setup)
+  (setq ess-nuke-trailing-whitespace-p t)
+  (autoload 'R-mode "ess-site.el" "" t)
+  (add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
+  (setq-default TeX-master "root")
+)
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs
 ;; or use customize-face and set height to 100.

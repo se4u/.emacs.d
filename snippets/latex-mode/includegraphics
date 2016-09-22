@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: includegraphics
+# key: ig
+# --
+\includegraphics[trim=${1:left} ${2:lower} ${3:right} ${4:upper},clip,width=\linewidth,angle=${5:0},origin=c]{$0}

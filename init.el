@@ -10,6 +10,9 @@
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
+
+(blink-cursor-mode -1)
+(set-cursor-color "DimGray")
 ;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
 ;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
@@ -19,6 +22,7 @@
 ;; (semantic-mode)
 ;; (global-semantic-idle-completions-mode)
 ;; (global-semantic-decoration-mode)
+
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
@@ -35,7 +39,7 @@
 (transient-mark-mode)
 ;; ido-dired is bound to C-x d. It lets you filter files through globs
 ;; Graphics Settings
-(global-font-lock-mode t)
+;; (global-font-lock-mode t)
 (defvar font-lock-operator-face 'font-lock-operator-face)
 (defface font-lock-operator-face ()
   "Basic face for highlighting."
@@ -88,6 +92,8 @@
 	  'c-hook-func)
 (add-hook 'c++-mode-hook
 	  'c-hook-func)
+(add-hook 'cmake-mode-hook
+	  'my-cmake-mode-hook)
 (add-hook 'dired-mode-hook
           'my-dired-mode-hook)
 (add-hook 'find-file-hook
@@ -110,19 +116,27 @@
 	  'my-org-mode-hook)
 (add-hook 'python-mode-hook
           'my-python-mode-hook)
-(add-hook 'sgml-mode
-          'my-sgml-mode-hook)
-(add-hook 'tex-mode-hook
-	  'my-tex-mode-hook)
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
 	  'delete-trailing-whitespace)
 (add-hook 'yaml-mode-hook
           'my-yaml-mode-hook)
+(add-hook 'ess-mode-hook
+          'my-ess-mode-hook)
+(add-hook 'sgml-mode-hook
+          'my-sgml-mode-hook)
+(add-hook 'html-mode-hook
+          'my-html-mode-hook)
+(add-hook 'js-mode-hook
+          'my-js-mode-hook)
+(add-hook 'shell-mode-hook
+	  'ansi-color-for-comint-mode-on)
 (if (display-graphic-p)
     (add-hook 'prog-mode-hook 'fci-mode)
   ())
+
+
 ;; ORG Mode Setup
 (setq org-publish-project-alist
       (list
@@ -147,7 +161,23 @@
          "* TODO %?\n %i\n")
         ))
 (setq org-alphabetical-lists t
-      org-startup-indented t
+      ;; NOTE: I spent 4 and 5 Feb debugging crashes that happened while I
+      ;; worked on org files that contained some pretty-entities and tables.
+      ;; I noted that the crashes did not occur when I start with -Q flag.
+      ;; I also noticed ;; that the crashes did not occur when I commented out
+      ;; the `org-startup-indented` flag.
+      ;;
+      ;; This behavior was consistent on the
+      ;; carbon-mac-port as well as the stock DMG that's distributed at
+      ;; emacsformac. Also, I found an old bug report stating that
+      ;; org-startup-indented used to cause crashed in emacs 23 and that this
+      ;; bug was fixed.
+      ;;
+      ;; Although that bug was fixed, what seems to have
+      ;; happened is that a combination of flags need to be set to crash emacs,
+      ;; one of which is the org-startup-indented flag.  However at this point
+      ;; since I have the workaround, I have stopped investigating further.
+      ;; org-startup-indented t
       org-enforce-todo-checkbox-dependencies t
       org-enforce-todo-dependencies t
       org-clock-persist 'history
@@ -205,25 +235,7 @@
 (eval-after-load "sgml-mode"
   '(progn
      (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
-     (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
-     (define-key sgml-mode-map [?\C-v] 'sgml-validate)
-     (define-key sgml-mode-map (kbd "C--") 'sgml-tags-invisible)
-					;(define-key sgml-mode-map (kbd "C-r") 'am-annotate-and-close-tag)
-     (define-key sgml-mode-map (kbd "C-]") 'surround-selected-text-with-tag)
-     (define-key sgml-mode-map (kbd "C-t") 'am-annotate-tag)
-     (define-key sgml-mode-map (kbd "M-.") 'end-of-buffer)
-     (define-key sgml-mode-map (kbd "M-,") 'beginning-of-buffer)
-     (define-key sgml-mode-map (kbd "C-.") 'end-of-buffer)
-     (define-key sgml-mode-map (kbd "C-,") 'beginning-of-buffer)
-     (define-key sgml-mode-map (kbd "C-p") 'previous-line)
-     (define-key sgml-mode-map (kbd "C-=") 'surround-all-names-and-msp-with-tags)
-     (define-key sgml-mode-map (kbd "C-+") 'surround-all-sms-language)
-     (define-key sgml-mode-map (kbd "<tab>") 'right-word)
-     (define-key sgml-mode-map (kbd "<backtab>") 'left-word)
-     (define-key sgml-mode-map (kbd "<C-return>") 'hippie-expand)
-     (define-key sgml-mode-map (kbd "M-=") (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 C-right 134217847 C-left 60 99 97 112 32 99 111 114 114 61 34 134217836 34 62 25 60 47 99 97 112 right 4] 0 "%d")) arg)))
-     (define-key sgml-mode-map (kbd "<f11>") (lambda (&optional arg) "Keyboard macro." (interactive "p") (save-buffer) (kmacro-exec-ring-item (quote ([24 111 down 111] 0 "%d")) arg)))
-     ;; (define-key sgml-mode-map (kbd "C-k") 'quickly-kill)
+     (define-key sgml-mode-map (kbd "C-v") 'sgml-validate)
      ))
 
 (eval-after-load "python"
@@ -268,6 +280,7 @@
 (global-set-key [f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f4] 'flymake-goto-next-error)
 (global-set-key [f7] 'my-generate-tags)
+(global-set-key [f8] 'magit-stage-commit-push)
 (global-set-key [f13] 'pop-global-mark)
 (global-set-key [f14] 'auto-fill-mode)
 (global-set-key [f15] 'toggle-truncate-lines)
@@ -311,6 +324,7 @@
 (global-set-key (kbd "M-}") 'mark-sexp)
 (global-set-key (kbd "M-{") (lambda () (interactive) (backward-sexp) (mark-sexp)))
 (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-z") 'kill-word-at-point)
 (global-set-key (kbd "M-?") 'pop-tag-mark)
 (global-set-key (kbd "M-=") 'move-end-of-line)
 (global-set-key (kbd "M--") 'back-to-indentation)
@@ -319,24 +333,28 @@
 (global-set-key (kbd "M-]") 'forward-sexp)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-.") 'pop-tag-mark)
+(global-set-key (kbd "C-;")  'previous-line)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C-8") 'create-file-at-point)
+(global-set-key (kbd "C-a") 'back-to-indentation)
+(global-set-key (kbd "C-p") 'save-line-to-kill-ring)
+(global-set-key (kbd "C-l") 'recenter)
+(global-set-key (kbd "C-M-e") 'mark-file-at-point-as-executable)
+(global-set-key (kbd "M-r") 'goto-random-line)
+(define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
 (global-set-key (kbd "C-x M-b") 'scroll-other-window-down)
 (global-set-key (kbd "C-x M-v") 'scroll-other-window)
-(global-set-key (kbd "C-;")  'previous-line)
 (global-set-key (kbd "C-c r") 'reload-buffer-no-confirm)
 (global-set-key (kbd "C-x C-k") 'ido-kill-buffer)
 (global-set-key (kbd "C-x C-f") 'find-file)
-(global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
 (global-set-key (kbd "C-c a") 'org-todo-list)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
-(global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-p") 'save-line-to-kill-ring)
-(global-set-key (kbd "C-l") 'recenter)
 (global-set-key (kbd "H-6") 'undo) ; H-6 means clear
 (global-set-key (kbd "H--") 'shrink-window-horizontally)
 (global-set-key (kbd "H-=") 'enlarge-window-horizontally)
@@ -350,14 +368,15 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
-(global-set-key (kbd "s-.") 'find-file-at-point)
+(global-set-key (kbd "s-.") 'my-find-file-at-point-wrapper)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "s-o") 'ido-find-file)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
-(define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
+(global-set-key (kbd "M-`") (lambda () (interactive) (insert "̅")))
 ;; Emacs Server
 (setq server-socket-dir "~/.emacs.d/server")
 

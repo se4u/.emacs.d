@@ -3,5 +3,5 @@
 # key: pdb
 # binding: direct-keybinding
 # --
-import ipdb as pdb
+import pdb
 pdb.set_trace()

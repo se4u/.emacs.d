@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pickle
+# key: pkl
+# --
+import cPickle as pkl
+pkl.load(open('$0'))

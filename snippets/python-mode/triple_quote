@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: triple_quote
+# key: ppp
+# --
+'''$1'''$0
