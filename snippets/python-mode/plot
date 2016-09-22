@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: plot
+# key: plot
+# binding: direct-keybinding
+# --
+import matplotlib.pyplot as plt
+plt.plot(x, $5)
+# plt.plot(x, y)
+plt.xlabel('${1:xlabel}')
+plt.ylabel('${2:ylabel}')
+plt.title('${3:title}')
+plt.grid(True)
+plt.legend(['$5'], loc='upper left')
+plt.savefig(${4:out_fn})
+plt.close()

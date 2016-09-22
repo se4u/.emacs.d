@@ -33,6 +33,8 @@
 ;; that eldoc mode unnecessarily adds.
 ;; (eval-after-load "eldoc"
 ;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area t nil))
+;; (eval-after-load "eldoc"
+;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area nil t))
 
 (defun my-generate-tags ()
   (interactive)
@@ -719,19 +721,19 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-after-init-hook ()
+  (require 'yasnippet)
   (add-package-managers)
   (recentf-mode 1)
   (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
-  (global-flycheck-mode)
+  ;; (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
-  (yas-global-mode)
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*"))
+  	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*" "*Python*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
@@ -772,7 +774,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
   (require 'matlab-load)
   (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-  (matlab-cedet-setup)
+  ;; (matlab-cedet-setup)
+  (yas-global-mode 1)
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

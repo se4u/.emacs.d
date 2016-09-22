@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: theano
+# key: theano
+# binding: direct-keybinding
+# --
+import theano as t
+import theano.tensor as tt
+T = tt.Tensor
+import numpy as np

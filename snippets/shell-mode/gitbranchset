@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: gitbranchset
+# key: gitbranchset
+# binding: direct-keybinding
+# --
+git branch --set-upstream-to $0

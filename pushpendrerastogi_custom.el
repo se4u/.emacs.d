@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["black" "red3" "green3" "blue" "blue2" "magenta3" "cyan3" "black"])
- '(dired-mode-hook (quote (ede-turn-on-hook)))
+ '(dired-mode-hook (quote (ede-turn-on-hook)) t)
  '(ecb-options-version "2.40")
  '(eldoc-idle-delay 1)
  '(flycheck-checkers
@@ -36,12 +36,26 @@
  '(org-pretty-entities t)
  '(package-selected-packages
    (quote
-    (gist company-anaconda anaconda-mode visual-fill-column json-mode json-reformat json-rpc json-snatcher pydoc-info fill-column-indicator expand-region async auto-complete auto-complete-pcmp company company-math concurrent ctable dash deferred direx epc epl flycheck flymake-easy git-commit-mode git-rebase-mode google helm hungry-delete jedi jedi-core log4e math-symbol-lists pkg-info popup python-environment yaxception auctex magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yasnippet yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))
+    (gist company-anaconda anaconda-mode visual-fill-column json-mode json-reformat json-rpc json-snatcher pydoc-info fill-column-indicator expand-region async auto-complete auto-complete-pcmp company company-math concurrent ctable dash deferred direx epc epl flycheck flymake-easy git-commit-mode git-rebase-mode google helm hungry-delete jedi jedi-core log4e math-symbol-lists pkg-info popup python-environment yaxception auctex magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))
  '(python-shell-interpreter "ipython")
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (eldoc-mode -1)
+           (anaconda-mode -1)
+           (flycheck-mode -1)
+           (company-mode -1))
+     (eval progn
+           (anaconda-mode -1))
+     (eval remove-hook
+           (quote write-file-hooks)
+           (quote delete-trailing-whitespace))
+     (header-auto-update-enabled))))
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/usr/local/R2012a/toolbox/matlab/funfun" "/usr/local/R2012a/toolbox/matlab/general")))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(yas-global-mode t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
