@@ -293,10 +293,10 @@
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
-(global-set-key [M-left] 'previous-multiframe-window)
-(global-set-key [M-right] 'next-multiframe-window)
-(global-set-key [27 down] 'transpose-line-down)
-(global-set-key [27 up] 'transpose-line-up)
+(global-set-key (kbd "M-<left>") 'hs-hide-level)
+(global-set-key (kbd "M-<right>") 'hs-show-level)
+(global-set-key [27 down] 'transpose-line-down) ; M-down
+(global-set-key [27 up] 'transpose-line-up) ; M-up
 (global-set-key (kbd "M-0") 'delete-window)
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-2") 'split-window-below)
@@ -365,8 +365,6 @@
 (global-set-key (kbd "H-<left>") 'back-to-indentation)
 (global-set-key (kbd "H-<right>") 'move-end-of-line)
 (global-set-key (kbd "H-<backspace>") 'hungry-delete-forward)
-(global-set-key (kbd "C-H-<left>") 'beginning-of-buffer)
-(global-set-key (kbd "C-H-<right>") 'end-of-buffer)
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
