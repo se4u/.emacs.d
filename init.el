@@ -293,8 +293,8 @@
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
-(global-set-key (kbd "M-<left>") 'hs-hide-level)
-(global-set-key (kbd "M-<right>") 'hs-show-level)
+(global-set-key (kbd "M-<left>") 'hs-hide-block)
+(global-set-key (kbd "M-<right>") 'hs-show-block)
 (global-set-key [27 down] 'transpose-line-down) ; M-down
 (global-set-key [27 up] 'transpose-line-up) ; M-up
 (global-set-key (kbd "M-0") 'delete-window)
