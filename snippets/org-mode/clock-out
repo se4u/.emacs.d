@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: clock-out
+# key: cout
+# --
+`(org-clock-out)`

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: word
+# key: word
+# --
+$(word ${1:2},$+)

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sssec
+# key: sssec
+# --
+\subsubsection{$1}
+\label{sssec:$2}

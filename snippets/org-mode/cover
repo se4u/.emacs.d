@@ -1,0 +1,40 @@
+# -*- mode: snippet -*-
+# name: cover
+# key: cover
+# --
+Dear Prof. $1,
+
+I am Pushpendre Rastogi, Ph.D student at Computer Science Department
+(Center for Language and Speech Processing, CLSP), working with Prof.
+Benjamin Van Durme and Vince Lyzinski.
+My research topic is "Recommendations From Knowledge Graphs and Text".
+
+Based on discussion with my advisors, ${2:I or We} will like to ask you to be a
+committee member for my GBO Exam (Graduate Board Oral Examination).
+The GBO requires 3 committee members from outside of the
+department. Since my thesis topic is
+related to ${3:what} and you are working on ${4:what} therefore it
+will be great if you agree to be on the GBO committee.
+
+The exact schedule has not been determined but it will be some time
+this semester, or in early Fall 2017.
+
+GBO (at CLSP) is a kind of preliminary oral exam before starting to
+write a Ph.D thesis.
+The committee will check if the candidate student is ready to start
+his/her research for Ph.D thesis according to the submitted thesis
+proposal and 2 hour oral examination.
+
+${5:I or We} will be grateful if you could be a member for my GBO exam,
+although we know how busy you must be.
+I will also like to explain my current thesis proposal
+some time this week or next week (maybe 15-30 mins or so) when you
+have time.
+
+For more detailed information about GBO, please email me or see
+http://cs.jhu.edu/grad-procedures-and-forms/PhDmanual.pdf (pg.5) or
+http://homewoodgrad.jhu.edu/academics/graduate-board/graduate-board-oral-exams/
+
+Best regards,
+Pushpendre Rastogi
+http://www.cs.jhu.edu/~prastog3

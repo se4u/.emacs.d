@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: imrad
+# key: imrad
+# --
+\section{Introduction}
+\label{sec:introduction}
+
+\section{Method}
+\label{sec:method}
+
+\section{Experiments and Results}
+\label{sec:experiments-results}
+
+\section{Discussion}
+\label{sec:discussion}

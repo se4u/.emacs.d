@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: function_pass
+# key: fp
+# --
+def $1():
+    pass
+$0

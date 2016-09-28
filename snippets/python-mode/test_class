@@ -4,4 +4,7 @@
 # group : testing
 # --
 class Test${1:toTest}(${2:unittest.TestCase}):
+    def setUp(self):
+        sp
+
     dt$0

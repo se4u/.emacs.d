@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: removecmd
+# key: removecmd
+# --
+% ------------- removecmd --------------- %
+\newcommand{\remove}[1]{}

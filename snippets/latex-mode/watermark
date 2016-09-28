@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: watermark
+# key: watermark
+# --
+% ------------ watermark -------------- %
+\usepackage{draftwatermark}
+\SetWatermarkText{${1:Confidential}}
+\SetWatermarkScale{5}

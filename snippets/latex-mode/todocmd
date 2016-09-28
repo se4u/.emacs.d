@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: todocmd
+# key: todocmd
+# --
+% ---------------- todocmd ----------------- %
+\usepackage[disable]{todonotes} % insert [disable] to disable all notes.
+\newcommand{\Todo}[1]{\todo[author=Pushpendre,size=\small,inline]{#1}}
+\newcommand{\tudu}[1][]{TODO TODO TODO #1}

@@ -7,17 +7,19 @@
 % how-to-construct-a-coloured-box-with-rounded-corners
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
 \makeatletter
-\newcommand{\mybox}[2][green]{%
+\newcommand{\mybox}[2][YellowGreen]{%
   \setbox0=\hbox{#1}%
   \setlength{\@tempdima}{\dimexpr\wd0+13pt}%
   \begin{tcolorbox}[%
+    hbox,% tex.stackexchange.com/questions/238205 (Restrict width)
+    halign=justify,
     nobeforeafter,% Inline box.
-    colframe=#1,% Color of the frame. Green by default.
+    colframe=black,% Color of the frame. Green by default.
+    colback=#1,% Color of the background
     boxrule=.5pt,% The size of border.
-    arc=4pt,% The Arc radius.
-    left=6pt,right=6pt,top=1pt,bottom=0pt,% The padding inside
-    boxsep=.5pt,%
-    width=\@tempdima]
+    arc=5pt,% The Arc radius.
+    left=4pt,right=0pt,top=0pt,bottom=0pt,% The padding inside
+    boxsep=2pt]% width=\@tempdima
     #2
   \end{tcolorbox}
 }

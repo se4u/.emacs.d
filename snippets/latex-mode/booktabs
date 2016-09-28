@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: booktabs
+# key: booktabs
+# --
+% ------------booktabs ------------ %
+\usepackage{booktabs}

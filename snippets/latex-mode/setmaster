@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: setmaster
+# key: setmaster
+# --
+(setq-default TeX-master "${1:root}")$0

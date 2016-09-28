@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: clock-in
+# key: cin
+# --
+`(org-clock-in)`

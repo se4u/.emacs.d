@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dbfs
+# key: dbfs
+# --
+from shelve import DbfilenameShelf

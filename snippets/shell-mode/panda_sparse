@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: panda_sparse
+# key: pds
+# --
+pd.SparseDataFrame(index=$1, columns=$2, dtype='float32')

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: base
+# key: base
+# --
+$(basename ${1:$<})$0

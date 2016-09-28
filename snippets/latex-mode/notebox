@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: notebox
+# key: notebox
+# --
+\begin{notebox}
+$0
+\end{notebox}

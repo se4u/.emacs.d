@@ -80,6 +80,8 @@
     ("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*")))
  '(ido-ignore-files (quote ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./")))
  '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(initial-buffer-choice "~/Dropbox/org/gtd.org")
  '(jedi:get-in-function-call-delay 4000)
  '(jedi:key-complete [C-\'])
  '(jedi:key-goto-definition [C-\.])
@@ -101,6 +103,7 @@
    (quote
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
+ '(org-babel-load-languages (quote ((plantuml . t) (sh . t))))
  '(org-directory "~/Dropbox/org")
  '(org-emphasis-alist
    (quote
@@ -153,7 +156,9 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval progn
+    ((eval setq-default TeX-master nil)
+     (eval setq-default TeX-master "root")
+     (eval progn
            (eldoc-mode -1)
            (anaconda-mode -1)
            (flycheck-mode -1)

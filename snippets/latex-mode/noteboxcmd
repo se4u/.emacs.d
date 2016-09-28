@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: noteboxcmd
+# key: noteboxcmd
+# --
+% -------- noteboxcmd -------- %
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+\declaretheorem[%
+  style=plain,%
+  thmbox={style=S,bodystyle=\normalfont},%
+  name=Note,%
+  within=section,%
+  shaded={rulecolor=Lavender,rulewidth=2pt},%
+]{notebox}
+%\begin{notebox} \end{notebox}

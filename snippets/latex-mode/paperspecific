@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: paperspecific
+# key: paperspecific
+# --
+% ------- paper specific cmd ------ %
+$0

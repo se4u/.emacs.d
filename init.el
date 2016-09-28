@@ -332,6 +332,7 @@
 (global-set-key (kbd "M-[") 'backward-sexp)
 (global-set-key (kbd "M-]") 'forward-sexp)
 (global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "M-`") (lambda () (interactive) (insert "̅"))) ; Insert a bar on t̅o̅p̅
 (global-set-key (kbd "C-.") 'pop-tag-mark)
 (global-set-key (kbd "C-;")  'previous-line)
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -355,6 +356,7 @@
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+;; Key Pad Commands.
 (global-set-key (kbd "H-6") 'undo) ; H-6 means clear
 (global-set-key (kbd "H--") 'shrink-window-horizontally)
 (global-set-key (kbd "H-=") 'enlarge-window-horizontally)
@@ -368,6 +370,7 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
+;;
 (global-set-key (kbd "s-.") 'my-find-file-at-point-wrapper)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
@@ -376,9 +379,33 @@
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
-(global-set-key (kbd "M-`") (lambda () (interactive) (insert "̅")))
-;; Emacs Server
-(setq server-socket-dir "~/.emacs.d/server")
+;; Ansi Term
+;; (expose-global-binding-in-term (kbd "M-o"))
+;; (expose-global-binding-in-term (kbd "M-k"))
+;; (expose-global-binding-in-term (kbd "<up>"))
+;; (expose-global-binding-in-term (kbd "<down>"))
+;; (expose-global-binding-in-term (kbd "<left>"))
+;; (expose-global-binding-in-term (kbd "<right>"))
+;; (expose-global-binding-in-term (kbd "C-h"))
+(setq server-socket-dir "~/.emacs.d/server") ; Emacs Server
+
+;; C-c C-j Switch to line mode (term-line-mode). Do nothing if already in line mode.
+;; C-c C-k Switch to char mode (term-char-mode). Do nothing if already in char mode.
+;; The following commands are only available in char mode:
+
+;; C-c C-c Send a literal C-c to the sub-shell.
+;; C-c char This is equivalent to C-x char in normal Emacs.
+
+;; Term mode has a page-at-a-time feature.
+;; When enabled, it makes output pause at the end of each screenful:
+
+;; C-c C-q Toggle the page-at-a-time feature. This command works in both line and char modes. When the feature is enabled, the mode-line
+;;     displays the word ‘page’, and each time Term receives more than a screenful of output, it pauses and displays ‘**MORE**’ in the
+;;     mode-line. Type SPC to display the next screenful of output, or ? to see your other options. The interface is similar to the
+;;     more program.
+
+
+
 
 ;; http://stackoverflow.com/questions/24725778/how-to-rebuild-elpa-packages-after-upgrade-of-emacs
 ;; (byte-recompile-directory package-user-dir nil 'force)

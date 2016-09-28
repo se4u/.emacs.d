@@ -700,23 +700,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-dired-mode-hook ()
   (define-key dired-mode-map (kbd "M-DEL") 'kill-this-buffer))
 
+
+(defun expose-global-binding-in-term (binding)
+   (define-key term-raw-map binding
+     (lookup-key (current-global-map) binding)))
+
 (defun my-python-after-save-hook ()
-  (call-process-shell-command
-   (concat "autopep8 --in-place " (buffer-file-name) " &")
-   nil
-   "*Shell Command Output*"
-   nil)
-  (reload-buffer-no-confirm))
+  ()
+  ;; (call-process-shell-command
+  ;;  (concat "autopep8 --in-place " (buffer-file-name) " &")
+  ;;  nil
+  ;;  "*Shell Command Output*"
+  ;;  nil)
+  ;; (reload-buffer-no-confirm)
+  )
 
 (defun my-insert-header ()
   (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
        (progn (insert "header") (message "Press [TAB] to insert header"))))
 
 (defun my-python-mode-hook ()
-  (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  (add-to-list 'company-backends 'company-anaconda)
   (run-python "python")
-  (anaconda-mode)
+  (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+  (electric-pair-mode 1)
+  ;; (add-to-list 'company-backends 'company-anaconda)
+  ;; (anaconda-mode)
   ;; (orgtbl-mode)
   (autoload 'auto-update-file-header "header2")
   (my-insert-header)
@@ -734,8 +742,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (auto-fill-mode 1)
   (eldoc-mode)
   (hs-minor-mode)
-  (define-key python-mode-map (kbd "<H-left>") 'hs-hide-block)
-  (define-key python-mode-map (kbd "<H-right>") 'hs-show-block)
+  (define-key python-mode-map (kbd "<kp-subtract>") 'hs-hide-block)
+  (define-key python-mode-map (kbd "<kp-add>") 'hs-show-block)
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
   )
 
@@ -818,8 +826,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (writegood-mode)
   )
 
+(defun latex-add-new-list-item ()
+  (interactive)
+  (insert "\n\\item "))
 
 (defun my-latex-mode-hook ()
+  ;; (hl-sentence-mode)
   (message "running my-latex-mode-hook")
   (require 'company-auctex)
   (company-auctex-init)
@@ -856,6 +868,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
+  (define-key latex-extra-mode-map (kbd "C-0") 'latex-add-new-list-item)
   ;; warn every time we write would
   (font-lock-add-keywords 'latex-mode
    '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
@@ -926,8 +939,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (require 'yasnippet)
   (add-package-managers)
   (recentf-mode 1)
-  (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
-  ;; (global-flycheck-mode)
+  ;; (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
+  (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
@@ -935,7 +948,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
-  	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS" "*magit-process*" "*Flycheck error message*" "*Ediff Registry*" "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp" "*anaconda-mode*" "*anaconda-doc*" "*info*" "*Shell Command Output*" "*Python*"))
+	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS"
+          "*magit-process*" "*Flycheck error message*" "*Ediff Registry*"
+          "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp"
+          "*anaconda-mode*" "*anaconda-doc*" "*info*"
+          "*Shell Command Output*" "*Compile-Log*" "*Python*"
+          "*notes*" "*Reftex Select*" "*Shell Command Output*"
+          "*.+ output*" "*TeX Help*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
   (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
   (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
@@ -982,8 +1001,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq ess-nuke-trailing-whitespace-p t)
   (autoload 'R-mode "ess-site.el" "" t)
   (add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
-  (setq-default TeX-master "root")
-)
+  (setq-default TeX-master nil)
+  (require 'hl-sentence)
+  (set-face-attribute 'hl-sentence-face nil :foreground "#b44")
+  (require 'ansi-color)
+  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs
 ;; or use customize-face and set height to 100.

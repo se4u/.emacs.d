@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: system
+# key: system
+# --
+# -------  system --------- #
+import os
+os.system('$0')

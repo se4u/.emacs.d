@@ -3,6 +3,7 @@
 # key: eg
 # --
 % ----------- eg ------------ %
+\usepackage{xspace}
 \newcommand{\eg}{e.g.,\xspace}
 \newcommand{\bigeg}{E.g.,\xspace}
 \newcommand{\etal}{\textit{et~al.\xspace}}

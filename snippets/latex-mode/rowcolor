@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: rowcolor
+# key: rowcolor
+# --
+% --------------- rowcolor ------------------- %
+\usepackage{colortbl}
+% Insert \rowcolors{1}{}{lightgray} after centering
