@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: raiv
+# key: raiv
+# --
+raise ValueError($1)$0

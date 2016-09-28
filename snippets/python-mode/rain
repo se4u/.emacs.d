@@ -1,0 +1,4 @@
+# key: rain
+# name: rain
+# --
+raise NotImplementedError($1)$0

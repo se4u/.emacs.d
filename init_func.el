@@ -922,6 +922,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-after-init-hook ()
+  (add-to-list 'load-path "~/.emacs.d/snippets")
   (require 'yasnippet)
   (add-package-managers)
   (recentf-mode 1)
