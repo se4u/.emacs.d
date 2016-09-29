@@ -4,7 +4,11 @@
 # group : testing
 # --
 class Test${1:toTest}(${2:unittest.TestCase}):
-    def setUp(self):
-        sp
+    @classmethod
+    def setUpClass(cls): # Run once setup
+        super(Test$1, cls).setUpClass()
+
+    def setUp(self): # Per Test Setup
+        pass
 
     dt$0

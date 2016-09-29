@@ -722,7 +722,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-python-mode-hook ()
   (run-python "python")
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  (electric-pair-mode 1)
+  ;; (electric-pair-mode 1)
   ;; (add-to-list 'company-backends 'company-anaconda)
   ;; (anaconda-mode)
   ;; (orgtbl-mode)
@@ -740,11 +740,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
   (auto-fill-mode 1)
-  (eldoc-mode)
+  ;; (eldoc-mode) ; All these enhancements cause emacs to freeze. That is unacceptable !!
   (hs-minor-mode)
   (define-key python-mode-map (kbd "<kp-subtract>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<kp-add>") 'hs-show-block)
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
+  (smartparens-mode 1)
   )
 
 (defun my-html-mode-hook ()
@@ -1006,6 +1007,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (set-face-attribute 'hl-sentence-face nil :foreground "#b44")
   (require 'ansi-color)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  (require 'smartparens-config)
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

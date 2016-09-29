@@ -281,6 +281,7 @@
 (global-set-key [f4] 'flymake-goto-next-error)
 (global-set-key [f7] 'my-generate-tags)
 (global-set-key [f8] 'magit-stage-commit-push)
+(global-set-key (kbd "M-O W") 'magit-stage-commit-push)
 (global-set-key [f13] 'pop-global-mark)
 (global-set-key [f14] 'auto-fill-mode)
 (global-set-key [f15] 'toggle-truncate-lines)
@@ -295,6 +296,8 @@
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
 (global-set-key (kbd "M-<left>") 'hs-hide-block)
 (global-set-key (kbd "M-<right>") 'hs-show-block)
+(global-set-key (kbd "ESC <left>") 'hs-hide-block)
+(global-set-key (kbd "ESC <right>") 'hs-show-block)
 (global-set-key [27 down] 'transpose-line-down) ; M-down
 (global-set-key [27 up] 'transpose-line-up) ; M-up
 (global-set-key (kbd "M-0") 'delete-window)
