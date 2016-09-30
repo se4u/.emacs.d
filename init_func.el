@@ -647,7 +647,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
                 args
                 indent)))
     (unless (string= formatted-args "")
-      (mapconcat 'identity (list "Params" "------" formatted-args) indent))))
+      (mapconcat 'identity (list "--- INPUT ---" formatted-args) indent))))
 
 (defun python-args-to-docstring ()
   "return docstring format for the python arguments in yas-text"
@@ -669,7 +669,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
        (insert "'''\n")
        (insert (make-string curcol ? ))
        (insert (python-args-to-docstring-impl (buffer-substring arg-start arg-end)))
-       (insert (concat "\n" (make-string curcol ? ) "Returns\n" (make-string curcol ? ) "-------\n" (make-string curcol ? ) "'''"))))
+       (insert (concat "\n" (make-string curcol ? ) "--- OUTPUT ---\n" (make-string curcol ? ) "'''"))))
   (move-end-of-line nil))
 
 (defun insert-4-space ()
