@@ -3,4 +3,4 @@
 # key: removecmd
 # --
 % ------------- removecmd --------------- %
-\newcommand{\remove}[1]{}
+\newcommand{\remove}[1]{\verbatim{}}

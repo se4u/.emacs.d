@@ -156,7 +156,9 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval setq-default TeX-master nil)
+    ((eval defun reftex-get-bibfile-list nil
+           (reftex-default-bibliography))
+     (eval setq-default TeX-master nil)
      (eval setq-default TeX-master "root")
      (eval progn
            (eldoc-mode -1)
@@ -252,6 +254,7 @@
  '(tags-table-list
    (quote
     ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
+ '(textlint-location-vm (quote textlint-location-vm-macos))
  '(tool-bar-mode nil)
  '(warning-suppress-types (quote (undo discard-info)))
  '(yaml-block-literal-electric-alist nil)

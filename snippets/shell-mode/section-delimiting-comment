@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: section-delimiting-comment
+# key: sdc
+# binding: direct-keybinding
+# --
+${2:#} ${1:$(make-string (string-width yas-text) ?\-)} $2
+$2 $1 $2
+$2 ${1:$(make-string (string-width yas-text) ?\-)} $2
+$0

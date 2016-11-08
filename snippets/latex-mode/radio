@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: radio
+# key: radio
+# --
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{r | l}
+    \textbf{$1} & \textbf{$2} \\\hline
+    % BEGIN RECEIVE ORGTBL ${3:tab-label}
+    % END RECEIVE ORGTBL $3
+    \end{tabular}
+  \caption{$4}
+  \label{tab:$3}
+\end{table}
+\remove{
+#+ORGTBL: SEND $3 orgtbl-to-latex :splice t :skip 1 :no-escape t ${5::skipcols ()}
+| $1 | $2 |
+| $0 |    |
+}

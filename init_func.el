@@ -92,6 +92,55 @@ judgement_valid: Yes$0\n")
 ;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area t nil))
 ;; (eval-after-load "eldoc"
 ;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area nil t))
+(with-eval-after-load 'elisp-mode
+  (defadvice elisp--get-fnsym-args-string (after add-docstring activate compile)
+    "Add a 1st line of docstring to ElDoc's function information."
+    (when ad-return-value
+      (let* ((doc (elisp--docstring-first-line (documentation (ad-get-arg 0) t)))
+             (w (frame-width))
+             (color-doc (propertize doc 'face 'font-lock-comment-face)))
+        (when (and doc (not (string= doc "")))
+          (setq ad-return-value (concat ad-return-value " " color-doc))
+          (when (> (length doc) w)
+            (setq ad-return-value (substring ad-return-value 0 (1- w))))))
+      ad-return-value)))
+(defadvice eldoc-highlight-function-argument
+    (around my-formatting (sym args index) compile activate preactivate)
+  "Replace original to apply my style of formatting."
+  ;; HACK: intercept the call to eldoc-docstring-format-sym-doc at the
+  ;; end of the adviced function. This is obviously brittle, but the
+  ;; alternative approach of copy/pasting the original also has
+  ;; downsides...
+  (flet ((eldoc-docstring-format-sym-doc
+          (sym doc face)
+          (let* ((function-name (propertize (symbol-name sym)
+                                            'face face))
+                 (spec (format "%s %s" function-name doc))
+                 (docstring (or (eldoc-docstring-first-line
+                                 (documentation sym t))
+                                "Undocumented."))
+                 (docstring (propertize docstring
+                                        'face 'font-lock-doc-face))
+                 ;; TODO: currently it strips from the start of spec by
+                 ;; character instead of whole arguments at a time.
+                 (fulldoc (format "%s: %s" spec docstring))
+                 (ea-width (1- (window-width (minibuffer-window)))))
+            (cond ((or (<= (length fulldoc) ea-width)
+                       (eq eldoc-echo-area-use-multiline-p t)
+                       (and eldoc-echo-area-use-multiline-p
+                            (> (length docstring) ea-width)))
+                   fulldoc)
+                  ((> (length docstring) ea-width)
+                   (substring docstring 0 ea-width))
+                  ((>= (- (length fulldoc) (length spec)) ea-width)
+                   docstring)
+                  (t
+                   ;; Show the end of the partial symbol name, rather
+                   ;; than the beginning, since the former is more likely
+                   ;; to be unique given package namespace conventions.
+                   (setq spec (substring spec (- (length fulldoc) ea-width)))
+                   (format "%s: %s" spec docstring))))))
+    ad-do-it))
 
 (defun my-generate-tags ()
   (interactive)
@@ -740,7 +789,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
   (auto-fill-mode 1)
-  (eldoc-mode)
   (hs-minor-mode)
   (define-key python-mode-map (kbd "<kp-subtract>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<kp-add>") 'hs-show-block)
@@ -830,6 +878,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (interactive)
   (insert "\n\\item "))
 
+
+;;; Potentially *DANGEROUS* hack
+;; (defun reftex-get-bibfile-list () (reftex-default-bibliography))
+
 (defun my-latex-mode-hook ()
   ;; (hl-sentence-mode)
   (message "running my-latex-mode-hook")
@@ -861,7 +913,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;; http://stackoverflow.com/tags/font-lock/hot
   ;; (latex-unicode-simplified) ;; This doen't work due to some mysterious reason.
   (turn-on-reftex)
-
+  (setq reftex-default-bibliography '("~/Dropbox/Bibliography_all.bib"))
   (auto-fill-mode 1)
   (setq comment-auto-fill-only-comments nil)
   (writegood-mode)
@@ -869,6 +921,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (flyspell-mode)
   (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
   (define-key latex-extra-mode-map (kbd "C-0") 'latex-add-new-list-item)
+  (define-key latex-extra-mode-map (kbd "C-c 9") (lambda ()
+                                                   (interactive)
+                                                   (insert (reftex-reference " " t nil))))
   ;; warn every time we write would
   (font-lock-add-keywords 'latex-mode
    '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
@@ -878,6 +933,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
    '(("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)
      ("\\<\\(would\\)" 1 font-lock-warning-face t)))
+  (orgtbl-mode)
+
+  (tex-fold-mode 1)
+  (define-key latex-extra-mode-map (kbd "C-9") 'TeX-fold-dwim)
   )
 
 (defun my-ess-mode-hook ()
@@ -1006,6 +1065,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (set-face-attribute 'hl-sentence-face nil :foreground "#b44")
   (require 'ansi-color)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+  (add-to-list 'load-path "~/.emacs.d/el-get/textlint-recipe/")
+  (require 'textlint)
+  (smartparens-global-mode 1)
   )
 (provide 'init_func)
 ;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs

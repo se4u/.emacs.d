@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: problemanswer
+# key: pa
+# --
+\problemAnswer{$0
+}

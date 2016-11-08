@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: paragraph
-# key: pg
+# key: para
 # --
-\paragraph{$1}$0
+\paragraph{$1} $0

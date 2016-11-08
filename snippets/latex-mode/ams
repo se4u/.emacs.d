@@ -3,7 +3,7 @@
 # key: ams
 # --
 % -------------- ams ------------------- %
-\usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype}
+\usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype,breakcites}
 \newcommand{\union}{\cup}
 \newcommand{\th}[1]{#1^{\textrm{th}}}
 % refcmd

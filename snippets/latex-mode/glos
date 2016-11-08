@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: glos
+# key: glos
+# --
+% --------- glos ---------- %
+\usepackage{glossaries} % Must not occur before hyperref
+\makeglossaries
+% \printglossaries
+\newglossaryentry{}{name={}, long={},
+  description={},
+  first={~()}}
+\newcommand{\na}[1]{}

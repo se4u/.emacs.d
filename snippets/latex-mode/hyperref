@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: hyperref
+# key: hyperref
+# --
+% ------------- hyperref ------------------- %
+\usepackage[hidelinks]{hyperref}

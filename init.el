@@ -132,6 +132,8 @@
           'my-js-mode-hook)
 (add-hook 'shell-mode-hook
 	  'ansi-color-for-comint-mode-on)
+(add-hook 'prog-mode-hook
+          'eldoc-mode)
 (if (display-graphic-p)
     (add-hook 'prog-mode-hook 'fci-mode)
   ())
@@ -368,7 +370,6 @@
 (global-set-key (kbd "C-H-<backspace>") 'kill-word)
 (global-set-key (kbd "<kp-equal>") 'save-buffer)
 (global-set-key (kbd "<kp-decimal>") 'repeat)
-;;
 (global-set-key (kbd "s-.") 'my-find-file-at-point-wrapper)
 (global-set-key (kbd "s-v") 'yank)
 (global-set-key (kbd "s-c") 'kill-ring-save)
