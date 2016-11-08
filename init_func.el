@@ -696,7 +696,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
                 args
                 indent)))
     (unless (string= formatted-args "")
-      (mapconcat 'identity (list "Params" "------" formatted-args) indent))))
+      (mapconcat 'identity (list "--- INPUT ---" formatted-args) indent))))
 
 (defun python-args-to-docstring ()
   "return docstring format for the python arguments in yas-text"
@@ -718,7 +718,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
        (insert "'''\n")
        (insert (make-string curcol ? ))
        (insert (python-args-to-docstring-impl (buffer-substring arg-start arg-end)))
-       (insert (concat "\n" (make-string curcol ? ) "Returns\n" (make-string curcol ? ) "-------\n" (make-string curcol ? ) "'''"))))
+       (insert (concat "\n" (make-string curcol ? ) "--- OUTPUT ---\n" (make-string curcol ? ) "'''"))))
   (move-end-of-line nil))
 
 (defun insert-4-space ()
@@ -771,7 +771,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-python-mode-hook ()
   (run-python "python")
   (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  (electric-pair-mode 1)
+  ;; (electric-pair-mode 1)
   ;; (add-to-list 'company-backends 'company-anaconda)
   ;; (anaconda-mode)
   ;; (orgtbl-mode)
@@ -793,6 +793,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key python-mode-map (kbd "<kp-subtract>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<kp-add>") 'hs-show-block)
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
+  (smartparens-mode 1)
   )
 
 (defun my-html-mode-hook ()
@@ -1065,9 +1066,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (set-face-attribute 'hl-sentence-face nil :foreground "#b44")
   (require 'ansi-color)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-
   (add-to-list 'load-path "~/.emacs.d/el-get/textlint-recipe/")
   (require 'textlint)
+  (require 'smartparens-config)
   (smartparens-global-mode 1)
   )
 (provide 'init_func)

@@ -295,8 +295,10 @@
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
-(global-set-key (kbd "M-<left>") 'hs-hide-block)
-(global-set-key (kbd "M-<right>") 'hs-show-block)
+;; (global-set-key (kbd "M-<left>") 'hs-hide-block)
+;; (global-set-key (kbd "M-<right>") 'hs-show-block)
+;; (global-set-key (kbd "ESC <left>") 'hs-hide-block)
+;; (global-set-key (kbd "ESC <right>") 'hs-show-block)
 (global-set-key [27 down] 'transpose-line-down) ; M-down
 (global-set-key [27 up] 'transpose-line-up) ; M-up
 (global-set-key (kbd "M-0") 'delete-window)
@@ -316,7 +318,7 @@
 (global-set-key (kbd "M-RET") 'save-buffer)
 (global-set-key (kbd "M-D") 'kill-whole-line)
 (global-set-key (kbd "M-O V") 'my-generate-tags)
-(global-set-key (kbd "M-O W") 'buffer-save)
+(global-set-key (kbd "M-O W") 'magit-stage-commit-push)
 (global-set-key (kbd "M-O X") 'menu-bar-open)
 (global-set-key (kbd "M-O Y") 'magit-status)
 (global-set-key (kbd "M-O Z") 'kill-this-buffer)
