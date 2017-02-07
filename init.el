@@ -1,6 +1,13 @@
 ;;; package --- Setup.
 ;;; Commentary:
 ;;; Code:
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setq-default bidi-display-reordering nil)
 ;; Setting line move visual to nil is very annoying. When you
 ;; do this then the pointer moves by logical lines and skips over
@@ -12,7 +19,7 @@
 (ido-everywhere 1)
 
 (blink-cursor-mode -1)
-(set-cursor-color "DimGray")
+(set-cursor-color "Red")
 ;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
 ;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
 ;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
@@ -51,7 +58,7 @@
 (kill-buffer "*scratch*")
 (winner-mode 1)
 (column-number-mode 1)
-(fringe-mode '(nil . 0))
+(if (display-graphic-p) (fringe-mode '(nil . 0)))
 (setq ediff-split-window-function 'split-window-horizontally)
 ;; Settings for the abbreviation mode
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs") ;; Where to save/read abbrevs
@@ -96,12 +103,16 @@
 	  'my-cmake-mode-hook)
 (add-hook 'dired-mode-hook
           'my-dired-mode-hook)
+(add-hook 'doc-view-mode-hook
+          'auto-revert-mode)
 (add-hook 'find-file-hook
 	  'find-file-check-line-endings)
 (add-hook 'java-mode-hook
 	  'my-java-mode-hook)
 (add-hook 'LaTeX-mode-hook
 	  'my-latex-mode-hook)
+(add-hook 'markdown-mode-hook
+          'my-markdown-mode-hook)
 (add-hook 'matlab-shell-mode-hook
 	  'my-matlab-shell-mode-hook)
 (add-hook 'matlab-mode-hook
@@ -128,16 +139,14 @@
           'my-sgml-mode-hook)
 (add-hook 'html-mode-hook
           'my-html-mode-hook)
+(add-hook 'nxml-mode-hook
+          'my-nxml-mode-hook)
 (add-hook 'js-mode-hook
           'my-js-mode-hook)
 (add-hook 'shell-mode-hook
 	  'ansi-color-for-comint-mode-on)
 (add-hook 'prog-mode-hook
-          'eldoc-mode)
-(if (display-graphic-p)
-    (add-hook 'prog-mode-hook 'fci-mode)
-  ())
-
+          'my-prog-mode-hook)
 
 ;; ORG Mode Setup
 (setq org-publish-project-alist
@@ -285,7 +294,7 @@
 (global-set-key [f8] 'magit-stage-commit-push)
 (global-set-key [f13] 'pop-global-mark)
 (global-set-key [f14] 'auto-fill-mode)
-(global-set-key [f15] 'toggle-truncate-lines)
+(global-set-key [f15] 'mu4e)
 (global-set-key [f16] 'magit-status)
 (global-set-key [f17] 'keyboard-quit)
 (global-set-key [f18] 'kill-this-buffer)
@@ -295,8 +304,8 @@
 (global-set-key (kbd "M-DEL") 'kill-this-buffer)
 (global-set-key (kbd "M-<down>") 'transpose-line-down)
 (global-set-key (kbd "M-<up>") 'transpose-line-up)
-;; (global-set-key (kbd "M-<left>") 'hs-hide-block)
-;; (global-set-key (kbd "M-<right>") 'hs-show-block)
+(global-set-key (kbd "M-<left>") 'previous-multiframe-window)
+(global-set-key (kbd "M-<right>") 'next-multiframe-window)
 ;; (global-set-key (kbd "ESC <left>") 'hs-hide-block)
 ;; (global-set-key (kbd "ESC <right>") 'hs-show-block)
 (global-set-key [27 down] 'transpose-line-down) ; M-down
@@ -340,6 +349,9 @@
 (global-set-key (kbd "C-.") 'pop-tag-mark)
 (global-set-key (kbd "C-;")  'previous-line)
 (global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-4") 'bookmark-set)
+(global-set-key (kbd "C-5") 'bookmark-jump)
 (global-set-key (kbd "C-8") 'create-file-at-point)
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)

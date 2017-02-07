@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: setupdebug
+# key: setupdebug
+# --
+#-- Put this at the start of setup.py --#
+import os
+os.environ.setdefault('DISTUTILS_DEBUG', failobj='1')
+import distutils.log
+distutils.log.set_verbosity(distutils.log.DEBUG)

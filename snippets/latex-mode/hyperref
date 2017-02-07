@@ -3,4 +3,4 @@
 # key: hyperref
 # --
 % ------------- hyperref ------------------- %
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref} % Must occur as the last package.

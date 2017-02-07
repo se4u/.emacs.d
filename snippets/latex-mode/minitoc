@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: minitoc
+# key: minitoc
+# --
+% -------------- minitoc --------------- %
+\usepackage[tight,italian]{minitoc}
+\usepackage{silence}
+\WarningFilter{minitoc(hints)}{W0023}
+\WarningFilter{minitoc(hints)}{W0024}
+\WarningFilter{minitoc(hints)}{W0030}
+\WarningFilter{minitoc(hints)}{W0039}

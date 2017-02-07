@@ -63,8 +63,7 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/usr/local/R2012a/toolbox/matlab/funfun" "/usr/local/R2012a/toolbox/matlab/general")))
- '(tool-bar-mode nil)
- '(yas-global-mode t))
+ '(tool-bar-mode nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -5,32 +5,75 @@
 # name: \documentclass{beamer} ...
 # --
 \documentclass[xcolor=dvipsnames]{beamer}
-
-\usepackage{graphicx,subfigure,url}
-
+\usepackage{graphicx,subfloat,url,appendixnumberbeamer,textpos,booktabs,multicol}
+\usepackage[english]{babel} % manage typographical rules, and hyphenation
+\usepackage[utf8]{inputenc} % Allow utf8 in the tex document.
+\usepackage{xcolor}
+\usepackage{amsmath,upgreek,bm,amsfonts,amsthm}
+\usepackage{times} % Change fonts.
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{ulem}
 % example themes
-\usetheme{Frankfurt}
-\usecolortheme{seahorse}
-\usecolortheme{rose}
-
-% put page numbers
-% \setbeamertemplate{footline}[frame number]{}
-% remove navigation symbols
-% \setbeamertemplate{navigation symbols}{}
-
-\title{${1:Presentation Title}}
-\author{${2:Author Name}}
-
+\usetheme{Boadilla} % example themes
+\usecolortheme{beaver} % Put nice grey boxes around titles, headline in red.
+\setbeamertemplate{footline}[frame number]{} % put page numbers
+\setbeamertemplate{navigation symbols}{} % remove navigation symbols
+\setbeamertemplate{itemize items}{$\bullet$} % Use the vector checkmark symbol
+                                % instead of the ugly aliased bitmap bullet.
+\setbeamertemplate{frametitle}[default][center] % Center the frame titles.
+% Set the bullet colors in the presentation TOC.
+\setbeamerfont{section number projected}{series=\bfseries,size=\normalsize}
+\setbeamercolor{section number projected}{bg=white,fg=black}
+% Define a new theorem box style with different colors called mystyle.
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange!20,fg=red}
+    \setbeamercolor{block body example}{bg=orange!10,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem*{mytheorem}{Theorem}
+\theoremstyle{mystyle}
+\newtheorem*{remark}{Remark}
+\theoremstyle{mystyle}
+\newtheorem*{mydefinition}{Definition}
+\makeatletter
+\def\th@mystyletwo{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=blue!15,fg=blue!80}
+    \setbeamercolor{block body example}{bg=blue!5,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyletwo}
+\newtheorem*{myexample}{Example}
+\theoremstyle{mystyletwo}
+\newtheorem*{myapplication}{Application}
+%--------------------------------------------%
+% Set title, author, insitute, date and logo %
+%--------------------------------------------%
+\title[Prob Review]{Probability Review: Beyond Dices and Coins}
+\author[Pushpendre Rastogi]{Pushpendre Rastogi \\ {\scriptsize 4$^\mathrm{th}$
+    year CS Phd. Student} \\ {\scriptsize pushpendre@jhu.edu}}
+\institute[CS, JHU]{Johns Hopkins University}
+\date[]{}
+% \addtobeamertemplate{frametitle}{}{%
+% \begin{textblock*}{100mm}(.80\textwidth,-1cm)
+% \includegraphics[width=3cm]{%
+% ../../paper/mvppdb/tex/poster/figures/jhulogo.pdf}
+% \end{textblock*}}
 \begin{document}
-	
 \frame[plain]{\titlepage}
-	
+
 \begin{frame}[plain]{Outline}
-	\tableofcontents
+  \tableofcontents
 \end{frame}
-	
-\section{${3:Example Section}}
-\begin{frame}{${4:Frame Title}}
+
+\section{Example Section}
+\begin{frame}{Frame Title}
 
 \end{frame}
 

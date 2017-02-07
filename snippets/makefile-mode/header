@@ -8,3 +8,6 @@ SHELL := /bin/bash
 
 default:
 	echo "Say specific target"
+
+echo_%:
+        echo $($*)

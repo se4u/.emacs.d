@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: setup
+# key: setup
+# --
+from distutils.core import setup
+from distutils.extension import Extension
+from Cython.Distutils import build_ext
+import distutils.log
+distutils.log.set_verbosity(distutils.log.DEBUG)
+
+# http://stackoverflow.com/questions/18423512/
+# calling-c-code-from-python-using-cython-whith-the-distutilis-approach
+
+setup(
+    name="tmp",
+    ext_modules=[
+        Extension("tmp",
+                  sources=["tmp.pyx", "KrovetzStemmer.cpp"],
+                  include_dirs=["."],
+                  language='c++',
+                  # library_dirs=[],
+                  # libraries=['python2.7'],
+        ),
+    ],
+    cmdclass=dict(build_ext=build_ext))

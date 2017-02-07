@@ -52,9 +52,14 @@
  '(company-abort-manual-when-too-short t)
  '(company-auto-complete t)
  '(company-auto-complete-chars nil)
+ '(company-global-modes t)
  '(company-idle-delay 1)
  '(company-minimum-prefix-length 2)
+ '(company-quickhelp-delay 0.25)
+ '(company-quickhelp-max-lines 10)
  '(company-show-numbers t)
+ '(company-tooltip-limit 20)
+ '(cursor-in-non-selected-windows (quote hollow))
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
@@ -73,6 +78,7 @@
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(font-lock-maximum-decoration 2)
+ '(global-company-mode t)
  '(global-flycheck-mode t)
  '(header-date-format t)
  '(ido-ignore-buffers
@@ -82,18 +88,11 @@
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-buffer-choice "~/Dropbox/org/gtd.org")
- '(jedi:get-in-function-call-delay 4000)
- '(jedi:key-complete [C-\'])
- '(jedi:key-goto-definition [C-\.])
- '(jedi:key-related-names nil)
- '(jedi:key-show-doc [C-\;])
- '(jedi:server-command
-   (quote
-    (list "/Users/pushpendrerastogi/anaconda/envs/emacs-jedi")))
  '(jit-lock-stealth-nice nil)
  '(jit-lock-stealth-time nil)
  '(line-move-visual t)
  '(magit-use-overlays nil)
+ '(mail-host-address "pushpendre-mu4e")
  '(make-header-hook
    (quote
     (header-file-name header-description header-author header-creation-date header-modification-date header-update-count header-end-line)))
@@ -150,13 +149,20 @@
  '(org-return-follows-link t)
  '(package-selected-packages
    (quote
-    (magit header2 ac-python company-cmake company-coq company-jedi ac-c-headers ac-helm ac-math auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor helm-company helm-flycheck helm-flymake helm-google jedi-direx markdown-mode org-ac popup-complete recentf-ext writegood-mode yasnippet yaml-mode smex org-blog org multi-web-mode igrep flymake-shell flymake cython-mode csv-mode)))
+    (web-mode web-mode-edit-element latex-extra company-auctex htmlize mu4e-alert mu4e-maildirs-extension top-mode markdown-mode company-quickhelp elpy writegood-mode hl-anything expand-region auctex-latexmk hungry-delete ido-at-point smartparens yaml-mode exec-path-from-shell fill-column-indicator flycheck flycheck-cython flycheck-google-cpplint yasnippet magit header2 ac-c-headers ac-helm auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor org-ac popup-complete recentf-ext smex org-blog org multi-web-mode igrep flymake-shell flymake)))
+ '(python-eldoc-function-timeout 3)
+ '(python-eldoc-function-timeout-permanent nil)
  '(python-python-command
    "/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python")
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval defun reftex-get-bibfile-list nil
+    ((eval progn
+           (anaconda-mode -1)
+           (eldoc-mode -1)
+           (company-mode -1)
+           (linum-mode 1))
+     (eval defun reftex-get-bibfile-list nil
            (reftex-default-bibliography))
      (eval setq-default TeX-master nil)
      (eval setq-default TeX-master "root")
@@ -249,13 +255,15 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 587)
+ '(sp-escape-quotes-after-insert nil)
+ '(sp-escape-wrapped-region nil)
  '(tags-add-tables (quote ask-user))
  '(tags-case-fold-search nil)
- '(tags-table-list
-   (quote
-    ("/Users/pushpendrerastogi/.emacs.d/TAGS" "/Users/pushpendrerastogi/Dropbox/paper/nmcr/src/python/TAGS")))
  '(textlint-location-vm (quote textlint-location-vm-macos))
  '(tool-bar-mode nil)
+ '(w3m-default-display-inline-images t)
  '(warning-suppress-types (quote (undo discard-info)))
  '(yaml-block-literal-electric-alist nil)
  '(yaml-imenu-generic-expression (quote ((nil "^\\(:?[a-zA-Z_!-]+\\):" 1))))
@@ -269,12 +277,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
+ '(cursor ((t (:background "Red" :foreground "black"))))
  '(flycheck-warning ((t (:background "white"))))
+ '(flymake-errline ((t nil)))
  '(font-latex-sectioning-5-face ((t (:inherit variable-pitch :foreground "blue4" :weight normal))))
  '(font-latex-warning-face ((t (:foreground "red"))))
  '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))
  '(font-lock-warning-face ((t (:inherit error :background "yellow"))))
+ '(highlight-indent-guides-even-face ((t (:background "gridColor"))))
+ '(highlight-indent-guides-odd-face ((t (:background "selectedControlColor"))))
  '(magit-item-highlight ((t (:weight semi-bold))))
+ '(mode-line ((t (:background "Orange" :foreground "black" :box (:line-width -1 :style released-button)))))
  '(semantic-decoration-on-unknown-includes ((t nil)))
  '(semantic-decoration-on-unparsed-includes ((t nil)))
  '(semantic-highlight-func-current-tag-face ((t (:background "white"))))
