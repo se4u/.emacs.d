@@ -18,7 +18,6 @@
 
 (defun setup-markup ()
   (interactive)
-  (yas-minor-mode-on)
   (use-local-map (copy-keymap text-mode-map))
   (local-set-key [right] 'markup-fnplus)
   (define-derived-mode my-derived-mode text-mode
@@ -66,81 +65,6 @@ judgement_valid: Yes$0\n")
  `(let ((time (current-time)))
     ,@body
     (message "%.06f" (float-time (time-since time)))))
-
-;; Override the default json encoding mechanism because it is too slow.
-(eval-after-load "json"
-  '(defun json-encode-string (string)
-     "Return a JSON representation of STRING."
-     (with-temp-buffer
-       (insert string)
-       (goto-char (point-min))
-       ;; Skip over ASCIIish printable characters.
-       (while (re-search-forward "\\([\"\\/\b\f\n\r\t]\\)\\|[^ -~]" nil t)
-         (let ((c (char-before)))
-           (replace-match
-            (if (match-beginning 1)
-                ;; Special JSON character (\n, \r, etc.).
-                (string ?\\ (car (rassq c json-special-chars)))
-              ;; Fallback: UCS code point in \uNNNN form.
-              (format "\\u%04x" c))
-            t t)))
-       (concat "\"" (buffer-string) "\""))))
-
-;; Remove the pesky pre-command-refresh function from the pre-command-hook
-;; that eldoc mode unnecessarily adds.
-;; (eval-after-load "eldoc"
-;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area t nil))
-;; (eval-after-load "eldoc"
-;;   '(add-hook 'pre-command-hook 'eldoc-pre-command-refresh-echo-area nil t))
-(with-eval-after-load 'elisp-mode
-  (defadvice elisp--get-fnsym-args-string (after add-docstring activate compile)
-    "Add a 1st line of docstring to ElDoc's function information."
-    (when ad-return-value
-      (let* ((doc (elisp--docstring-first-line (documentation (ad-get-arg 0) t)))
-             (w (frame-width))
-             (color-doc (propertize doc 'face 'font-lock-comment-face)))
-        (when (and doc (not (string= doc "")))
-          (setq ad-return-value (concat ad-return-value " " color-doc))
-          (when (> (length doc) w)
-            (setq ad-return-value (substring ad-return-value 0 (1- w))))))
-      ad-return-value)))
-(defadvice eldoc-highlight-function-argument
-    (around my-formatting (sym args index) compile activate preactivate)
-  "Replace original to apply my style of formatting."
-  ;; HACK: intercept the call to eldoc-docstring-format-sym-doc at the
-  ;; end of the adviced function. This is obviously brittle, but the
-  ;; alternative approach of copy/pasting the original also has
-  ;; downsides...
-  (flet ((eldoc-docstring-format-sym-doc
-          (sym doc face)
-          (let* ((function-name (propertize (symbol-name sym)
-                                            'face face))
-                 (spec (format "%s %s" function-name doc))
-                 (docstring (or (eldoc-docstring-first-line
-                                 (documentation sym t))
-                                "Undocumented."))
-                 (docstring (propertize docstring
-                                        'face 'font-lock-doc-face))
-                 ;; TODO: currently it strips from the start of spec by
-                 ;; character instead of whole arguments at a time.
-                 (fulldoc (format "%s: %s" spec docstring))
-                 (ea-width (1- (window-width (minibuffer-window)))))
-            (cond ((or (<= (length fulldoc) ea-width)
-                       (eq eldoc-echo-area-use-multiline-p t)
-                       (and eldoc-echo-area-use-multiline-p
-                            (> (length docstring) ea-width)))
-                   fulldoc)
-                  ((> (length docstring) ea-width)
-                   (substring docstring 0 ea-width))
-                  ((>= (- (length fulldoc) (length spec)) ea-width)
-                   docstring)
-                  (t
-                   ;; Show the end of the partial symbol name, rather
-                   ;; than the beginning, since the former is more likely
-                   ;; to be unique given package namespace conventions.
-                   (setq spec (substring spec (- (length fulldoc) ea-width)))
-                   (format "%s: %s" spec docstring))))))
-    ad-do-it))
 
 (defun my-generate-tags ()
   (interactive)
@@ -198,34 +122,6 @@ judgement_valid: Yes$0\n")
   (interactive "*")
   (uniquify-all-lines-region (point-min) (point-max)))
 
-;; (defun my-speedbar-no-separate-frame ()
-;;     (interactive)
-;;     (when (not (buffer-live-p speedbar-buffer))
-;;       (setq speedbar-buffer (get-buffer-create my-speedbar-buffer-name)
-;;             speedbar-frame (selected-frame)
-;;             dframe-attached-frame (selected-frame)
-;;             speedbar-select-frame-method 'attached
-;;             speedbar-verbosity-level 0
-;;             speedbar-last-selected-file nil)
-;;       (set-buffer speedbar-buffer)
-;;       (speedbar-mode)
-;;       (speedbar-reconfigure-keymaps)
-;;       (speedbar-update-contents)
-;;       (speedbar-set-timer 1)
-;;       (make-local-hook 'kill-buffer-hook)
-;;       (add-hook 'kill-buffer-hook
-;;                 (lambda () (when (eq (current-buffer) speedbar-buffer)
-;;                              (setq speedbar-frame nil
-;;                                    dframe-attached-frame nil
-;;                                    speedbar-buffer nil)
-;;                              (speedbar-set-timer nil)))))
-;;     (set-window-buffer (selected-window)
-;;                        (get-buffer my-speedbar-buffer-name)))
-
-;; http://endlessparentheses.com/fixing-double-capitals-as-you-type.html
-;; http://emacs.stackexchange.com/q/13970/50
-;; Note that this mode automatically changes words that start with two
-;; caps to single cap like THe -> The but it does not change THE.
 (defun dcaps-to-scaps ()
   "Convert word in DOuble CApitals to Single Capitals."
   (interactive)
@@ -286,6 +182,19 @@ be global."
         (replace-match ">\n<" t t))
       (goto-char beg)
       (indent-region beg end nil))))
+
+(defun my-nxml-mode-hook ()
+  (hs-minor-mode 1)
+  (add-to-list 'hs-special-modes-alist
+               '(nxml-mode
+                 "<!--\\|<[^/>]*[^/]>"
+                 "-->\\|</[^/>]*[^/]>"
+                 "<!--"
+                 sgml-skip-tag-forward
+                 nil))
+  (define-key nxml-mode-map (kbd "C-c h") 'hs-toggle-hiding)
+  )
+
 
 (defun active-learn-publishing-completion ()
   "Set file permissions and clean up after publishing"
@@ -576,12 +485,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
     (execute-kbd-macro [?\C-u ?\C- ])))
 
 (defun c-hook-func()
-  ;;(setq ac-sources (append '(ac-source-semantic) ac-sources))
-  (linum-mode t)
-  (c-turn-on-eldoc-mode)
-  (font-lock-add-keywords nil
-			  '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
-			    ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face))))
+  (font-lock-add-keywords
+   nil
+   '(("\\<\\(FIXME\\):" 1 font-lock-warning-face prepend)
+     ("\\<\\(and\\|or\\|not\\)\\>" . font-lock-keyword-face))))
 
 
 (defun org-transpose-table-at-point ()
@@ -640,7 +547,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq matlab-indent-function-body nil); indent function bodies
   (setq matlab-verify-on-save-flag t); verify on save
   (if (display-graphic-p) (fci-mode) ())
-  (company-mode -1)
   )
 
 (defun run-matlab-once ()
@@ -696,7 +602,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
                 args
                 indent)))
     (unless (string= formatted-args "")
-      (mapconcat 'identity (list "--- INPUT ---" formatted-args) indent))))
+      (mapconcat 'identity (list formatted-args) indent))))
 
 (defun python-args-to-docstring ()
   "return docstring format for the python arguments in yas-text"
@@ -740,6 +646,42 @@ directory as the org-buffer and insert a link to this file. This function wont w
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
+(defun LaTeX-transpose-table (start end)
+  (interactive "r")
+  (goto-char start)
+  (let ((last start)
+        (rows (list ()))
+        (nrows 0)
+        (ncols 0)
+        (maxcols 0))
+    (while (re-search-forward "&\\|\\\\\\\\" end t)
+      (setf (car rows)
+            (cons (buffer-substring last (match-beginning 0)) (car rows)))
+      (incf ncols)
+      (when (string= "\\\\" (match-string-no-properties 0))
+        (setq maxcols (max maxcols ncols))
+        (setq rows (cons () rows))
+        (incf nrows)
+        (setq ncols 0))
+      (setq last (match-end 0))
+      (goto-char last))
+    ;; empty row
+    (setq rows (cdr rows))
+    ;; now output the transposed variant
+    (kill-region start end)
+    (insert
+      (let (i j table trow)
+        (loop for j from 1 upto maxcols collect
+          (loop for i from 1 upto nrows
+            collect (let* ((row (nth (- nrows i) rows))
+                           (cell (if row (nth (- maxcols j) row) "")))
+                      (concat cell (if (< i nrows) "&" "\\\\\n")))
+            into trow
+            finally return (apply 'concat trow))
+          into table
+          finally return (apply 'concat table)))))
+  (message "Old table saved to kill ring."))
+
 (defun transpose-line-down ()
   (interactive) (beginning-of-line 2) (transpose-lines 1) (beginning-of-line 0))
 
@@ -768,17 +710,31 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (and (zerop (buffer-size)) (not buffer-read-only) (buffer-file-name)
        (progn (insert "header") (message "Press [TAB] to insert header"))))
 
+
+(defun python-mode-setup-tabs ()
+  (interactive)
+  (setq indent-tabs-mode t)
+  (setq python-indent 8)
+  (setq tab-width 4)
+  )
+
 (defun my-python-mode-hook ()
-  (run-python "python")
-  (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  ;; (electric-pair-mode 1)
-  ;; (add-to-list 'company-backends 'company-anaconda)
-  ;; (anaconda-mode)
-  ;; (orgtbl-mode)
+  ;; (run-python)
+  (company-mode 1)
+  (company-quickhelp-mode 1)
+  ;; Minor modes.
+  (auto-fill-mode 1)
+  (hs-minor-mode)
+  ;; Editing support
+  ;; (setq pychecker-regexp-alist
+  ;;       '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+  (modify-syntax-entry 95 "w") ; Consider _ as part of a word.
+  ;; Header maintenance
   (autoload 'auto-update-file-header "header2")
   (my-insert-header)
   (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
   (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
+  ;; Add keywords to font lock.
   (font-lock-add-keywords
    'python-mode
    '(("\\<\\(sys.argv\\)" 0 'font-lock-warning-face)
@@ -788,23 +744,24 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(QQQ\\)" 1 font-lock-warning-face t)
      ("\\<\\(TODO\\)" 1 font-lock-warning-face t)
      ("\\<\\(NOTE\\)" 1 font-lock-warning-face t)))
-  (auto-fill-mode 1)
-  (hs-minor-mode)
+  ;; Add key bindings
   (define-key python-mode-map (kbd "<kp-subtract>") 'hs-hide-block)
   (define-key python-mode-map (kbd "<kp-add>") 'hs-show-block)
   (define-key python-mode-map (kbd "<C-d>") 'hungry-delete-forward)
-  (smartparens-mode 1)
+  (define-key python-mode-map (kbd "C-?") 'elpy-doc)
+  (define-key python-mode-map (kbd "C-c C-d") 'elpy-doc)
+  (define-key python-mode-map (kbd "C-M-i") 'elpy-company-backend)
+  ;; Bugfix
+  ;; Somehow the C-c C-d key for elpy doc clashes with a key that yas sets.
+  ;; If I set this value to nil then the clash does not happen any more.
+  (define-key yas-minor-mode-map (kbd "C-c C-d") 'elpy-doc)
+  (setq yas--direct-python-mode nil)
   )
 
 (defun my-html-mode-hook ()
-  (my-insert-header)
+  ;;(my-insert-header)
   (define-key html-mode-map (kbd "C-p") 'save-line-to-kill-ring)
   (local-set-key (kbd "C-p") 'save-line-to-kill-ring)
-  (highlight-indent-guides-mode)
-  (set-face-background 'highlight-indent-guides-even-face "grey")
-  (set-face-background 'highlight-indent-guides-odd-face "lightgrey")
-  ;;(add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
-  ;;(add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   )
 
 (defun my-sgml-mode-hook ()
@@ -845,6 +802,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
   (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
+  (define-key org-mode-map (kbd "C-c d") 'org-deadline)
   (define-key org-mode-map (kbd "C-c C-S-o") 'org-mark-ring-goto)
   (define-key org-mode-map (kbd "C-c C-o") 'org-open-at-point)
   (define-key org-mode-map (kbd "<M-up>") 'org-shiftmetaup)
@@ -940,6 +898,16 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key latex-extra-mode-map (kbd "C-9") 'TeX-fold-dwim)
   )
 
+(defun my-markdown-mode-hook ()
+  (orgstruct-mode))
+
+(defun my-prog-mode-hook ()
+  ;; (eldoc-mode)
+  ;; (if (display-graphic-p)
+  ;;     ;; (highlight-indent-guides-mode) ;; Too ugly
+  ;;     ;; (progn (fci-mode) )
+  ())
+
 (defun my-ess-mode-hook ()
   (ess-set-style 'C++ 'quiet)
   (ess-toggle-underscore nil)
@@ -994,12 +962,67 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (find-file-at-point)
   )
 
+(defun my-mu4e-setup ()
+  ;; http://www.ict4g.net/adolfo/notes/2014/12/27/EmacsIMAP.html
+  ;; http://manifold.io/blog/setting-up-mu4e
+  (setq
+   mail-user-agent 'mu4e-user-agent             ;; set mu4e as default mail client
+   mu4e-maildir "/Users/pushpendrerastogi/.mail"                 ;; root mail directory
+   mu4e-attachments-dir "/Users/pushpendrerastogi/.mail_attachments"
+   mu4e-get-mail-command "mbsync -q -a"         ;; update command
+   mu4e-update-interval (* 60 60)                ;; update database every sixty minutes
+   message-send-mail-function 'message-send-mail-with-sendmail ;; use smtpmail (bundled with emacs) for sending
+   sendmail-program "msmtp"
+   smtpmail-debug-info t                        ;; optionally log smtp output to a buffer
+   message-kill-buffer-on-exit t                ;; close sent message buffers
+   mu4e-headers-fields '((:flags      . 4)      ;; customize list columns
+                         (:from       . 20)
+                         (:human-date . 10)
+                         (:subject))
+   mu4e-change-filenames-when-moving t ;; for mbsync
+   mu4e-context-policy 'pick-first     ;; pick first context automatically on launch
+   mu4e-compose-context-policy nil     ;; use current context for new mail
+   mu4e-confirm-quit           nil
+   mu4e-html2text-command "w3m -dump -T text/html"
+   mu4e-drafts-folder "/local/drafts"
+   mu4e-sent-folder "/local/sent"
+   mu4e-trash-folder "/local/trash"
+   mu4e-view-prefer-html t
+   mu4e-view-show-images t
+   mu4e-compose-signature "Thanks,\nPushpendre\n"
+   )
+  (add-to-list
+   'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (setq
+   user-mail-address "pushpendre@gmail.com"
+   user-full-name  "Pushpendre Rastogi"
+  )
+  ;; https://github.com/iqbalansari/mu4e-alert
+  (mu4e-alert-set-default-style 'notifier)
+  (mu4e-alert-enable-mode-line-display)
+  (mu4e-alert-enable-notifications)
+  )
+
+(defun setup-el-get ()
+  "docstring"
+  ;; (add-to-list 'load-path "~/.emacs.d/el-get/textlint-recipe/")
+  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+  (unless (require 'el-get nil 'noerror)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+  (el-get 'sync)
+  )
+
 (defun my-after-init-hook ()
   (add-to-list 'load-path "~/.emacs.d/snippets")
-  (require 'yasnippet)
   (add-package-managers)
+  ;; (yas-minor-mode-on) ;; It's possible to add this to prog-mode hook instead
+  (yas-global-mode 1)
   (recentf-mode 1)
-  ;; (global-company-mode 1)     ;; Company mode globally is a visual autocompletion mode.
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
   (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
@@ -1009,16 +1032,13 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
 	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS"
-          "*magit-process*" "*Flycheck error message*" "*Ediff Registry*"
-          "*Ibuffer*" "*epc con " "#" "*magit" "*Help*" "*tramp"
+          "*Flycheck error message*" "*Ediff Registry*"
+          "*Ibuffer*" "*epc con " "#" "*Help*" "*tramp"
           "*anaconda-mode*" "*anaconda-doc*" "*info*"
           "*Shell Command Output*" "*Compile-Log*" "*Python*"
           "*notes*" "*Reftex Select*" "*Shell Command Output*"
           "*.+ output*" "*TeX Help*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
-  (autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
-  (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
-  (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
   (setq exec-path (append exec-path '("/usr/local/bin")))
   (setq org-src-fontify-natively t)
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -1031,16 +1051,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq org-plantuml-jar-path
         (expand-file-name "~/.emacs.d/plantuml.jar"))
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-  (require 'expand-region)
-  (global-set-key (kbd "C-=") 'er/expand-region)
-  ;; http://draketo.de/light/english/free-software/read-your-python-module-documentation-emacs
-  ;; https://bitbucket.org/jonwaltman/pydoc-info
-  (require 'pydoc-info)
-  (pydoc-info-add-help '("python" "theano" "pylearn2" "Lasagne"))
+
   (add-to-list 'load-path "~/.emacs.d/mymodes")
   (require 'stripes)
-  (require 'yaml-mode)
-  (require 'math-symbol-lists)
   (quail-define-package "math" "UTF-8" "Ω" t)
   (quail-define-rules ; Manual overrides for the Tex Input method
    ("\\from"    #X2190)
@@ -1049,29 +1062,25 @@ directory as the org-buffer and insert a link to this file. This function wont w
    ("\\rhd"     #X22B3)
    ("\\unlhd"   #X22B4)
    ("\\unrhd"   #X22B5))
-  (mapc (lambda (x)
-        (if (cddr x)
-            (quail-defrule (cadr x) (car (cddr x)))))
-        (append math-symbol-list-basic math-symbol-list-extended))
-  (add-to-list 'load-path "~/.emacs.d/matlab-emacs/")
-  (require 'matlab-load)
-  (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
-  (yas-global-mode 1)
-  (matlab-cedet-setup)
-  (setq ess-nuke-trailing-whitespace-p t)
-  (autoload 'R-mode "ess-site.el" "" t)
-  (add-to-list 'auto-mode-alist '("\\.[rR]\\'" . R-mode))
+  ;; (require 'math-symbol-lists)
+  ;; (mapc (lambda (x)
+  ;;       (if (cddr x)
+  ;;           (quail-defrule (cadr x) (car (cddr x)))))
+  ;;       (append math-symbol-list-basic math-symbol-list-extended))
   (setq-default TeX-master nil)
-  (require 'hl-sentence)
-  (set-face-attribute 'hl-sentence-face nil :foreground "#b44")
-  (require 'ansi-color)
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-  (add-to-list 'load-path "~/.emacs.d/el-get/textlint-recipe/")
-  (require 'textlint)
   (require 'smartparens-config)
   (smartparens-global-mode 1)
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+  (require 'mu4e)
+  (my-mu4e-setup)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("elpy" . "https://jorgenschaefer.github.io/packages/"))
+  (package-initialize)
+  (elpy-enable)
+  (elpy-use-ipython)
   )
+
 (provide 'init_func)
-;; Set line spacing http://stackoverflow.com/questions/5061321/letterspacing-in-gnu-emacs
-;; or use customize-face and set height to 100.
 ;;; init_func.el ends here
