@@ -1,5 +1,23 @@
 ;;; Requires
 (require 'cl-lib)
+
+(defun sh-send-line-or-region-and-step ()
+  ;; Actually we only send a line. The original code was more complex but it did not work.
+  ;; https://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
+  (interactive)
+  (setq this-buffer (current-buffer))
+  (setq proc (get-process "shell"))
+  (setq pbuff (process-buffer proc))
+  (setq command (concat (buffer-substring (point-at-bol) (point-at-eol)) "\n"))
+  (switch-to-buffer pbuff)
+  (goto-char (process-mark proc))
+  ;;(insert command)
+  (process-send-string  proc command)
+  (goto-char (point-max))
+  (switch-to-buffer this-buffer)
+  (next-line)
+  )
+
 ;;; Code
 (defun kill-word-at-point ()
   "Kill the word under cursor"
@@ -209,7 +227,14 @@ be global."
 (defun dos-file-endings-p ()
   (string-match "dos" (symbol-name buffer-file-coding-system)))
 
-(defun find-file-check-line-endings ()
+(defun my-find-file-hook ()
+  (when (string-match "build" (buffer-file-name) 1)
+    (face-remap-add-relative
+     'mode-line
+     '((:foreground "ivory" :background "purple") mode-line))
+    (face-remap-add-relative
+     'mode-line-inactive
+     '((:foreground "ivory" :background "purple") mode-line)))
   (when (dos-file-endings-p)
     (set-buffer-file-coding-system 'undecided-unix)
     (set-buffer-modified-p nil)))
@@ -720,20 +745,20 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-python-mode-hook ()
   ;; (run-python)
-  (company-mode 1)
-  (company-quickhelp-mode 1)
+  ;; (company-mode 1)
+  ;; (company-quickhelp-mode 1)
   ;; Minor modes.
-  (auto-fill-mode 1)
-  (hs-minor-mode)
+  ;; (auto-fill-mode 1)
+  ;; (hs-minor-mode)
   ;; Editing support
   ;; (setq pychecker-regexp-alist
   ;;       '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
   (modify-syntax-entry 95 "w") ; Consider _ as part of a word.
   ;; Header maintenance
-  (autoload 'auto-update-file-header "header2")
-  (my-insert-header)
-  (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
-  (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
+  ;; (autoload 'auto-update-file-header "header2")
+  ;; (my-insert-header)
+  ;; (add-hook 'write-file-hooks 'auto-update-file-header nil 'make-it-local)
+  ;; (add-hook 'after-save-hook 'my-python-after-save-hook nil 'make-it-local)
   ;; Add keywords to font lock.
   (font-lock-add-keywords
    'python-mode
@@ -768,6 +793,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (define-key sgml-mode-map (kbd "C-c C-p") 'sgml-skip-tag-backward)
   (define-key sgml-mode-map (kbd "C-c C-n") 'sgml-skip-tag-forward)
   )
+
+(defun my-sh-mode-hook ()
+  (define-key sh-mode-map (kbd "<C-return>") 'sh-send-line-or-region-and-step))
 
 (defun my-js-mode-hook ()
   (font-lock-add-keywords
@@ -844,8 +872,8 @@ directory as the org-buffer and insert a link to this file. This function wont w
 (defun my-latex-mode-hook ()
   ;; (hl-sentence-mode)
   (message "running my-latex-mode-hook")
-  (require 'company-auctex)
-  (company-auctex-init)
+  ;; (require 'company-auctex)
+  ;; (company-auctex-init)
   ;; Disable latex-pretty-symbols
   ;; (require #'latex-pretty-symbols)
 
@@ -876,7 +904,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (auto-fill-mode 1)
   (setq comment-auto-fill-only-comments nil)
   (writegood-mode)
-  (setq reftex-plug-into-AUCTeX t)
+  ;; (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
   (define-key latex-extra-mode-map (kbd "C-0") 'latex-add-new-list-item)
@@ -1025,10 +1053,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (recentf-mode 1)
   (global-flycheck-mode)
   (setq flycheck-check-syntax-automatically '(mode-enabled save newline))
-  (when (equal system-type 'darwin) (exec-path-from-shell-initialize))
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
-  (load "auctex.el" nil t t)
+  ;; (load "auctex.el" nil t t)
   (setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
 	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS"
@@ -1039,7 +1066,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
           "*notes*" "*Reftex Select*" "*Shell Command Output*"
           "*.+ output*" "*TeX Help*"))
   (setq ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
-  (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq exec-path (append exec-path '("/usr/local/bin"
+				      "/Users/rastogi/anaconda2/bin"
+				      "/Library/TeX/texbin")))
   (setq org-src-fontify-natively t)
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
         backup-by-copying t    ; Don't delink hardlinks
@@ -1071,15 +1100,15 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
   (require 'smartparens-config)
   (smartparens-global-mode 1)
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
-  (require 'mu4e)
-  (my-mu4e-setup)
+  ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+  ;; (require 'mu4e)
+  ;; (my-mu4e-setup)
   (require 'package)
   (add-to-list 'package-archives
                '("elpy" . "https://jorgenschaefer.github.io/packages/"))
   (package-initialize)
-  (elpy-enable)
-  (elpy-use-ipython)
+  ;; (elpy-enable)
+  ;; (elpy-use-ipython)
   )
 
 (provide 'init_func)

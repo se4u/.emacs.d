@@ -81,12 +81,12 @@
   (add-to-list 'load-path "~/.emacs.d/w3m/")
 
   (require 'w3m))
-(if (equal system-type 'darwin)
-    (if (display-graphic-p)
-	(setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
-      (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
-  (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
-(load custom-file)
+;; (if (equal system-type 'darwin)
+;;     ;; (if (display-graphic-p)
+;;     ;;     (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
+;;     ;;   (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
+;;   (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
+;; (load custom-file)
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
 	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
@@ -106,7 +106,7 @@
 (add-hook 'doc-view-mode-hook
           'auto-revert-mode)
 (add-hook 'find-file-hook
-	  'find-file-check-line-endings)
+	  'my-find-file-hook)
 (add-hook 'java-mode-hook
 	  'my-java-mode-hook)
 (add-hook 'LaTeX-mode-hook
@@ -137,14 +137,16 @@
           'my-ess-mode-hook)
 (add-hook 'sgml-mode-hook
           'my-sgml-mode-hook)
+(add-hook 'shell-mode-hook
+	  'ansi-color-for-comint-mode-on)
+(add-hook 'sh-mode-hook
+          'my-sh-mode-hook)
 (add-hook 'html-mode-hook
           'my-html-mode-hook)
 (add-hook 'nxml-mode-hook
           'my-nxml-mode-hook)
 (add-hook 'js-mode-hook
           'my-js-mode-hook)
-(add-hook 'shell-mode-hook
-	  'ansi-color-for-comint-mode-on)
 (add-hook 'prog-mode-hook
           'my-prog-mode-hook)
 
@@ -427,3 +429,38 @@
 ;; SETUP Package Managers
 (add-hook 'after-init-hook
 	  'my-after-init-hook)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
+ '(indent-tabs-mode nil)
+ '(js-indent-level 2)
+ '(org-agenda-files (quote ("~/Dropbox/org/gtd.org")))
+ '(org-clock-persist (quote history))
+ '(org-confirm-babel-evaluate nil)
+ '(org-enforce-todo-checkbox-dependencies t)
+ '(org-enforce-todo-dependencies t)
+ '(org-from-is-user-regexp "\\<Pushpendre Rastogi\\>")
+ '(org-hide-leading-stars t)
+ '(org-list-allow-alphabetical t)
+ '(org-log-done (quote time))
+ '(org-plantuml-jar-path "/Users/rastogi/.emacs.d/plantuml.jar")
+ '(org-src-fontify-natively t)
+ '(org-startup-truncated nil)
+ '(org-todo-keywords (quote ((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))))
+ '(org-use-tag-inheritance nil)
+ '(package-selected-packages
+   (quote
+    (zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+ '(safe-local-variable-values (quote ((TeX-master . t))))
+ '(tab-width 2))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-hide ((t (:foreground "White")))))
