@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ntm
+# key: ntm
+# --
+\newtheorem{$1}{${1:$(capitalize yas-text)}}
