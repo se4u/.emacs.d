@@ -1,6 +1,16 @@
 ;;; Requires
 (require 'cl-lib)
 
+(defun visual-line-line-range ()
+  (save-excursion
+    (cons
+     (progn (vertical-motion 0) (point))
+     (progn (vertical-motion 1) (point)))))
+
+(defun my-hl-line-mode-hook ()
+  (visual-line-mode)
+  (set (make-local-variable 'hl-line-range-function) #'visual-line-line-range))
+
 (defun sh-send-line-or-region-and-step ()
   ;; Actually we only send a line. The original code was more complex but it did not work.
   ;; https://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
