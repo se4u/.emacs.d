@@ -357,7 +357,6 @@
 (global-set-key (kbd "C-8") 'create-file-at-point)
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
-(global-set-key (kbd "C-l") 'recenter)
 (global-set-key (kbd "C-M-e") 'mark-file-at-point-as-executable)
 (global-set-key (kbd "M-r") 'goto-random-line)
 (define-key ctl-x-map (kbd "C-i") #'endless/ispell-word-then-abbrev)
@@ -455,7 +454,8 @@
  '(org-use-tag-inheritance nil)
  '(package-selected-packages
    (quote
-    (zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+    (yaml-mode zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+ '(recenter-positions (quote (middle top)))
  '(safe-local-variable-values (quote ((TeX-master . t))))
  '(tab-width 2))
 (custom-set-faces
@@ -463,4 +463,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-hide ((t (:foreground "White")))))
+ '(org-hide ((t (:foreground "White"))))
+ '(org-table ((t (:foreground "Blue1" :underline "selectedTextBackgroundColor")))))

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: param
+# key: param
+# --
+name:
+in:
+description:
+schema:
+    type: object
+    properties:
+    required:

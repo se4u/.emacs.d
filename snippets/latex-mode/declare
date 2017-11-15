@@ -1,0 +1,4 @@
+# key: declare
+# name: declare
+# --
+\DeclareMathOperator{\\${1:Ber}}{$1}

@@ -816,6 +816,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (abbrev-mode -1))
 
 (defun my-org-mode-hook ()
+  (setq org-startup-with-inline-images t)
   (font-lock-add-keywords
    nil
    '(("\\<\\(NOTE:\\)" 1 font-lock-warning-face t)

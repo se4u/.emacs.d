@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: minitoc
-# key: minitoc
+# key: toc
 # --
 % -------------- minitoc --------------- %
 \usepackage[tight,italian]{minitoc}
@@ -9,3 +9,4 @@
 \WarningFilter{minitoc(hints)}{W0024}
 \WarningFilter{minitoc(hints)}{W0030}
 \WarningFilter{minitoc(hints)}{W0039}
+% \tableofcontents

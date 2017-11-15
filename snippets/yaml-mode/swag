@@ -1,0 +1,23 @@
+# key: swag
+# name: swag
+# --
+swagger: '2.0'
+host: ${1:api.shephbot.com}
+basePath: /
+info:
+  title: Swagger Api
+  description: The Shephbot Rest Api.
+  termsOfService: https://shephbot.com/pages/terms/
+  contact:
+    name: Shephbot Support
+    email: support@shephbot.com
+  license:
+    name: Proprietary, All Rights Reserved to Pushpendre Rastogi
+  version: 0.0.1
+schemes:
+ - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths: {}

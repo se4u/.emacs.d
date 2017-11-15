@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: geometry
+# key: geometry
+# --
+\usepackage[margin=1in]{geometry}
