@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
-# name: theoremcmd
-# key: theoremcmd
+# name: theorem
+# key: theorem
 # --
-% ------------ theoremcmd --------------- %
-\newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
-% ntm
+\begin{theorem}[$1]
+$0
+\end{theorem}

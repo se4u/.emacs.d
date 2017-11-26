@@ -4,3 +4,4 @@
 # --
 % ------------- hyperref ------------------- %
 \usepackage[hidelinks]{hyperref} % Must occur as the last package.
+% [colorlinks,linkcolor=blue,urlcolor=blue]

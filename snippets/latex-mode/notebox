@@ -2,6 +2,6 @@
 # name: notebox
 # key: notebox
 # --
-\begin{notebox}
+\begin{notebox}[$1]
 $0
 \end{notebox}

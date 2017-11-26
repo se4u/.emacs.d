@@ -4,7 +4,46 @@
 # --
 % -------------- ams ------------------- %
 \usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype,breakcites}
+% \usepackage[margin=1in,top=1in]{geometry}
+\usepackage[shortlabels]{enumitem}
 \newcommand{\union}{\cup}
-\newcommand{\th}[1]{#1^{\textrm{th}}}
-% refcmd
-% eg
+\newcommand{\ath}[1]{#1^{\textrm{th}}}
+% --------- refcmd ------------ %
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\ssecref}[1]{Subsection~\ref{#1}}
+\newcommand{\charef}[1]{Chapter~\ref{#1}}
+\newcommand{\algoref}[1]{Algorithm~\ref{#1}}
+\newcommand{\eqnref}[1]{Equation~\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+% ----------- eg ------------ %
+\usepackage{xspace}
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\bigeg}{E.g.,\xspace}
+\newcommand{\etal}{\textit{et~al.\xspace}}
+\newcommand{\etc}{etc.\@\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\bigie}{I.e.,\xspace}
+% -------- noteboxcmd -------- %
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+% mirrors.ibiblio.org/CTAN/macros/latex/exptl/thmtools/thmtools.pdf
+\declaretheoremstyle[spaceabove=6pt, spacebelow=6pt, headfont=\normalfont\bfseries, %
+notefont=\mdseries, %
+notebraces={(}{)}, bodyfont=\normalfont, postheadspace=1em, qed=\qedsymbol]{mystyle}
+\declaretheorem[name=Note,within=section,thmbox=S,
+  shaded={rulewidth=2pt,rulecolor=Lavender},%shadethm
+]{notebox}
+% -------------- minitoc --------------- %
+\usepackage[tight,italian]{minitoc}
+\usepackage{silence}
+\WarningFilter{minitoc(hints)}{W0023}
+\WarningFilter{minitoc(hints)}{W0024}
+\WarningFilter{minitoc(hints)}{W0030}
+\WarningFilter{minitoc(hints)}{W0039}
+% ------- paper specific cmd ------ %
+% \tableofcontents
+% \listoftheorems

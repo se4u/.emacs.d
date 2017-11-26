@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cenum
+# key: cenum
+# --
+\begin{compactenum}${1:[a)]}
+\item $0
+\end{compactenum}

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: subeq
+# key: subeq
+# --
+\begin{subequations}
+\begin{${1:align}}
+$0
+\end{$1}
+\end{subequations}

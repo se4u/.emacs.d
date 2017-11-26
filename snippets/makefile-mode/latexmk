@@ -2,6 +2,7 @@
 # name: latexmk
 # key: latexmk
 # --
+SHELL := /bin/bash
 LATEXMK := latexmk -pvc -pdf
 PDFLATEXCMD := pdflatex %O -interaction=nonstopmode -synctex=1
 
