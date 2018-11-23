@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: manualbib
+# key: manualbib
+# --
+
+\begin{thebibliography}{111}
+
+bibitem
+
+bibitem
+
+\end{thebibliography}

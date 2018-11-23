@@ -29,7 +29,6 @@
 ;; (semantic-mode)
 ;; (global-semantic-idle-completions-mode)
 ;; (global-semantic-decoration-mode)
-
 ;; (global-semantic-highlight-func-mode)
 ;; (global-semantic-show-unmatched-syntax-mode nil)
 ;; (global-srecode-minor-mode 1)
@@ -78,9 +77,7 @@
    scroll-down-aggressively 0.01
    scroll-conservatively 100000
    scroll-preserve-screen-position 1)
-  (add-to-list 'load-path "~/.emacs.d/w3m/")
-
-  (require 'w3m))
+)
 ;; (if (equal system-type 'darwin)
 ;;     ;; (if (display-graphic-p)
 ;;     ;;     (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
@@ -268,17 +265,17 @@
 
 
 (eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-	       '("\\.py\\'" flymake-pyflakes-init))
-  )
+;; (when (load "flymake" t)
+;;   (defun flymake-pyflakes-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list "pyflakes" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;; 	       '("\\.py\\'" flymake-pyflakes-init))
+;;   )
 ;; Key bindings
 ;; They should be set last so that they override any other mode
 (global-set-key (kbd "<S-kp-9>") '(lambda () (interactive) (insert "(")))
@@ -354,9 +351,11 @@
 (global-set-key (kbd "C-;")  'previous-line)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C-4") 'bookmark-set)
-(global-set-key (kbd "C-5") 'bookmark-jump)
+(global-set-key (kbd "C-1") 'bookmark-set)
+(global-set-key (kbd "C-2") 'bookmark-jump)
+(global-set-key (kbd "C-5") 'magit)
 (global-set-key (kbd "C-8") 'create-file-at-point)
+(global-set-key (kbd "C-9") 'yas-expand)
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)
 (global-set-key (kbd "C-M-e") 'mark-file-at-point-as-executable)
@@ -392,6 +391,7 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)
 (global-set-key (kbd "s-o") 'ido-find-file)
+(global-set-key (kbd "C-M-x M-n") 'overwrite-mode)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
@@ -427,6 +427,7 @@
 ;; (byte-recompile-directory package-user-dir nil 'force)
 ;; (dolist (package-name package-activated-list) (package-install package-name))
 
+
 ;; SETUP Package Managers
 (add-hook 'after-init-hook
 	  'my-after-init-hook)
@@ -438,8 +439,15 @@
  '(custom-safe-themes
    (quote
     ("67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
+ '(ensime-startup-notification nil)
+ '(exec-path
+   (quote
+    ("/opt/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/MacPorts/Emacs.app/Contents/MacOS/libexec" "/Applications/MacPorts/Emacs.app/Contents/MacOS/bin" "/usr/local/bin" "/Library/TeX/texbin" "/Users/rastogi/Library/Python/3.6/bin")))
+ '(flycheck-flake8rc ".flake8rc")
+ '(flycheck-python-flake8-executable nil)
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
+ '(magit-git-executable "/usr/local/bin/git")
  '(org-agenda-files (quote ("~/Dropbox/org/gtd.org")))
  '(org-clock-persist (quote history))
  '(org-confirm-babel-evaluate nil)
@@ -456,15 +464,22 @@
  '(org-use-tag-inheritance nil)
  '(package-selected-packages
    (quote
-    (yaml-mode zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+    (flycheck-pyflakes yasnippet ensime matlab-mode yaml-mode zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+ '(python-indent-guess-indent-offset t)
+ '(python-indent-offset 2)
+ '(python-shell-completion-native-enable nil)
  '(recenter-positions (quote (middle top)))
- '(safe-local-variable-values (quote ((TeX-master . t))))
- '(tab-width 2))
+ '(safe-local-variable-values (quote ((TeX-master . "root") (TeX-master . t))))
+ '(sh-basic-offset 2)
+ '(sh-indentation 2)
+ '(tab-width 2)
+ '(yas-snippet-dirs (quote ("/Users/rastogi/.emacs.d/snippets"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(hl-line ((t (:background "controlHighlightColor"))))
+ '(mode-line ((t (:background "Cyan" :foreground "black" :box (:line-width -1 :style released-button)))))
  '(org-hide ((t (:foreground "White"))))
  '(org-table ((t (:foreground "Blue1" :underline "selectedTextBackgroundColor")))))

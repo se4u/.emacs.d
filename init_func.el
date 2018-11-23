@@ -763,6 +763,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;; Editing support
   ;; (setq pychecker-regexp-alist
   ;;       '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+  (linum-mode 1)
   (modify-syntax-entry 95 "w") ; Consider _ as part of a word.
   ;; Header maintenance
   ;; (autoload 'auto-update-file-header "header2")
@@ -1120,6 +1121,10 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (package-initialize)
   ;; (elpy-enable)
   ;; (elpy-use-ipython)
+
+  ;; Suppress the popup warning about undo limit reached.
+  (require 'warnings)
+  (add-to-list 'warning-suppress-types '(undo discard-info))
   )
 
 (provide 'init_func)

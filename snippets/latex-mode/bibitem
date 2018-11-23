@@ -1,0 +1,5 @@
+# key: bit
+# name: bit
+# --
+\bibitem{${1:key}} \`\`${2:Title}.'' ${3:Author}. ${4:Venue}, (${5:year}).
+

@@ -6,4 +6,5 @@
 % The package algorithmicx itself doesn’t define any algorithmic commands
 % algpseudocode is the predefined command set that must be used.
 \usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage[noend]{algpseudocode}
+\algrenewcommand\algorithmicindent{.75em}%

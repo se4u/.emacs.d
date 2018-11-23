@@ -3,21 +3,18 @@
 # group: skeleton
 # name: \documentclass{article} ...
 # --
-\documentclass[14pt]{article}
-% ------ removeindent -------- %
+\documentclass[14pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=.5in]{geometry}
 \usepackage{parskip}
 \setlength\parindent{0pt}
-% ------- number enumerate environment by letter --- %
-% \renewcommand{\labelenumi}{\alph{enumi}.}
-
 \title{${1:title}}
 \author{${2:Author Name}}
-
 \begin{document}
 \maketitle
-$0
+
 
 \bibliographystyle{${3:plain}}
 \bibliography{${4:references.bib}}
-
 \end{document}

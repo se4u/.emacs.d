@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dcolor
+# key: dcolor
+# --
+\definecolor{lightred}{red}{0.5}

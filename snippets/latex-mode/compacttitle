@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: compacttitle
+# key: compacttitle
+# --
+% ------- compact title ----------- %
+\usepackage[]{titling}
+\setlength{\droptitle}{-80pt}
+\posttitle{\par\end{center}}

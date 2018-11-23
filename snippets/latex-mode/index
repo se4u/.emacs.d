@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: index
+# key: index
+# --
+\usepackage[]{makeidx}
+\makeindex
+\newcommand{\indexed}[1]{\textbf{#1}\index{#1}}
+\printindex
+\indexed{}
