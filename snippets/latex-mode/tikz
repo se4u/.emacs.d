@@ -1,0 +1,17 @@
+# key: tikz
+# name: tikz
+# --
+\documentclass[border=5pt,multi,crop,tikz]{standalone}
+\usetikzlibrary{quotes,arrows.meta}
+\begin{document}
+\begin{tikzpicture}
+  %% coo
+  %% draw
+  %% node
+  $0
+  %% Debug
+  \foreach \coo in {a,b,c,d}{
+    \node at (\coo) {$\coo$};
+  }
+\end{tikzpicture}
+\end{document}

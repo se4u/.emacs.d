@@ -2,4 +2,4 @@
 # name: node
 # key: node
 # --
-\node [$1] ($2) {$3};
+\node[anchor=${1:east}] at ($2) {$3};

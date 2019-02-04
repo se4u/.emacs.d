@@ -1,5 +1,5 @@
-# key: bit
-# name: bit
+# -*- mode: snippet -*-
+# name: bibi
+# key: bibi
 # --
-\bibitem{${1:key}} \`\`${2:Title}.'' ${3:Author}. ${4:Venue}, (${5:year}).
-
+\bibitem{${1:key}} ${2:author}. \textit{${3:title}}. ${4:location}. (${5:year})

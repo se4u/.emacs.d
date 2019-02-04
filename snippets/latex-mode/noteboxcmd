@@ -3,10 +3,19 @@
 # key: noteboxcmd
 # --
 % -------- noteboxcmd -------- %
+% https://tex.stackexchange.com/questions/305174/
+% proof-environment-produces-proof-proof-only-when-thmbox-is-used
+% This is a bug in thmtools.
+\usepackage{letltxmacro}
+\LetLtxMacro\amsproof\proof
+\LetLtxMacro\amsendproof\endproof
 \usepackage{thmtools}
 \usepackage[dvipsnames]{xcolor}
-% mirrors.ibiblio.org/CTAN/macros/latex/exptl/thmtools/thmtools.pdf
-\declaretheorem[name=Note,within=section,thmbox=S,
-shaded={rulewidth=2pt,rulecolor=Lavender},%shadethm
-]{notebox}
-%\begin{notebox} \end{notebox}
+\AtBeginDocument{\LetLtxMacro\proof\amsproof
+  \LetLtxMacro\endproof\amsendproof}
+\declaretheorem[name=Note,within=section,thmbox=S,shaded={rulewidth=2pt,rulecolor=Lavender}]{notebox}
+\declaretheorem[name=Theorem]{theorem}
+%% % mirrors.ibiblio.org/CTAN/macros/latex/exptl/thmtools/thmtools.pdf
+%% \declaretheoremstyle[spaceabove=6pt, spacebelow=6pt, headfont=\normalfont\bfseries, %
+%%   notefont=\mdseries, %
+%%   notebraces={(}{)}, bodyfont=\normalfont, postheadspace=1em, qed=\qedsymbol]{mystyle}

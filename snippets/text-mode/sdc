@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: sdc
+# key: sdc
+# --
+# ${1:$(make-string (string-width yas-text) ?\-)} #
+# $1 #
+# ${1:$(make-string (string-width yas-text) ?\-)} #

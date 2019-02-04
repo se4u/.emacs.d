@@ -1,5 +1,4 @@
-# -*- mode: snippet -*-
-# name: draw
 # key: draw
+# name: draw
 # --
-\draw[-Latex] ($1) -- ($2);
+\draw[-${1:{Latex[length=4mm,width=2mm]}},${2:very} thick,${3:densely dotted}] ($4) to${5:[bend left=20]} node[midway,right,sloped,anchor=east] {$6} ($7)  ;

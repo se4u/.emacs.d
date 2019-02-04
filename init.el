@@ -438,7 +438,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
+    ("274fa62b00d732d093fc3f120aca1b31a6bb484492f31081c1814a858e25c72e" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
  '(ensime-startup-notification nil)
  '(exec-path
    (quote
@@ -464,7 +464,7 @@
  '(org-use-tag-inheritance nil)
  '(package-selected-packages
    (quote
-    (flycheck-pyflakes yasnippet ensime matlab-mode yaml-mode zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
+    (ess dracula-theme flycheck-pyflakes yasnippet ensime matlab-mode yaml-mode zenburn-theme writegood-mode thrift smex smartparens mu4e-maildirs-extension mu4e-alert markdown-preview-mode markdown-mode+ magit luarocks lua-mode json-mode jekyll-modes hungry-delete flycheck)))
  '(python-indent-guess-indent-offset t)
  '(python-indent-offset 2)
  '(python-shell-completion-native-enable nil)
@@ -473,13 +473,15 @@
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(tab-width 2)
+ '(tool-bar-mode nil)
+ '(vc-follow-symlinks t)
  '(yas-snippet-dirs (quote ("/Users/rastogi/.emacs.d/snippets"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(hl-line ((t (:background "controlHighlightColor"))))
+ '(hl-line ((t (:underline t))))
  '(mode-line ((t (:background "Cyan" :foreground "black" :box (:line-width -1 :style released-button)))))
  '(org-hide ((t (:foreground "White"))))
  '(org-table ((t (:foreground "Blue1" :underline "selectedTextBackgroundColor")))))

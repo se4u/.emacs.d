@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: wrap
+# key: wrap
+# --
+% \usepackage[]{wrapfig}
+\begin{wrapfigure}{$3}{${4:0.5\textwidth}}
+  \centering
+  \includegraphics[width=\linewidth]{${1}.pdf}
+  \caption{$0}
+  \label{fig:$2}
+\end{wrapfigure}

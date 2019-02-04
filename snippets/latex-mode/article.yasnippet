@@ -9,12 +9,67 @@
 \usepackage[margin=.5in]{geometry}
 \usepackage{parskip}
 \setlength\parindent{0pt}
+% -------------- ams ------------------- %
+\usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype,breakcites,makeidx}
+\usepackage[shortlabels]{enumitem}
+\newcommand{\union}{\cup}
+\newcommand{\ath}[1]{#1^{\textrm{th}}}
+% --------- refcmd ------------ %
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\ssecref}[1]{Subsection~\ref{#1}}
+\newcommand{\charef}[1]{Chapter~\ref{#1}}
+\newcommand{\algoref}[1]{Algorithm~\ref{#1}}
+\newcommand{\eqnref}[1]{Equation~\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+% ----------- eg ------------ %
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\bigeg}{E.g.,\xspace}
+\newcommand{\etal}{\textit{et~al.\xspace}}
+\newcommand{\etc}{etc.\@\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\bigie}{I.e.,\xspace}
+% -------- noteboxcmd -------- %
+% https://tex.stackexchange.com/questions/305174/
+% proof-environment-produces-proof-proof-only-when-thmbox-is-used
+% This is a bug in thmtools.
+\usepackage{letltxmacro}
+\LetLtxMacro\amsproof\proof
+\LetLtxMacro\amsendproof\endproof
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+\AtBeginDocument{\LetLtxMacro\proof\amsproof
+  \LetLtxMacro\endproof\amsendproof}
+\declaretheorem[name=Note,within=section,thmbox=S,shaded={rulewidth=2pt,rulecolor=Lavender}]{notebox}
+\declaretheorem[name=Theorem]{theorem}
+%% % mirrors.ibiblio.org/CTAN/macros/latex/exptl/thmtools/thmtools.pdf
+%% \declaretheoremstyle[spaceabove=6pt, spacebelow=6pt, headfont=\normalfont\bfseries, %
+%%   notefont=\mdseries, %
+%%   notebraces={(}{)}, bodyfont=\normalfont, postheadspace=1em, qed=\qedsymbol]{mystyle}
+% -------------- minitoc --------------- %
+\usepackage[tight,italian]{minitoc}
+\usepackage[hidelinks]{hyperref}
+\usepackage{silence}
+\WarningFilter{minitoc(hints)}{W0023}
+\WarningFilter{minitoc(hints)}{W0024}
+\WarningFilter{minitoc(hints)}{W0030}
+\WarningFilter{minitoc(hints)}{W0039}
+% -------- Index Specific Cmd ------ %
+\makeindex
+\newcommand{\indexed}[1]{\textbf{#1}\index{#1}}
+% ------- paper specific cmd ------ %
+
 \title{${1:title}}
 \author{${2:Author Name}}
 \begin{document}
 \maketitle
-
-
+\tableofcontents
+\listoftheorems
+\printindex
+$0
 \bibliographystyle{${3:plain}}
 \bibliography{${4:references.bib}}
 \end{document}
