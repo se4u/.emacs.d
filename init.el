@@ -129,7 +129,7 @@
 (add-hook 'text-mode-hook
 	  'my-text-mode-hook)
 (add-hook 'write-file-hooks
-	  'delete-trailing-whitespace)
+          'delete-trailing-whitespace)
 (add-hook 'yaml-mode-hook
           'my-yaml-mode-hook)
 (add-hook 'ess-mode-hook
@@ -369,6 +369,10 @@
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") '(lambda () (interactive) (org-capture nil "t")))
+;;; We often have to remove this hook when working
+;;; with foreign code that it makes sense to dedicate a short cut to this.
+(global-set-key (kbd "C-c C-d")
+ '(lambda () (interactive) (remove-hook 'write-file-hooks 'delete-trailing-whitespace)))
 (global-set-key (kbd "C-c a") 'org-todo-list)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 (global-set-key (kbd "C-x 9") 'close-and-kill-next-pane)
