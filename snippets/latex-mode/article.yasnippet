@@ -6,14 +6,18 @@
 \documentclass[14pt]{extarticle}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\DeclareMathAlphabet{\mathsfsl}{OT1}{cmss}{m}{sl}
 \usepackage[margin=.5in]{geometry}
 \usepackage{parskip}
 \setlength\parindent{0pt}
 % -------------- ams ------------------- %
-\usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype,breakcites,makeidx}
+\usepackage{amssymb,amsmath,amsthm,mathtools,graphicx,url,xspace,booktabs,microtype,breakcites,makeidx,bm,mathrsfs}
 \usepackage[shortlabels]{enumitem}
 \newcommand{\union}{\cup}
 \newcommand{\ath}[1]{#1^{\textrm{th}}}
+\newcommand{\defby}{\overset{\mathrm{\scriptscriptstyle{def}}}{=}}
+\newcommand{\argmin}{\operatorname*{arg\; min}}
+\newcommand{\argmax}{\operatorname*{arg\; max}}
 % --------- refcmd ------------ %
 \newcommand{\figref}[1]{Figure~\ref{#1}}
 \newcommand{\tabref}[1]{Table~\ref{#1}}
@@ -32,6 +36,14 @@
 \newcommand{\etc}{etc.\@\xspace}
 \newcommand{\ie}{i.e.,\xspace}
 \newcommand{\bigie}{I.e.,\xspace}
+% ---------- theorems --------- %
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\newenvironment{procedure}{\textsc{Procedure:}\begin{enumerate}}{\end{enumerate}}
 % -------- noteboxcmd -------- %
 % https://tex.stackexchange.com/questions/305174/
 % proof-environment-produces-proof-proof-only-when-thmbox-is-used
@@ -44,7 +56,6 @@
 \AtBeginDocument{\LetLtxMacro\proof\amsproof
   \LetLtxMacro\endproof\amsendproof}
 \declaretheorem[name=Note,within=section,thmbox=S,shaded={rulewidth=2pt,rulecolor=Lavender}]{notebox}
-\declaretheorem[name=Theorem]{theorem}
 %% % mirrors.ibiblio.org/CTAN/macros/latex/exptl/thmtools/thmtools.pdf
 %% \declaretheoremstyle[spaceabove=6pt, spacebelow=6pt, headfont=\normalfont\bfseries, %
 %%   notefont=\mdseries, %
