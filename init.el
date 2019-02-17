@@ -395,6 +395,7 @@
 (global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-s") 'save-buffer)
 (global-set-key (kbd "s-o") 'ido-find-file)
+(global-set-key [s-return] 'save-buffer)
 (global-set-key (kbd "C-M-x M-n") 'overwrite-mode)
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
