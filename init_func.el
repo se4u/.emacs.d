@@ -7,6 +7,10 @@
      (progn (vertical-motion 0) (point))
      (progn (vertical-motion 1) (point)))))
 
+(defun my-shell-mode-hood ()
+  (ansi-color-for-comint-mode-on)
+  (linum-mode -1))
+
 (defun my-hl-line-mode-hook ()
   (visual-line-mode)
   (set (make-local-variable 'hl-line-range-function) #'visual-line-line-range))
@@ -1125,6 +1129,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   ;; Suppress the popup warning about undo limit reached.
   (require 'warnings)
   (add-to-list 'warning-suppress-types '(undo discard-info))
+  (global-linum-mode)
   )
 
 (provide 'init_func)

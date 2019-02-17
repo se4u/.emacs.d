@@ -40,3 +40,8 @@ var/
 org-clock-save.el
 *~
 .DS_Store
+bookmarks
+ido.last
+recentf
+smex-items
+srecode-map.el

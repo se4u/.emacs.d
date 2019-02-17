@@ -137,7 +137,7 @@
 (add-hook 'sgml-mode-hook
           'my-sgml-mode-hook)
 (add-hook 'shell-mode-hook
-	  'ansi-color-for-comint-mode-on)
+          'my-shell-mode-hook)
 (add-hook 'sh-mode-hook
           'my-sh-mode-hook)
 (add-hook 'html-mode-hook
