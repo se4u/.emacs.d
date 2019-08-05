@@ -1,6 +1,4 @@
-;;; Requires
-(require 'cl-lib)
-;;; Code
+
 (defun kill-word-at-point ()
   "Kill the word under cursor"
   (interactive)
@@ -9,6 +7,7 @@
 
 (defun buffer-line-count ()
   "Return the number of lines in this buffer."
+  (interactive)
   (count-lines (point-min) (point-max)))
 
 (defun goto-random-line ()
@@ -696,6 +695,18 @@ directory as the org-buffer and insert a link to this file. This function wont w
    (define-key term-raw-map binding
      (lookup-key (current-global-map) binding)))
 
+(defun my-term-hook ()
+  (expose-global-binding-in-term (kbd "M-o"))
+  ;; (expose-global-binding-in-term (kbd "M-k"))
+  ;; (expose-global-binding-in-term (kbd "<up>"))
+  ;; (expose-global-binding-in-term (kbd "<down>"))
+  ;; (expose-global-binding-in-term (kbd "<left>"))
+  ;; (expose-global-binding-in-term (kbd "<right>"))
+  ;; (expose-global-binding-in-term (kbd "C-h"))
+  )
+
+
+
 (defun my-python-after-save-hook ()
   ()
   ;; (call-process-shell-command
@@ -1017,6 +1028,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-after-init-hook ()
   (require 'package)
+  ;; package-init must be called before configurations of installed packages.
   (package-initialize)
   (add-to-list 'load-path "~/.emacs.d/snippets")
   (add-package-managers)
@@ -1049,11 +1061,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
         kept-new-versions 20   ; how many of the newest versions to keep
         kept-old-versions 5    ; and how many of the old
         )
-  ;;(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+
   (require 'smartparens-config)
   (smartparens-global-mode 1)
-  (menu-bar-mode -1)
-  (kill-buffer "*scratch*")
   (winner-mode 1)
   )
 

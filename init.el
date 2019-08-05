@@ -1,227 +1,147 @@
-;;; package --- Setup.
-;;; Commentary:
-;;; Code:
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
-(setq-default bidi-display-reordering nil)
 ;; Setting line move visual to nil is very annoying. When you
 ;; do this then the pointer moves by logical lines and skips over
 ;; wrapped visual lines. The following is default behavior so I dont
 ;; need to do something explicitly but I keep this as reminder for future.
 ;; (setq-default line-move-visual 1)
+;; (setq-default bidi-display-reordering nil)
+
+;; The abbreviation mode auto corrects typos.
+;; Auto correction can not be ued while programming and scripting!
+;; (setq-default abbrev-mode t)
+;; (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
+
+
+(kill-buffer "*scratch*")
 (display-time)  ;; Displays time in minibuffer
 (ido-mode t)    ;; Helps in switching buffers
 (ido-everywhere 1)
-
 (blink-cursor-mode -1)
 (set-cursor-color "Red")
-;; DONT DELETE THE FOLLOWING COMMENTED OPTIONS. Keep them for future.
-;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode) ; This shows summary of tokens in echo area, very anoying, interferes with error messages etc.
-;; ;;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-;; (semantic-mode)
-;; (global-semantic-idle-completions-mode)
-;; (global-semantic-decoration-mode)
-
-;; (global-semantic-highlight-func-mode)
-;; (global-semantic-show-unmatched-syntax-mode nil)
-;; (global-srecode-minor-mode 1)
-;; (semantic-complete-analyze-inline)
-
-
 (auto-fill-mode 1) ;; Turn on auto fill mode globally
-(show-paren-mode)  ;; Highlights parenthesis
-;; (electric-pair-mode)
+(show-paren-mode 1)  ;; Highlights parenthesis
+(transient-mark-mode 1)
 (semantic-mode)    ;; Emacs parses buffers in this mode.
-;; (global-ede-mode)  ;; EDE is a project manager
-(add-hook 'before-save-hook 'time-stamp)
-(setq shift-select-mode t)
-(transient-mark-mode)
-;; ido-dired is bound to C-x d. It lets you filter files through globs
-;; Graphics Settings
-;; (global-font-lock-mode t)
-(defvar font-lock-operator-face 'font-lock-operator-face)
-(defface font-lock-operator-face ()
-  "Basic face for highlighting."
-  :group 'basic-faces)
-(set-face-foreground 'font-lock-operator-face "red")
-(setq ring-bell-function (lambda () (message "*beep*")))
-;; (menu-bar-mode -1)
-;; (menu-bar-showhide-tool-bar-menu-customize-disable)
-;; (kill-buffer "*scratch*")
-;; (winner-mode 1)
 (column-number-mode 1)
-(if (display-graphic-p) (fringe-mode '(nil . 0)))
-(setq ediff-split-window-function 'split-window-horizontally)
-;; Settings for the abbreviation mode
-(setq abbrev-file-name "~/.emacs.d/abbrev_defs") ;; Where to save/read abbrevs
-(setq save-abbrevs t)
-;; Do not turn on abbrev mode till you have time to figure out
-;; how to make sure it doesn't turn on in comint, shells and programming modes.
-;; (setq-default abbrev-mode t) ;; Turn abbrev mode by default
+(setq browse-url-mailto-function 'browse-url-generic
+      browse-url-generic-program "open"
+      redisplay-dont-pause t
+      scroll-margin 3
+      scroll-step 1
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1
+      custom-file (if (display-graphic-p) "~/.emacs.d/custom_gui.el" "~/.emacs.d/custom_nogui.el"))
 (when (equal system-type 'darwin)
   (setq
    mac-option-modifier 'meta
    mac-command-modifier 'super
-   mac-function-modifier 'hyper
-   redisplay-dont-pause t
-   scroll-margin 3
-   scroll-step 1
-   scroll-up-aggressively 0.01
-   scroll-down-aggressively 0.01
-   scroll-conservatively 100000
-   scroll-preserve-screen-position 1)
-  (add-to-list 'load-path "~/.emacs.d/w3m/")
+   mac-function-modifier 'hyper))
+(custom-set-variables
+ '(shift-select-mode t)
+ '(ring-bell-function (lambda () (message "*beep*")))
+ '(cursor-in-non-selected-windows 'hollow)
+ '(dired-use-ls-dired nil)
+ '(display-time-format "%H:%M:%S")
+ '(display-time-interval 1)
+ '(doc-view-continuous t)
+ '(fill-column 80)
+ '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
+ '(font-lock-maximum-decoration 2)
+ ;; company mode is not included with emacs.
+ ;; so this variable may not have any effect
+ '(global-company-mode t)
+ '(global-flycheck-mode t)
+ '(ido-ignore-buffers '("\\` " "*Messages*" "*GNU Emacs*"
+                        "*Calendar*" "*Completions*" "TAGS"
+                        "*magit-process*"))
+ '(ido-ignore-files '("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./"))
+ '(header-date-format t)
+ '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(initial-buffer-choice "~/Dropbox/org/gtd.org")
+ '(line-move-visual t)
+ ;; setting magit-use-overlays to nil will color diffs
+ ;; using text properties instead of overlays, which
+ ;; scales much better with larger diffs.
+ '(magit-use-overlays nil)
+ '(menu-bar-mode nil)
+ '(org-directory "~/Dropbox/org")
+ '(save-abbrevs 'silently)
+ '(tool-bar-mode nil)
+ '(warning-suppress-types '(undo discard-info))
 
-  (require 'w3m))
-(if (equal system-type 'darwin)
-    (if (display-graphic-p)
-	(setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac.el")
-      (setq custom-file "~/.emacs.d/pushpendrerastogi_custom_mac_nogui.el"))
-  (setq custom-file "~/.emacs.d/pushpendrerastogi_custom.el"))
+ ;; Nest yas calls, and put contents of region as $0.
+ '(yas-triggers-in-field t)
+ '(yas-wrap-around-region nil)
+
+ '(python-eldoc-function-timeout 3)
+ '(python-eldoc-function-timeout-permanent nil)
+ '(python-python-command "/Users/pushpendrerastogi/Library/Enthought/Canopy_64bit/User/bin/python")
+ '(python-shell-interpreter "python")
+
+ '(sh-basic-offset 2)
+ '(scroll-bar-mode nil)
+ '(ediff-split-window-function 'split-window-horizontally)
+ '(frame-title-format (list (format "%s %%S: %%j " (system-name)) '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+ '(org-return-follows-link t)
+
+ '(make-header-hook
+   '(header-file-name
+     header-description
+     header-author
+     header-creation-date
+     header-modification-date
+     header-update-count
+     header-end-line))
+ ;; save the place of cursor in closed buffers
+ '(save-place t nil (saveplace))
+
+ ;; company mode settings.
+ '(company-abort-manual-when-too-short t)
+ '(company-auto-complete t)
+ '(company-auto-complete-chars nil)
+ '(company-global-modes t)
+ '(company-idle-delay 1)
+ '(company-minimum-prefix-length 2)
+ '(company-quickhelp-delay 0.25)
+ '(company-quickhelp-max-lines 10)
+ '(company-show-numbers t)
+ '(company-tooltip-limit 20)
+ )
 (load custom-file)
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-	    '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-;; After loading the helper functions, Now add them as hooks to various modes
 (load "~/.emacs.d/init_func.el")
 (add-hook 'auto-fill-mode-hook
           #'(lambda () (setq comment-auto-fill-only-comments t)))
-(add-hook 'c-mode-hook
-	  'c-hook-func)
-(add-hook 'c++-mode-hook
-	  'c-hook-func)
-(add-hook 'cmake-mode-hook
-	  'my-cmake-mode-hook)
-(add-hook 'dired-mode-hook
-          'my-dired-mode-hook)
-(add-hook 'doc-view-mode-hook
-          'auto-revert-mode)
-(add-hook 'find-file-hook
-	  'find-file-check-line-endings)
-(add-hook 'java-mode-hook
-	  'my-java-mode-hook)
-(add-hook 'LaTeX-mode-hook
-	  'my-latex-mode-hook)
-(add-hook 'markdown-mode-hook
-          'my-markdown-mode-hook)
-(add-hook 'matlab-shell-mode-hook
-	  'my-matlab-shell-mode-hook)
-(add-hook 'matlab-mode-hook
-	  'my-matlab-mode-hook)
-(add-hook 'matlab-mode-hook
-	  'run-matlab-once)
-(add-hook 'makefile-gmake-mode-hook
-	  'my-makefile-mode-hook)
-(add-hook 'makefile-bsdmake-mode-hook
-	  'my-makefile-mode-hook)
-(add-hook 'org-mode-hook
-	  'my-org-mode-hook)
-(add-hook 'python-mode-hook
-          'my-python-mode-hook)
-(add-hook 'text-mode-hook
-	  'my-text-mode-hook)
-(add-hook 'write-file-hooks
-	  'delete-trailing-whitespace)
-(add-hook 'yaml-mode-hook
-          'my-yaml-mode-hook)
-(add-hook 'ess-mode-hook
-          'my-ess-mode-hook)
-(add-hook 'sgml-mode-hook
-          'my-sgml-mode-hook)
-(add-hook 'html-mode-hook
-          'my-html-mode-hook)
-(add-hook 'nxml-mode-hook
-          'my-nxml-mode-hook)
-(add-hook 'js-mode-hook
-          'my-js-mode-hook)
-(add-hook 'shell-mode-hook
-	  'ansi-color-for-comint-mode-on)
-(add-hook 'prog-mode-hook
-          'my-prog-mode-hook)
-
-;; ORG Mode Setup
-(setq org-publish-project-alist
-      (list
-       '("active-learn"
-         :base-directory "~/Dropbox/org/"
-         :base-extension "org"
-         :publishing-directory "~/public_html/notes/"
-         :exclude "morepersonal.org" ; talks-with-ben.html ass4.html gtd.html theindex.html ToReadPersonal.html
-         :publishing-function org-publish-org-to-html
-         :auto-sitemap t
-         :sitemap-sort-files "anti-chronologically"
-         :makeindex nil
-         :auto-preamble t
-         :with-section-numbers nil
-         :completion-function active-learn-publishing-completion
-         :sitemap-function org-blog-export
-         :sitemap-title
-         :sitemap-filename
-         )))
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline (concat org-directory "/gtd.org") "Tasks")
-         "* TODO %?\n %i\n")
-        ))
-(setq org-alphabetical-lists t
-      ;; NOTE: I spent 4 and 5 Feb debugging crashes that happened while I
-      ;; worked on org files that contained some pretty-entities and tables.
-      ;; I noted that the crashes did not occur when I start with -Q flag.
-      ;; I also noticed ;; that the crashes did not occur when I commented out
-      ;; the `org-startup-indented` flag.
-      ;;
-      ;; This behavior was consistent on the
-      ;; carbon-mac-port as well as the stock DMG that's distributed at
-      ;; emacsformac. Also, I found an old bug report stating that
-      ;; org-startup-indented used to cause crashed in emacs 23 and that this
-      ;; bug was fixed.
-      ;;
-      ;; Although that bug was fixed, what seems to have
-      ;; happened is that a combination of flags need to be set to crash emacs,
-      ;; one of which is the org-startup-indented flag.  However at this point
-      ;; since I have the workaround, I have stopped investigating further.
-      ;; org-startup-indented t
-      org-enforce-todo-checkbox-dependencies t
-      org-enforce-todo-dependencies t
-      org-clock-persist 'history
-      org-log-done t
-      org-use-tag-inheritance nil
-      org-startup-truncated nil
-      org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE"))
-      org-confirm-babel-evaluate nil
-      org-tag-alist '((:startgroup . nil)
-                      ("@reading" . ?r)
-                      ("@coding" . ?c)
-                      ("@errand" . ?e)
-                      (:endgroup . nil)
-                      (:startgroup . nil)
-                      ("@work" . ?w)
-                      ("@personal" . ?p)
-                      (:endgroup . nil)
-                      ))
-
-(define-key mode-specific-map [?a] 'org-agenda)
-;; org-clock-persistance-insinutae has a side effect dont shift it behind that eval-after function
-;; (org-clock-persistence-insinuate)
-
-(setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
-
-(org-babel-do-load-languages
-    'org-babel-load-languages '((python . t) (R . t)))
-
-
-;;(server-start)
-(setq browse-url-mailto-function 'browse-url-generic)
-(setq browse-url-generic-program "open")
-
+(add-hook 'after-init-hook            'my-after-init-hook) ;; SETUP Package Managers
+(add-hook 'before-save-hook           'time-stamp)
+(add-hook 'c-mode-hook                'c-hook-func)
+(add-hook 'c++-mode-hook              'c-hook-func)
+(add-hook 'cmake-mode-hook            'my-cmake-mode-hook)
+(add-hook 'dired-mode-hook            'my-dired-mode-hook)
+(add-hook 'doc-view-mode-hook         'auto-revert-mode)
+(add-hook 'find-file-hook             'find-file-check-line-endings)
+(add-hook 'java-mode-hook             'my-java-mode-hook)
+(add-hook 'LaTeX-mode-hook            'my-latex-mode-hook)
+(add-hook 'markdown-mode-hook         'my-markdown-mode-hook)
+(add-hook 'matlab-shell-mode-hook     'my-matlab-shell-mode-hook)
+(add-hook 'matlab-mode-hook           'my-matlab-mode-hook)
+(add-hook 'matlab-mode-hook           'run-matlab-once)
+(add-hook 'makefile-gmake-mode-hook   'my-makefile-mode-hook)
+(add-hook 'makefile-bsdmake-mode-hook 'my-makefile-mode-hook)
+(add-hook 'org-mode-hook              'my-org-mode-hook)
+(add-hook 'python-mode-hook           'my-python-mode-hook)
+(add-hook 'text-mode-hook             'my-text-mode-hook)
+(add-hook 'write-file-hooks           'delete-trailing-whitespace)
+(add-hook 'yaml-mode-hook             'my-yaml-mode-hook)
+(add-hook 'ess-mode-hook              'my-ess-mode-hook)
+(add-hook 'sgml-mode-hook             'my-sgml-mode-hook)
+(add-hook 'html-mode-hook             'my-html-mode-hook)
+(add-hook 'nxml-mode-hook             'my-nxml-mode-hook)
+(add-hook 'js-mode-hook               'my-js-mode-hook)
+(add-hook 'shell-mode-hook            'ansi-color-for-comint-mode-on)
+(add-hook 'prog-mode-hook             'my-prog-mode-hook)
+(add-hook 'term-mode-hook             'my-term-hook)
 ;; Eval AFTER load
 (eval-after-load "org"
   '(progn
@@ -263,20 +183,20 @@
 (ad-activate 'quit-window)
 
 
-(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-	       '("\\.py\\'" flymake-pyflakes-init))
-  )
-;; Key bindings
-;; They should be set last so that they override any other mode
+
+;; (when (load "flymake" t)
+;;   (defun flymake-pyflakes-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list "pyflakes" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;; 	       '("\\.py\\'" flymake-pyflakes-init))
+;;   )
+
+;; Key bindings are set last so that they override all modes.
 (global-set-key (kbd "<S-kp-9>") '(lambda () (interactive) (insert "(")))
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key [f1] 'kmacro-end-or-call-macro)
@@ -392,38 +312,7 @@
 (define-key key-translation-map [f5] (kbd "C-c C-c"))
 (define-key key-translation-map [f19] (kbd "C-g"))
 (define-key key-translation-map (kbd "M-O T") (kbd "C-c C-c"))
-;; Ansi Term
-;; (expose-global-binding-in-term (kbd "M-o"))
-;; (expose-global-binding-in-term (kbd "M-k"))
-;; (expose-global-binding-in-term (kbd "<up>"))
-;; (expose-global-binding-in-term (kbd "<down>"))
-;; (expose-global-binding-in-term (kbd "<left>"))
-;; (expose-global-binding-in-term (kbd "<right>"))
-;; (expose-global-binding-in-term (kbd "C-h"))
-(setq server-socket-dir "~/.emacs.d/server") ; Emacs Server
-
-;; C-c C-j Switch to line mode (term-line-mode). Do nothing if already in line mode.
-;; C-c C-k Switch to char mode (term-char-mode). Do nothing if already in char mode.
-;; The following commands are only available in char mode:
-
-;; C-c C-c Send a literal C-c to the sub-shell.
-;; C-c char This is equivalent to C-x char in normal Emacs.
-
-;; Term mode has a page-at-a-time feature.
-;; When enabled, it makes output pause at the end of each screenful:
-
-;; C-c C-q Toggle the page-at-a-time feature. This command works in both line and char modes. When the feature is enabled, the mode-line
-;;     displays the word ‘page’, and each time Term receives more than a screenful of output, it pauses and displays ‘**MORE**’ in the
-;;     mode-line. Type SPC to display the next screenful of output, or ? to see your other options. The interface is similar to the
-;;     more program.
-
-
-
 
 ;; http://stackoverflow.com/questions/24725778/how-to-rebuild-elpa-packages-after-upgrade-of-emacs
 ;; (byte-recompile-directory package-user-dir nil 'force)
 ;; (dolist (package-name package-activated-list) (package-install package-name))
-
-;; SETUP Package Managers
-(add-hook 'after-init-hook
-	  'my-after-init-hook)
