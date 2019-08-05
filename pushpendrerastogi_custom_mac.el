@@ -77,6 +77,7 @@
     (ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd elixir emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck haml handlebars haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-gjslint json-jsonlint less lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-pylint python-flake8 python-pycompile r-lintr racket rpm-rpmlint rst rst-sphinx ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(flycheck-pylintrc "~/.emacs.d/.pylintrc")
  '(flymake-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
+ '(flymake-proc-allowed-file-name-masks (quote (("\\.py\\'" flymake-pyflakes-init))))
  '(font-lock-maximum-decoration 2)
  '(global-company-mode t)
  '(global-flycheck-mode t)
@@ -102,7 +103,6 @@
    (quote
     ("/Applications/MATLAB_R2010a.app/bin/maci64/mlint")))
  '(mlint-verbose t)
- '(org-babel-load-languages (quote ((plantuml . t) (sh . t))))
  '(org-directory "~/Dropbox/org")
  '(org-emphasis-alist
    (quote
@@ -149,7 +149,7 @@
  '(org-return-follows-link t)
  '(package-selected-packages
    (quote
-    (web-mode web-mode-edit-element latex-extra company-auctex htmlize mu4e-alert mu4e-maildirs-extension top-mode markdown-mode company-quickhelp elpy writegood-mode hl-anything expand-region auctex-latexmk hungry-delete ido-at-point smartparens yaml-mode exec-path-from-shell fill-column-indicator flycheck flycheck-cython flycheck-google-cpplint yasnippet magit header2 ac-c-headers ac-helm auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor org-ac popup-complete recentf-ext smex org-blog org multi-web-mode igrep flymake-shell flymake)))
+    (web-mode web-mode-edit-element latex-extra company-auctex htmlize mu4e-alert mu4e-maildirs-extension top-mode markdown-mode company-quickhelp elpy hl-anything expand-region auctex-latexmk hungry-delete ido-at-point smartparens yaml-mode exec-path-from-shell fill-column-indicator flycheck flycheck-cython flycheck-google-cpplint yasnippet magit header2 ac-c-headers ac-helm auto-complete-c-headers auto-complete-chunk c-eldoc ecb ess flymake-cursor org-ac popup-complete recentf-ext smex org-blog org multi-web-mode igrep flymake-shell flymake)))
  '(python-eldoc-function-timeout 3)
  '(python-eldoc-function-timeout-permanent nil)
  '(python-python-command
@@ -157,10 +157,10 @@
  '(python-shell-interpreter "python")
  '(safe-local-variable-values
    (quote
-    ((eval progn
+    ((eval org-mode t)
+     (eval progn
            (anaconda-mode -1)
            (eldoc-mode -1)
-           (company-mode -1)
            (linum-mode 1))
      (eval defun reftex-get-bibfile-list nil
            (reftex-default-bibliography))
@@ -169,8 +169,7 @@
      (eval progn
            (eldoc-mode -1)
            (anaconda-mode -1)
-           (flycheck-mode -1)
-           (company-mode -1))
+           (flycheck-mode -1))
      (eval org-toggle-pretty-entities)
      (eval add-hook
            (quote after-save-hook)
@@ -184,38 +183,29 @@
            (quote make-it-local))
      (eval progn
            (flycheck-mode -1)
-           (company-mode -1)
            (orgtbl-mode -1))
      (eval progn
            (flycheck-mode -1)
            (hs-minor-mode -1))
      (eval progn
            (anaconda-mode -1)
-           (company-mode -1)
            (eldoc-mode -1))
      (eval progn
-           (flycheck-mode -1)
-           (company-mode -1))
+           (flycheck-mode -1))
      (eval progn
            (flycheck-mode -1)
-           (writegood-mode -1)
            (orgtbl-mode -1)
-           (company-mode -1)
            (auto-revert-mode -1))
      (eval progn
            (flychek-mode -1)
-           (writegood-mode -1)
-           (orgtbl-mode -1)
-           (company-mode -1))
+           (orgtbl-mode -1))
      (eval progn
            (linum-mode 1)
-           (eldoc-mode -1)
-           (company-mode -1))
+           (eldoc-mode -1))
      (eval progn
            (linum-mode 1)
            (anaconda-mode -1)
-           (eldoc-mode -1)
-           (company-mode -1))
+           (eldoc-mode -1))
      (eval progn
            (linum-mode 1)
            (anaconda-mode -1)
@@ -239,7 +229,6 @@
            (hs-minor-mode -1)
            (orgtbl-mode -1))
      (eval progn
-           (company-mode -1)
            (anaconda-mode -1)
            (eldoc-mode -1))
      (header-auto-update-enabled)
@@ -255,6 +244,7 @@
  '(semantic-matlab-dependency-system-include-path
    (quote
     ("/Applications/MATLAB_R2010a.app/toolbox/matlab/funfun" "/Applications/MATLAB_R2010a.app/toolbox/matlab/general")))
+ '(sh-basic-offset 2)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587)
  '(sp-escape-quotes-after-insert nil)
@@ -276,10 +266,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Monaco"))))
+ '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#111111" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "nil" :family "Monaco"))))
  '(cursor ((t (:background "Red" :foreground "black"))))
  '(flycheck-warning ((t (:background "white"))))
- '(flymake-errline ((t nil)))
+ '(flymake-errline ((t nil)) t)
  '(font-latex-sectioning-5-face ((t (:inherit variable-pitch :foreground "blue4" :weight normal))))
  '(font-latex-warning-face ((t (:foreground "red"))))
  '(font-lock-keyword-face ((t (:foreground "blue" :weight normal))))

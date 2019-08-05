@@ -53,10 +53,10 @@
   :group 'basic-faces)
 (set-face-foreground 'font-lock-operator-face "red")
 (setq ring-bell-function (lambda () (message "*beep*")))
-(menu-bar-mode -1)
-(menu-bar-showhide-tool-bar-menu-customize-disable)
-(kill-buffer "*scratch*")
-(winner-mode 1)
+;; (menu-bar-mode -1)
+;; (menu-bar-showhide-tool-bar-menu-customize-disable)
+;; (kill-buffer "*scratch*")
+;; (winner-mode 1)
 (column-number-mode 1)
 (if (display-graphic-p) (fringe-mode '(nil . 0)))
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -210,7 +210,7 @@
 
 (define-key mode-specific-map [?a] 'org-agenda)
 ;; org-clock-persistance-insinutae has a side effect dont shift it behind that eval-after function
-(org-clock-persistence-insinuate)
+;; (org-clock-persistence-insinuate)
 
 (setq org-agenda-files (list "~/Dropbox/org/gtd.org"))
 
@@ -329,7 +329,7 @@
 (global-set-key (kbd "M-O V") 'my-generate-tags)
 (global-set-key (kbd "M-O W") 'magit-stage-commit-push)
 (global-set-key (kbd "M-O X") 'menu-bar-open)
-(global-set-key (kbd "M-O Y") 'magit-status)
+(global-set-key (kbd "C-]") 'magit-status)
 (global-set-key (kbd "M-O Z") 'kill-this-buffer)
 (global-set-key (kbd "M-,") (lambda () (interactive) (set-mark-command t)))
 (global-set-key (kbd "M-'") 'ido-switch-buffer)
@@ -351,7 +351,7 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-4") 'bookmark-set)
-(global-set-key (kbd "C-5") 'bookmark-jump)
+(global-set-key (kbd "C-5") 'magit-status)
 (global-set-key (kbd "C-8") 'create-file-at-point)
 (global-set-key (kbd "C-a") 'back-to-indentation)
 (global-set-key (kbd "C-p") 'save-line-to-kill-ring)

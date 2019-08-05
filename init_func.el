@@ -798,8 +798,9 @@ directory as the org-buffer and insert a link to this file. This function wont w
      ("\\<\\(GUESS:\\)" 1 font-lock-string-face t)
      ("\\<\\(SKIP:\\)" 1 font-lock-string-face t)
      ("\\<\\(ToProve:.*\\)" 1 font-lock-warning-face t)))
-  (writegood-mode -1)
   (define-key org-mode-map (kbd "C-c C-r") 'org-refresh-everything)
+  (define-key org-mode-map (kbd "<return>") 'newline-and-indent)
+  (define-key org-mode-map (kbd "C-j") 'newline-and-indent)
   (define-key org-mode-map (kbd "C-=") 'text-scale-increase)
   (define-key org-mode-map (kbd "C-c q") 'org-set-tags-command)
   (define-key org-mode-map (kbd "C-c d") 'org-deadline)
@@ -829,8 +830,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
 
 (defun my-text-mode-hook ()
   (remove-dos-eol)
-  ;; (auto-fill-mode)
-  (writegood-mode)
   )
 
 (defun latex-add-new-list-item ()
@@ -875,7 +874,6 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (setq reftex-default-bibliography '("~/Dropbox/Bibliography_all.bib"))
   (auto-fill-mode 1)
   (setq comment-auto-fill-only-comments nil)
-  (writegood-mode)
   (setq reftex-plug-into-AUCTeX t)
   (flyspell-mode)
   (define-key latex-extra-mode-map (kbd "<C-return>") 'latex/compile-commands-until-done)
@@ -1018,9 +1016,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
   )
 
 (defun my-after-init-hook ()
+  (require 'package)
+  (package-initialize)
   (add-to-list 'load-path "~/.emacs.d/snippets")
   (add-package-managers)
-  ;; (yas-minor-mode-on) ;; It's possible to add this to prog-mode hook instead
+  (require 'yasnippet)
+  (yas-minor-mode-on) ;; It's possible to add this to prog-mode hook instead
   (yas-global-mode 1)
   (recentf-mode 1)
   (global-flycheck-mode)
@@ -1029,7 +1030,7 @@ directory as the org-buffer and insert a link to this file. This function wont w
   (add-hook 'ibuffer-mode-hook 'my-ibuffer-mode-hook)
   (global-hungry-delete-mode)
   (load "auctex.el" nil t t)
-  (setq tags-case-fold-search nil)
+  ;;(setq tags-case-fold-search nil)
   (setq ido-ignore-buffers
 	'("\\` " "*Messages*" "*GNU Emacs*" "*Calendar*" "*Completions*" "TAGS"
           "*Flycheck error message*" "*Ediff Registry*"
@@ -1048,38 +1049,12 @@ directory as the org-buffer and insert a link to this file. This function wont w
         kept-new-versions 20   ; how many of the newest versions to keep
         kept-old-versions 5    ; and how many of the old
         )
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/.emacs.d/plantuml.jar"))
-  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-
-  (add-to-list 'load-path "~/.emacs.d/mymodes")
-  (require 'stripes)
-  (quail-define-package "math" "UTF-8" "Ω" t)
-  (quail-define-rules ; Manual overrides for the Tex Input method
-   ("\\from"    #X2190)
-   ("\\to"      #X2192)
-   ("\\lhd"     #X22B2)
-   ("\\rhd"     #X22B3)
-   ("\\unlhd"   #X22B4)
-   ("\\unrhd"   #X22B5))
-  ;; (require 'math-symbol-lists)
-  ;; (mapc (lambda (x)
-  ;;       (if (cddr x)
-  ;;           (quail-defrule (cadr x) (car (cddr x)))))
-  ;;       (append math-symbol-list-basic math-symbol-list-extended))
-  (setq-default TeX-master nil)
-  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  ;;(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
   (require 'smartparens-config)
   (smartparens-global-mode 1)
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
-  (require 'mu4e)
-  (my-mu4e-setup)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("elpy" . "https://jorgenschaefer.github.io/packages/"))
-  (package-initialize)
-  (elpy-enable)
-  (elpy-use-ipython)
+  (menu-bar-mode -1)
+  (kill-buffer "*scratch*")
+  (winner-mode 1)
   )
 
 (provide 'init_func)
